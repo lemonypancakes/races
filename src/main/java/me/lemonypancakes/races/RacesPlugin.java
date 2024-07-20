@@ -1,19 +1,33 @@
 package me.lemonypancakes.races;
 
+import me.lemonypancakes.races.power.PowerRepository;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class RacesPlugin extends JavaPlugin {
-    @Override
-    public void onLoad() {
-        Races.setPlugin(this);
+    private List<RacesPlayer> players;
+    private PowerRepository powerRepository;
+
+    public List<RacesPlayer> getPlayers() {
+        return players;
     }
 
-    @Override
+    public PowerRepository getPowerRepository() {
+        return powerRepository;
+    }
+
+    public void onLoad() {
+        Races.setPlugin(this);
+        players = new ArrayList<>();
+        powerRepository = new PowerRepository();
+    }
+
     public void onEnable() {
         super.onEnable();
     }
 
-    @Override
     public void onDisable() {
         super.onDisable();
     }

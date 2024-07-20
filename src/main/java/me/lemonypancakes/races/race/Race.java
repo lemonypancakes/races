@@ -1,9 +1,6 @@
 package me.lemonypancakes.races.race;
 
-public final class Race {
-    private final String name;
+import org.bukkit.inventory.ItemStack;
 
-    public Race(String name) {
-        this.name = name;
-    }
+public record Race(String name, String description, ItemStack icon) {
 }

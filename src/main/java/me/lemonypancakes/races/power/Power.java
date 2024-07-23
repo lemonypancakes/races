@@ -8,9 +8,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public abstract class Power implements Keyed {
     private final NamespacedKey key;
+    private final JsonObject json;
     private final String name;
     private final String displayName;
     private final String description;
@@ -19,7 +21,8 @@ public abstract class Power implements Keyed {
     private final int order;
 
     public Power(NamespacedKey key, JsonObject json) {
-        this.key = key;
+        this.key = Objects.requireNonNull(key, "key must not be null");
+        this.json = Objects.requireNonNull(json, "json must not be null");
         this.name = json.has("name") ? json.get("name").getAsString() : null;
         this.displayName = json.has("displayName") ? json.get("displayName").getAsString() : null;
         this.description = json.has("description") ? json.get("description").getAsString() : null;
@@ -32,6 +35,10 @@ public abstract class Power implements Keyed {
     @Override
     public NamespacedKey getKey() {
         return key;
+    }
+
+    public JsonObject getJson() {
+        return json.deepCopy();
     }
 
     public final String getName() {
@@ -58,7 +65,12 @@ public abstract class Power implements Keyed {
         return order;
     }
 
-    public abstract void apply(Player player);
+    public final PowerInstance<?> apply(Player player) {
+        return Objects.requireNonNull(onApply(player));
+    }
+
+    @Nonnull
+    protected abstract PowerInstance<?> onApply(Player player);
 
     @Override
     public final boolean equals(Object o) {

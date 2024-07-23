@@ -1,6 +1,9 @@
 package me.lemonypancakes.races;
 
+import me.lemonypancakes.races.power.PowerInstance;
 import me.lemonypancakes.races.power.PowerRepository;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public final class RacesPlugin extends JavaPlugin {
     public void onLoad() {
         Races.setPlugin(this);
         players = new ArrayList<>();
-        powerRepository = new PowerRepository();
+        powerRepository = new PowerRepository().reload();
     }
 
     public void onEnable() {
@@ -29,6 +32,8 @@ public final class RacesPlugin extends JavaPlugin {
     }
 
     public void onDisable() {
-        super.onDisable();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            PowerInstance.removeAll(player);
+        }
     }
 }

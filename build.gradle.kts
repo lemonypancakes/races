@@ -13,10 +13,13 @@ version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://repo.papermc.io/repository/maven-public/")
+
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot:1.21-R0.1-SNAPSHOT:remapped-mojang")
+    compileOnly("dev.folia:folia-api:1.20.6-R0.1-SNAPSHOT")
     implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.3.0")
 }
 

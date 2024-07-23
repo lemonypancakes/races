@@ -18,6 +18,10 @@ public record PowerType<T extends Power>(NamespacedKey key, PowerFactory<T> fact
         return Registry.INSTANCE.register(new PowerType<>(key, factory));
     }
 
+    public static <T extends Power> PowerType<T> get(NamespacedKey key) {
+        return Registry.INSTANCE.get(key);
+    }
+
     static {
         MOB_EFFECT = register("mob_effect", MobEffectPower::new);
     }
@@ -35,7 +39,7 @@ public record PowerType<T extends Power>(NamespacedKey key, PowerFactory<T> fact
             return (PowerType<T>) registry.putIfAbsent(powerType.key(), powerType);
         }
 
-        public <T extends Power> PowerType<T> get(NamespacedKey key, PowerFactory<T> factory) {
+        public <T extends Power> PowerType<T> get(NamespacedKey key) {
             return (PowerType<T>) registry.get(key);
         }
     }

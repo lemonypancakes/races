@@ -8,12 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class RacesPlayer {
+    private final Player player;
     private final List<PowerInstance<?>> activePowers;
 
     public RacesPlayer(Player player) {
+        this.player = player;
         this.activePowers = new ArrayList<>();
     }
 
     public void addPower(final Power power) {
+        power.apply(player).add();
+    }
+
+    public void removePower(final Power power) {
+
     }
 }

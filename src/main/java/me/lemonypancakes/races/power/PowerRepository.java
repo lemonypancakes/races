@@ -15,8 +15,9 @@ public final class PowerRepository {
         powers = new HashMap<>();
     }
 
-    public void reload() {
+    public PowerRepository reload() {
         Map<ResourceLocation, Resource> resources = ResourceManagerHelper.listResources("power", s -> s.toString().endsWith(".json"));
+        return this;
     }
 
     public Map<NamespacedKey, Power> getPowers() {

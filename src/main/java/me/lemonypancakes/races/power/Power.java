@@ -1,9 +1,11 @@
 package me.lemonypancakes.races.power;
 
 import com.google.gson.JsonObject;
+import me.lemonypancakes.races.condition.Condition;
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,6 +21,7 @@ public abstract class Power implements Keyed {
     private final ItemStack icon;
     private final int impact;
     private final int order;
+    protected final Condition<Entity> condition;
 
     public Power(NamespacedKey key, JsonObject json) {
         this.key = Objects.requireNonNull(key, "key must not be null");
@@ -29,6 +32,12 @@ public abstract class Power implements Keyed {
         this.icon =  json.has("icon") ? Bukkit.getItemFactory().createItemStack(json.get("icon").getAsString()) : null;
         this.impact = json.has("impact") ? json.get("impact").getAsInt() : 0;
         this.order = json.has("order") ? json.get("order").getAsInt() : 0;
+        this.condition = new Condition<>(json) {
+            @Override
+            public boolean test(Entity entity) {
+                return entity.getLocation().getY() > 150;
+            }
+        };
     }
 
     @Nonnull
@@ -73,20 +82,20 @@ public abstract class Power implements Keyed {
     protected abstract PowerInstance<?> onApply(Player player);
 
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Power power)) return false;
+    public final boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Power power)) return false;
 
         return key.equals(power.key);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return key.hashCode();
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return key.toString();
     }
 }

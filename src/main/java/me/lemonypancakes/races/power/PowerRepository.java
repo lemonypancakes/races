@@ -1,8 +1,5 @@
 package me.lemonypancakes.races.power;
 
-import me.lemonypancakes.resourcemanagerhelper.Resource;
-import me.lemonypancakes.resourcemanagerhelper.ResourceLocation;
-import me.lemonypancakes.resourcemanagerhelper.ResourceManagerHelper;
 import org.bukkit.NamespacedKey;
 
 import java.util.HashMap;
@@ -16,7 +13,7 @@ public final class PowerRepository {
     }
 
     public PowerRepository reload() {
-        Map<ResourceLocation, Resource> resources = ResourceManagerHelper.listResources("power", s -> s.toString().endsWith(".json"));
+        //Map<ResourceLocation, Resource> resources = ResourceManagerHelper.listResources("power", s -> s.toString().endsWith(".json"));
         return this;
     }
 

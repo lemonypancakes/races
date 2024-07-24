@@ -13,9 +13,13 @@ import javax.annotation.Nonnull;
 public class MobEffectPower extends Power {
     private final PotionEffect potionEffect;
 
-    public MobEffectPower(NamespacedKey key, JsonObject json) {
+    public MobEffectPower(NamespacedKey key, JsonObject json, PotionEffect potionEffect) {
         super(key, json);
-        potionEffect = DataType.POTION_EFFECT.retrieve(json.get("potion").getAsJsonObject());
+        this.potionEffect = potionEffect;
+    }
+
+    public MobEffectPower(NamespacedKey key, JsonObject json) {
+        this(key, json, DataType.POTION_EFFECT.retrieve(json.get("potion").getAsJsonObject()));
     }
 
     @Nonnull
@@ -31,10 +35,13 @@ public class MobEffectPower extends Power {
 
         @Override
         protected void onAdd() {
+            if (!power.condition.test(player)) return;
+            player.addPotionEffect(power.potionEffect);
         }
 
         @Override
         protected void onRemove() {
+            player.removePotionEffect(power.potionEffect.getType());
         }
     }
 }

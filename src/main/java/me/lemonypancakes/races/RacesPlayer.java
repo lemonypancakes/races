@@ -9,11 +9,11 @@ import java.util.List;
 
 public final class RacesPlayer {
     private final Player player;
-    private final List<PowerInstance<?>> activePowers;
+    private final List<PowerInstance<?>> powers;
 
-    public RacesPlayer(Player player) {
+    RacesPlayer(Player player) {
         this.player = player;
-        this.activePowers = new ArrayList<>();
+        this.powers = new ArrayList<>();
     }
 
     public void addPower(final Power power) {

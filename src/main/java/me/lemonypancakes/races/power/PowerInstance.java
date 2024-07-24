@@ -2,13 +2,14 @@ package me.lemonypancakes.races.power;
 
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public abstract class PowerInstance<T extends Power> {
-    private final T power;
-    private final Player player;
+    protected final T power;
+    protected final Player player;
     private State state;
 
     public PowerInstance(final T power, final Player player) {
@@ -72,8 +73,32 @@ public abstract class PowerInstance<T extends Power> {
         return state;
     }
 
+    @Override
+    public final boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof PowerInstance<?> that)) return false;
+
+        return power.equals(that.power) && player.equals(that.player);
+    }
+
+    @Override
+    public final int hashCode() {
+        int result = power.hashCode();
+        result = 31 * result + player.hashCode();
+        return result;
+    }
+
+    @Override
+    public final String toString() {
+        return power.toString();
+    }
+
     public static void removeAll(Player player) {
         Manager.INSTANCE.removeAll(player);
+    }
+
+    public static Map<Power, PowerInstance<?>> get(Player player) {
+        return Manager.INSTANCE.get(player);
     }
 
     private enum Manager {
@@ -83,6 +108,12 @@ public abstract class PowerInstance<T extends Power> {
 
         Manager() {
             players = new HashMap<>();
+        }
+
+        public Map<Power, PowerInstance<?>> get(final Player player) {
+            Map<Power, PowerInstance<?>> result = players.get(player);
+            if (result == null) return null;
+            return Collections.unmodifiableMap(result);
         }
 
         public void add(PowerInstance<?> powerInstance) {

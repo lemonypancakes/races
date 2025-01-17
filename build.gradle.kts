@@ -18,13 +18,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot:1.21-R0.1-SNAPSHOT:remapped-mojang")
+    compileOnly("org.spigotmc:spigot:1.21.4-R0.1-SNAPSHOT:remapped-mojang")
     compileOnly("dev.folia:folia-api:1.20.6-R0.1-SNAPSHOT")
     implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.3.0")
 }
 
 spigotRemap {
-    spigotVersion.set("1.21")
+    spigotVersion.set("1.21.4")
     sourceJarTask.set(tasks.jar)
 }
 

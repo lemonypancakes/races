@@ -20,6 +20,7 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot:1.21.4-R0.1-SNAPSHOT:remapped-mojang")
     compileOnly("dev.folia:folia-api:1.20.6-R0.1-SNAPSHOT")
+    implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
     implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.0")
 }
 

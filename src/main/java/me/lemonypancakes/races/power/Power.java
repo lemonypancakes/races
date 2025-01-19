@@ -78,7 +78,6 @@ public abstract class Power implements Keyed {
         return Objects.requireNonNull(onApply(player));
     }
 
-    @Nonnull
     protected abstract PowerInstance<?> onApply(Player player);
 
     @Override

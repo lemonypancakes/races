@@ -1,8 +1,6 @@
-package me.lemonypancakes.races.power.builtin;
+package me.lemonypancakes.races.power;
 
 import com.google.gson.JsonObject;
-import me.lemonypancakes.races.power.Power;
-import me.lemonypancakes.races.power.PowerInstance;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
@@ -13,7 +11,6 @@ public class TickingPower extends Power {
         super(key, json);
     }
 
-    @Nonnull
     @Override
     protected PowerInstance<?> onApply(Player player) {
         return new Instance(this, player);

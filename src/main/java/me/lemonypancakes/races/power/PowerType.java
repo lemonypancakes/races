@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public record PowerType<T extends Power>(NamespacedKey key, PowerFactory<T> factory) {
-    public static final PowerType<PotionEffectPower> MOB_EFFECT;
+    public static final PowerType<TickingPower> TICKING;
 
     public static <T extends Power> PowerType<T> register(String name, PowerFactory<T> factory) {
         return register(Races.namespace(name), factory);
@@ -23,7 +23,7 @@ public record PowerType<T extends Power>(NamespacedKey key, PowerFactory<T> fact
     }
 
     static {
-        MOB_EFFECT = register("mob_effect", PotionEffectPower::new);
+        TICKING = register("ticking", TickingPower::new);
     }
 
     private enum Registry {

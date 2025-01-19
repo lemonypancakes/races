@@ -1,20 +1,20 @@
 package me.lemonypancakes.races.power;
 
 import me.lemonypancakes.races.Races;
-import me.lemonypancakes.races.power.builtin.MobEffectPower;
+import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public record PowerType<T extends Power>(NamespacedKey key, PowerFactory<T> factory) {
-    public static final PowerType<MobEffectPower> MOB_EFFECT;
+    public static final PowerType<PotionEffectPower> MOB_EFFECT;
 
-    private static <T extends Power> PowerType<T> register(String name, PowerFactory<T> factory) {
+    public static <T extends Power> PowerType<T> register(String name, PowerFactory<T> factory) {
         return register(Races.namespace(name), factory);
     }
 
-    private static <T extends Power> PowerType<T> register(NamespacedKey key, PowerFactory<T> factory) {
+    public static <T extends Power> PowerType<T> register(NamespacedKey key, PowerFactory<T> factory) {
         return Registry.INSTANCE.register(new PowerType<>(key, factory));
     }
 
@@ -23,7 +23,7 @@ public record PowerType<T extends Power>(NamespacedKey key, PowerFactory<T> fact
     }
 
     static {
-        MOB_EFFECT = register("mob_effect", MobEffectPower::new);
+        MOB_EFFECT = register("mob_effect", PotionEffectPower::new);
     }
 
     private enum Registry {
@@ -36,11 +36,11 @@ public record PowerType<T extends Power>(NamespacedKey key, PowerFactory<T> fact
         }
 
         public <T extends Power> PowerType<T> register(PowerType<T> powerType) {
-            return (PowerType<T>) registry.putIfAbsent(powerType.key(), powerType);
+            return Unchecked.unchecked(registry.putIfAbsent(powerType.key(), powerType));
         }
 
         public <T extends Power> PowerType<T> get(NamespacedKey key) {
-            return (PowerType<T>) registry.get(key);
+            return Unchecked.unchecked(registry.get(key));
         }
     }
 }

@@ -36,19 +36,6 @@ tasks {
     }
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
-tasks {
-    javadoc {
-        options {
-            (this as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
-        }
-    }
-}
-
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
@@ -91,25 +78,15 @@ publishing {
     }
 
     repositories {
-        val mavenUrl: String? by project
-        val mavenSnapshotUrl: String? by project
-
-        (if(version.toString().endsWith("SNAPSHOT")) mavenSnapshotUrl else mavenUrl)?.let { url ->
-            maven(url) {
-                val mavenUsername: String? by project
-                val mavenPassword: String? by project
-
-                if(mavenUsername != null && mavenPassword != null) {
-                    credentials {
-                        username = mavenUsername
-                        password = mavenPassword
-                    }
-                }
+        maven {
+            credentials {
+                username = System.getenv("JENKINS_USERNAME")
+                password = System.getenv("JENKINS_PASSWORD")
             }
+
+            isAllowInsecureProtocol = true
+
+            url = uri(project.findProperty("repositoryURL") ?: "https://repo.codemc.io/repository/lemonypancakes/")
         }
     }
-}
-
-signing {
-    sign(publishing.publications["mavenJava"])
 }

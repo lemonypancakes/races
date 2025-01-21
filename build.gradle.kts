@@ -13,8 +13,9 @@ version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://repo.codemc.io/repository/nms")
+    maven("https://libraries.minecraft.net/")
     maven("https://repo.papermc.io/repository/maven-public/")
-
 }
 
 dependencies {
@@ -38,12 +39,6 @@ tasks {
 java {
     withSourcesJar()
     withJavadocJar()
-}
-
-repositories {
-    mavenCentral()
-    maven("https://repo.codemc.io/repository/nms/")
-    maven("https://libraries.minecraft.net/")
 }
 
 tasks {
@@ -96,14 +91,20 @@ publishing {
     }
 
     repositories {
-        maven {
-            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
-            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+        val mavenUrl: String? by project
+        val mavenSnapshotUrl: String? by project
 
-            credentials {
-                username = project.findProperty("ossrhUsername")?.toString()
-                password = project.findProperty("ossrhPassword")?.toString()
+        (if(version.toString().endsWith("SNAPSHOT")) mavenSnapshotUrl else mavenUrl)?.let { url ->
+            maven(url) {
+                val mavenUsername: String? by project
+                val mavenPassword: String? by project
+
+                if(mavenUsername != null && mavenPassword != null) {
+                    credentials {
+                        username = mavenUsername
+                        password = mavenPassword
+                    }
+                }
             }
         }
     }

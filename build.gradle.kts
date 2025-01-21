@@ -86,7 +86,7 @@ publishing {
 
             isAllowInsecureProtocol = true
 
-            url = uri("https://repo.codemc.io/repository/lemonypancakes/")
+            url = uri("https://repo.codemc.io/repository/maven-snapshots/")
         }
     }
 }

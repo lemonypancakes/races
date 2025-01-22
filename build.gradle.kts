@@ -19,6 +19,9 @@ version = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -26,6 +29,7 @@ repositories {
     maven("https://repo.codemc.io/repository/nms")
     maven("https://libraries.minecraft.net")
     maven("https://repo.papermc.io/repository/maven-public")
+    maven("https://repo.codemc.io/repository/lemonypancakes")
 }
 
 dependencies {

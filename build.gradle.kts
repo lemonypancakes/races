@@ -8,14 +8,24 @@ plugins {
     id("io.typecraft.gradlesource.spigot") version "1.0.0"
 }
 
-group = "me.lemonypancakes.races"
-version = "1.0.0-SNAPSHOT"
+val majorVersion = project.property("majorVersion") as String
+val minorVersion = project.property("minorVersion") as String
+val patchVersion = project.property("patchVersion") as String
+val isSnapshot = project.property("isSnapshot").toString().toBoolean()
+val baseVersion = "$majorVersion.$minorVersion.$patchVersion"
+group = "me.lemonypancakes.${rootProject.name}"
+version = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
 
 repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms")
-    maven("https://libraries.minecraft.net/")
-    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://libraries.minecraft.net")
+    maven("https://repo.papermc.io/repository/maven-public")
 }
 
 dependencies {
@@ -40,53 +50,17 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-
-            pom {
-                groupId = "me.lemonypancakes.races"
-                name = "Races"
-                description = "Formerly Origins-Bukkit"
-                url = "https://github.com/lemonypancakes/races"
-                inceptionYear = "2024"
-                packaging = "jar"
-
-                licenses {
-                    license {
-                        name = "GNU General Public License, Version 3.0"
-                        url = "https://www.gnu.org/licenses/gpl-3.0.txt"
-                        distribution = "repo"
-                        comments = "A copyleft license that ensures software freedom"
-                    }
-                }
-
-                scm {
-                    url = "https://github.com/lemonypancakes/races"
-                    connection = "scm:git://github.com:lemonypancakes/races.git"
-                    developerConnection = "scm:git://github.com:lemonypancakes/races.git"
-                }
-
-                developers {
-                    developer {
-                        id = "lemonypancakes"
-                        name = "Teofilo Jr. Daquipil"
-                        url = "https://lemonypancakes.me"
-                        email = "jiboyjune@gmail.com"
-                        roles = listOf("developer", "maintainer")
-                    }
-                }
-            }
         }
     }
 
     repositories {
         maven {
+            url = uri("https://repo.codemc.io/repository/lemonypancakes")
+
             credentials {
                 username = System.getenv("JENKINS_USERNAME")
                 password = System.getenv("JENKINS_PASSWORD")
             }
-
-            isAllowInsecureProtocol = true
-
-            url = uri("https://repo.codemc.io/repository/lemonypancakes/")
         }
     }
 }

@@ -1,4 +1,4 @@
 main: me.lemonypancakes.races.RacesPlugin
-version: 1.0
+version: ${project.version}
 api-version: 1.21
 name: Races

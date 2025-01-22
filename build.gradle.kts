@@ -26,10 +26,10 @@ java {
 
 repositories {
     mavenCentral()
-    maven("https://repo.codemc.io/repository/nms")
-    maven("https://libraries.minecraft.net")
-    maven("https://repo.papermc.io/repository/maven-public")
-    maven("https://repo.codemc.io/repository/lemonypancakes")
+    maven("https://repo.codemc.io/repository/nms/")
+    maven("https://libraries.minecraft.net/")
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.codemc.io/repository/lemonypancakes/")
 }
 
 dependencies {
@@ -59,7 +59,7 @@ publishing {
 
     repositories {
         maven {
-            url = uri("https://repo.codemc.io/repository/lemonypancakes")
+            url = uri("https://repo.codemc.io/repository/lemonypancakes/")
 
             credentials {
                 username = System.getenv("JENKINS_USERNAME")

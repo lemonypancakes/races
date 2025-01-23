@@ -6,6 +6,7 @@ plugins {
     id("maven-publish")
     id("signing")
     id("io.typecraft.gradlesource.spigot") version "1.0.0"
+    id("kr.entree.spigradle") version "2.4.4"
 }
 
 val majorVersion = project.property("majorVersion") as String
@@ -37,6 +38,11 @@ dependencies {
     compileOnly("dev.folia:folia-api:1.20.6-R0.1-SNAPSHOT")
     implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
     implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.0")
+}
+
+spigot {
+    name = "Races"
+    description = "Formerly Origins-Bukkit"
 }
 
 spigotRemap {

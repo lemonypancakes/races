@@ -43,6 +43,7 @@ dependencies {
 spigot {
     name = "Races"
     description = "Formerly Origins-Bukkit"
+    main = "me.lemonypancakes.races.RacesPlugin"
 }
 
 spigotRemap {

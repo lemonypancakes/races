@@ -16,7 +16,8 @@ val isSnapshot = project.property("isSnapshot").toString().toBoolean()
 val buildNumber = System.getenv("BUILD_NUMBER") ?: ""
 val isJenkins = buildNumber.isNotEmpty()
 group = "me.lemonypancakes.${rootProject.name}"
-version = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
+version = if (isSnapshot) "$baseVersion-SNAPSHOT${if (isJenkins) "-b${buildNumber}" else ""}" else baseVersion
+
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -54,7 +55,6 @@ spigotRemap {
 
 tasks {
     withType<ShadowJar> {
-        archiveVersion.set(if (isJenkins && isSnapshot) "${version}-${buildNumber}" else version.toString())
         archiveClassifier = ""
     }
 }

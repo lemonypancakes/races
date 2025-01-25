@@ -54,11 +54,8 @@ spigotRemap {
 
 tasks {
     withType<ShadowJar> {
-        archiveClassifier = ""
-    }
-
-    jar {
         archiveVersion.set(if (isJenkins && isSnapshot) "${version}-${buildNumber}" else version.toString())
+        archiveClassifier = ""
     }
 }
 

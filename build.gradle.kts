@@ -4,7 +4,6 @@ plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("maven-publish")
-    id("signing")
     id("io.typecraft.gradlesource.spigot") version "1.0.0"
     id("de.eldoria.plugin-yml.bukkit") version "0.6.0"
 }
@@ -12,8 +11,10 @@ plugins {
 val majorVersion = project.property("majorVersion") as String
 val minorVersion = project.property("minorVersion") as String
 val patchVersion = project.property("patchVersion") as String
-val isSnapshot = project.property("isSnapshot").toString().toBoolean()
 val baseVersion = "$majorVersion.$minorVersion.$patchVersion"
+val isSnapshot = project.property("isSnapshot").toString().toBoolean()
+val buildNumber = System.getenv("BUILD_NUMBER") ?: ""
+val isJenkins = buildNumber.isNotEmpty()
 group = "me.lemonypancakes.${rootProject.name}"
 version = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
 
@@ -54,6 +55,10 @@ spigotRemap {
 tasks {
     withType<ShadowJar> {
         archiveClassifier = ""
+    }
+
+    jar {
+        archiveVersion.set(if (isJenkins && isSnapshot) "${version}-${buildNumber}" else version.toString())
     }
 }
 

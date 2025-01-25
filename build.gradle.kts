@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "8.3.5"
     id("maven-publish")
     id("io.typecraft.gradlesource.spigot") version "1.0.0"
     id("de.eldoria.plugin-yml.bukkit") version "0.6.0"
@@ -13,11 +13,12 @@ val minorVersion = project.property("minorVersion") as String
 val patchVersion = project.property("patchVersion") as String
 val baseVersion = "$majorVersion.$minorVersion.$patchVersion"
 val isSnapshot = project.property("isSnapshot").toString().toBoolean()
+val finalVersion = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
 val buildNumber = System.getenv("BUILD_NUMBER") ?: ""
 val isJenkins = buildNumber.isNotEmpty()
-group = "me.lemonypancakes.${rootProject.name}"
-version = if (isSnapshot) "$baseVersion-SNAPSHOT${if (isJenkins) "-b${buildNumber}" else ""}" else baseVersion
 
+group = "me.lemonypancakes.${rootProject.name}"
+version = if (isJenkins) "$finalVersion-$buildNumber" else finalVersion
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -30,9 +31,9 @@ java {
 repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
-    maven("https://libraries.minecraft.net/")
-    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.codemc.io/repository/lemonypancakes/")
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://libraries.minecraft.net/")
 }
 
 dependencies {
@@ -46,6 +47,8 @@ bukkit {
     name = "Races"
     description = "Formerly Origins-Bukkit"
     main = "me.lemonypancakes.races.RacesPlugin"
+    apiVersion = "1.21"
+    foliaSupported = false
 }
 
 spigotRemap {
@@ -64,7 +67,7 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
 
-            version = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
+            version = finalVersion
         }
     }
 

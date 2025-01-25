@@ -63,6 +63,8 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
+
+            version = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
         }
     }
 

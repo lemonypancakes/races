@@ -4,8 +4,6 @@ import com.google.gson.JsonObject;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
-
 public class TickingPower extends Power {
     public TickingPower(NamespacedKey key, JsonObject json) {
         super(key, json);

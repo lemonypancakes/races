@@ -59,6 +59,9 @@ spigotRemap {
 tasks {
     withType<ShadowJar> {
         archiveClassifier = ""
+
+        relocate("me.lemonypancakes.resourcemanagerhelper", "me.lemonypancakes.races.libs.resourcemanagerhelper")
+        relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
     }
 }
 

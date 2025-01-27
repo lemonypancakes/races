@@ -67,6 +67,12 @@ publishing {
 }
 
 tasks {
+    withType<ProcessResources> {
+        eachFile {
+            expand("version" to finalVersion)
+        }
+    }
+
     withType<RemapTask> {
         inputTask.set(jar)
         version.set(mcVersion)

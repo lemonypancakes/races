@@ -1,0 +1,5 @@
+name: Races
+version: ${version}
+main: me.lemonypancakes.races.RacesPlugin
+authors:
+  - LemonyPancakes

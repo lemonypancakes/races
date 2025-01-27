@@ -1,5 +1,6 @@
 name: Races
 version: ${version}
+api-version: 1.21
 main: me.lemonypancakes.races.RacesPlugin
 authors:
   - LemonyPancakes

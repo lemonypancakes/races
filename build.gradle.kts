@@ -4,8 +4,7 @@ plugins {
     id("java")
     id("com.gradleup.shadow") version "8.3.5"
     id("maven-publish")
-    id("io.typecraft.gradlesource.spigot") version "1.0.0"
-    id("de.eldoria.plugin-yml.bukkit") version "0.6.0"
+    id("io.github.patrick.remapper") version "1.4.2"
 }
 
 val majorVersion = project.property("majorVersion") as String
@@ -20,14 +19,6 @@ val isJenkins = buildNumber.isNotEmpty()
 group = "me.lemonypancakes.${rootProject.name}"
 version = if (isJenkins && isSnapshot) "$finalVersion-b$buildNumber" else finalVersion
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-
-    withJavadocJar()
-    withSourcesJar()
-}
-
 repositories {
     mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
@@ -40,29 +31,15 @@ dependencies {
     compileOnly("org.spigotmc:spigot:1.21.4-R0.1-SNAPSHOT:remapped-mojang")
     compileOnly("dev.folia:folia-api:1.20.6-R0.1-SNAPSHOT")
     implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
-    implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.2")
+    implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.3")
 }
 
-bukkit {
-    name = "Races"
-    description = "Formerly Origins-Bukkit"
-    main = "me.lemonypancakes.races.RacesPlugin"
-    apiVersion = "1.21"
-    foliaSupported = false
-}
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 
-spigotRemap {
-    spigotVersion.set("1.21.4")
-    sourceJarTask.set(tasks.jar)
-}
-
-tasks {
-    withType<ShadowJar> {
-        archiveClassifier = ""
-
-        relocate("me.lemonypancakes.resourcemanagerhelper", "me.lemonypancakes.races.libs.resourcemanagerhelper")
-        relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
-    }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
@@ -83,5 +60,14 @@ publishing {
                 password = System.getenv("JENKINS_PASSWORD")
             }
         }
+    }
+}
+
+tasks {
+    withType<ShadowJar> {
+        archiveClassifier.set("")
+
+        relocate("me.lemonypancakes.resourcemanagerhelper", "me.lemonypancakes.races.libs.resourcemanagerhelper")
+        relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
     }
 }

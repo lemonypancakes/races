@@ -1,20 +1,23 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import io.github.patrick.gradle.remapper.RemapTask
 
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "8.3.5"
     id("maven-publish")
+    id("com.gradleup.shadow") version "8.3.5"
     id("io.github.patrick.remapper") version "1.4.2"
 }
 
-val majorVersion = project.property("majorVersion") as String
-val minorVersion = project.property("minorVersion") as String
-val patchVersion = project.property("patchVersion") as String
+val majorVersion: String by project
+val minorVersion: String by project
+val patchVersion: String by project
 val baseVersion = "$majorVersion.$minorVersion.$patchVersion"
 val isSnapshot = project.property("isSnapshot").toString().toBoolean()
 val finalVersion = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
 val buildNumber = System.getenv("BUILD_NUMBER") ?: ""
 val isJenkins = buildNumber.isNotEmpty()
+
+val mcVersion: String by project
 
 group = "me.lemonypancakes.${rootProject.name}"
 version = if (isJenkins && isSnapshot) "$finalVersion-b$buildNumber" else finalVersion
@@ -28,10 +31,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot:1.21.4-R0.1-SNAPSHOT:remapped-mojang")
+    compileOnly("org.spigotmc:spigot:$mcVersion-R0.1-SNAPSHOT:remapped-mojang")
     compileOnly("dev.folia:folia-api:1.20.6-R0.1-SNAPSHOT")
     implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
-    implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.3")
+    implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.5")
 }
 
 java {
@@ -64,7 +67,14 @@ publishing {
 }
 
 tasks {
+    withType<RemapTask> {
+        inputTask.set(jar)
+        version.set(mcVersion)
+    }
+
     withType<ShadowJar> {
+        dependsOn(withType<RemapTask>())
+
         archiveClassifier.set("")
 
         relocate("me.lemonypancakes.resourcemanagerhelper", "me.lemonypancakes.races.libs.resourcemanagerhelper")

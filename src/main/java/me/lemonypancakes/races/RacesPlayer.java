@@ -1,6 +1,5 @@
 package me.lemonypancakes.races;
 
-import me.lemonypancakes.races.power.Power;
 import me.lemonypancakes.races.power.PowerInstance;
 import org.bukkit.entity.Player;
 
@@ -8,19 +7,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class RacesPlayer {
-    private final Player player;
-    private final List<PowerInstance<?>> powers;
+    private final Player handle;
+    private final List<PowerInstance> powers;
 
-    RacesPlayer(Player player) {
-        this.player = player;
+    RacesPlayer(Player handle) {
+        this.handle = handle;
         this.powers = new ArrayList<>();
     }
 
-    public void addPower(final Power power) {
-        power.apply(player).add();
+    public Player getHandle() {
+        return handle;
     }
 
-    public void removePower(final Power power) {
+    public void addPower(PowerInstance power) {
+        powers.add(power);
+    }
 
+    public void removePower(PowerInstance power) {
+        powers.remove(power);
+    }
+
+    public void tick() {
+        powers.forEach(PowerInstance::tick);
     }
 }

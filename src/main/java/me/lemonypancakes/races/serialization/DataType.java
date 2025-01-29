@@ -64,10 +64,6 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         });
   }
 
-  public T read(JsonElement element) {
-    return reader.apply(element);
-  }
-
   public static DataType<PowerBehavior<?>> powerBehavior() {
     return new DataType<>(
         Unchecked.castClass(PowerBehavior.class),
@@ -82,5 +78,9 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
           if (powerBehaviorType == null) return null;
           return powerBehaviorType.factory().create(jsonObject);
         });
+  }
+
+  public T read(JsonElement element) {
+    return reader.apply(element);
   }
 }

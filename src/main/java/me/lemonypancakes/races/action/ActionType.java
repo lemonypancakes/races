@@ -1,43 +1,37 @@
 package me.lemonypancakes.races.action;
 
-import com.google.gson.JsonObject;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
 
 public record ActionType<T>(Class<T> typeClass, NamespacedKey key, ActionFactory<T> factory) {
-  public static final ActionType<Entity> TEST;
-
-  static {
-    TEST = register(Entity.class, "test", TestAction.FACTORY);
-  }
-
   public static <T> ActionType<T> register(
       Class<T> typeClass, String name, ActionFactory<T> factory) {
     return register(typeClass, Races.namespace(name), factory);
   }
 
   public static <T> ActionType<T> registerSimple(
-      Class<T> typeClass, String name, BiConsumer<JsonObject, T> action) {
+      Class<T> typeClass, String name, Consumer<T> action) {
     return registerSimple(typeClass, Races.namespace(name), action);
   }
 
   public static <T> ActionType<T> registerSimple(
-      Class<T> typeClass, NamespacedKey key, BiConsumer<JsonObject, T> action) {
+      Class<T> typeClass, NamespacedKey key, Consumer<T> action) {
     return register(
         typeClass,
         key,
-        data ->
-            new Action<>() {
-              @Override
-              public void accept(T t) {
-                action.accept(data, t);
-              }
-            });
+        new ActionFactory<>(
+            null,
+            dataInstance ->
+                new Action<>() {
+                  @Override
+                  public void accept(T t) {
+                    action.accept(t);
+                  }
+                }));
   }
 
   public static <T> ActionType<T> register(

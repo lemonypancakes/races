@@ -54,7 +54,7 @@ public final class RacesPlugin extends JavaPlugin {
               @EventHandler
               public void onPlayerJoin(PlayerJoinEvent event) {
                 RacesPlayer player = new RacesPlayer(event.getPlayer());
-                Power power = Power.EMPTY;
+                Power power = new Power(null, null, null, null, null, 0, 0, null);
                 PowerInstance powerInstance = new PowerInstance(power, player.getHandle());
                 player.addPower(powerInstance);
                 powerInstance.grant();

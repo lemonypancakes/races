@@ -2,9 +2,25 @@ package me.lemonypancakes.races.power.behavior;
 
 import me.lemonypancakes.races.action.Action;
 import me.lemonypancakes.races.condition.Condition;
+import me.lemonypancakes.races.serialization.Data;
+import me.lemonypancakes.races.serialization.DataType;
 import org.bukkit.entity.Player;
 
 public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> {
+  public static final PowerBehaviorFactory<OverTimePowerBehavior> FACTORY;
+
+  static {
+    FACTORY =
+        new PowerBehaviorFactory<>(
+            new Data()
+                .add("condition", DataType.PLAYER_CONDITION)
+                .add("action", DataType.PLAYER_ACTION)
+                .add("interval", DataType.INTEGER),
+            data ->
+                new OverTimePowerBehavior(
+                    data.get("condition"), data.get("action"), data.get("interval")));
+  }
+
   private final Condition<Player> condition;
   private final Action<Player> action;
   private final int interval;
@@ -27,7 +43,8 @@ public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> 
 
     @Override
     public void tick() {
-      if (behavior.interval == 0 || player.getTicksLived() % behavior.interval == 0) {}
+      if (!behavior.condition.test(player)) return;
+      if (behavior.interval % player.getTicksLived() != 0) {}
     }
   }
 }

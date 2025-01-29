@@ -1,43 +1,38 @@
 package me.lemonypancakes.races.condition;
 
-import com.google.gson.JsonObject;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import me.lemonypancakes.races.Races;
+import me.lemonypancakes.races.serialization.Data;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 
 public record ConditionType<T>(Class<T> typeClass, NamespacedKey key, ConditionFactory<T> factory) {
-  public static final ConditionType<Player> BLANK;
-
-  static {
-    BLANK = registerSimple(Player.class, "blank", (data, player) -> true);
-  }
-
   public static <T> ConditionType<T> register(
       Class<T> typeClass, String name, ConditionFactory<T> factory) {
     return register(typeClass, Races.namespace(name), factory);
   }
 
   public static <T> ConditionType<T> registerSimple(
-      Class<T> typeClass, String name, BiPredicate<JsonObject, T> condition) {
-    return registerSimple(typeClass, Races.namespace(name), condition);
+      Class<T> typeClass, String name, Data data, Predicate<T> condition) {
+    return registerSimple(typeClass, Races.namespace(name), data, condition);
   }
 
   public static <T> ConditionType<T> registerSimple(
-      Class<T> typeClass, NamespacedKey key, BiPredicate<JsonObject, T> condition) {
+      Class<T> typeClass, NamespacedKey key, Data data, Predicate<T> condition) {
     return register(
         typeClass,
         key,
-        data ->
-            new Condition<>() {
-              @Override
-              public boolean test(T t) {
-                return condition.test(data, t);
-              }
-            });
+        new ConditionFactory<>(
+            data,
+            dataInstance ->
+                new Condition<>() {
+                  @Override
+                  public boolean test(T t) {
+                    return condition.test(t);
+                  }
+                }));
   }
 
   public static <T> ConditionType<T> register(

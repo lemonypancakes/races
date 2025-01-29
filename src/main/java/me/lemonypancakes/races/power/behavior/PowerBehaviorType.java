@@ -8,9 +8,11 @@ import org.bukkit.NamespacedKey;
 
 public record PowerBehaviorType<T extends PowerBehavior<T>>(
     NamespacedKey key, PowerBehaviorFactory<T> factory) {
+  public static final PowerBehaviorType<AttributePowerBehavior> ATTRIBUTE;
   public static final PowerBehaviorType<OverTimePowerBehavior> OVER_TIME;
 
   static {
+    ATTRIBUTE = register("attribute", AttributePowerBehavior.FACTORY);
     OVER_TIME = register("over_time", OverTimePowerBehavior.FACTORY);
   }
 

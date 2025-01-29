@@ -13,6 +13,10 @@ import java.util.function.BiConsumer;
 public record ActionType<T>(Class<T> typeClass, NamespacedKey key, ActionFactory<T> factory) {
     public static final ActionType<Entity> TEST;
 
+    static {
+        TEST = register(Entity.class, "test", TestAction.FACTORY);
+    }
+
     public static <T> ActionType<T> register(Class<T> typeClass, String name, ActionFactory<T> factory) {
         return register(typeClass, Races.namespace(name), factory);
     }
@@ -22,10 +26,10 @@ public record ActionType<T>(Class<T> typeClass, NamespacedKey key, ActionFactory
     }
 
     public static <T> ActionType<T> registerSimple(Class<T> typeClass, NamespacedKey key, BiConsumer<JsonObject, T> action) {
-        return register(typeClass, key, json -> new Action<>(json) {
+        return register(typeClass, key, data -> new Action<>() {
             @Override
             public void accept(T t) {
-                action.accept(json, t);
+                action.accept(data, t);
             }
         });
     }
@@ -40,10 +44,6 @@ public record ActionType<T>(Class<T> typeClass, NamespacedKey key, ActionFactory
 
     public static <T> ActionType<T> get(Class<T> typeClass, NamespacedKey key) {
         return Registry.INSTANCE.get(typeClass, key);
-    }
-
-    static {
-        TEST = registerSimple(Entity.class, "", (json, entity) -> entity.isDead());
     }
 
     private enum Registry {

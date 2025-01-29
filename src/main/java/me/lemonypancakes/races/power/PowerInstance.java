@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 public class PowerInstance {
   private final Power power;
   private final Player player;
-  private State state;
   private final PowerBehaviorInstance<?> behavior;
+  private State state;
 
   public PowerInstance(final Power power, final Player player) {
     this.power = Objects.requireNonNull(power, "power must not be null");

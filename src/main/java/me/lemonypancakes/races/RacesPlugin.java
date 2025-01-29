@@ -39,7 +39,8 @@ public final class RacesPlugin extends JavaPlugin {
         players = new ArrayList<>();
         powerRepository = new PowerRepository().reload();
         raceRepository = new RaceRepository();
-        CommandAPI.onLoad(new CommandAPIBukkitConfig(this));
+        CommandAPI.onLoad(new CommandAPIBukkitConfig(this)
+                .setNamespace("races"));
     }
 
     public void onEnable() {

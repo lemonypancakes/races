@@ -1,11 +1,18 @@
 package me.lemonypancakes.races.power.behavior;
 
-import com.google.gson.JsonObject;
+import me.lemonypancakes.races.action.Action;
+import me.lemonypancakes.races.condition.Condition;
 import org.bukkit.entity.Player;
 
 public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> {
-    public OverTimePowerBehavior(JsonObject data) {
-        super(data);
+    private final Condition<Player> condition;
+    private final Action<Player> action;
+    private final int interval;
+
+    public OverTimePowerBehavior(Condition<Player> condition, Action<Player> action, int interval) {
+        this.condition = condition;
+        this.action = action;
+        this.interval = interval;
     }
 
     @Override
@@ -20,7 +27,8 @@ public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> 
 
         @Override
         public void tick() {
-            player.setFreezeTicks(player.getFreezeTicks() + 1);
+            if (behavior.interval == 0 || player.getTicksLived() % behavior.interval == 0) {
+            }
         }
     }
 }

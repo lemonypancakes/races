@@ -4,14 +4,18 @@ import com.google.gson.JsonObject;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
 public record ConditionType<T>(Class<T> typeClass, NamespacedKey key, ConditionFactory<T> factory) {
-    public static final ConditionType<Entity> TEST;
+    public static final ConditionType<Player> BLANK;
+
+    static {
+        BLANK = registerSimple(Player.class, "blank", (data, player) -> true);
+    }
 
     public static <T> ConditionType<T> register(Class<T> typeClass, String name, ConditionFactory<T> factory) {
         return register(typeClass, Races.namespace(name), factory);
@@ -22,10 +26,10 @@ public record ConditionType<T>(Class<T> typeClass, NamespacedKey key, ConditionF
     }
 
     public static <T> ConditionType<T> registerSimple(Class<T> typeClass, NamespacedKey key, BiPredicate<JsonObject, T> condition) {
-        return register(typeClass, key, json -> new Condition<>(json) {
+        return register(typeClass, key, data -> new Condition<>() {
             @Override
             public boolean test(T t) {
-                return condition.test(json, t);
+                return condition.test(data, t);
             }
         });
     }
@@ -41,10 +45,6 @@ public record ConditionType<T>(Class<T> typeClass, NamespacedKey key, ConditionF
 
     public static <T> ConditionType<T> get(Class<T> typeClass, NamespacedKey key) {
         return Registry.INSTANCE.get(typeClass, key);
-    }
-
-    static {
-        TEST = registerSimple(Entity.class, "test", (json, entity) -> entity.isDead());
     }
 
     private enum Registry {

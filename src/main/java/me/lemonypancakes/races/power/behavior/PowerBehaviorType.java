@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public record PowerBehaviorType<T extends PowerBehavior<T>>(NamespacedKey key, PowerBehaviorFactory<T> factory) {
+    public static final PowerBehaviorType<OverTimePowerBehavior> OVER_TIME;
+
+    static {
+        OVER_TIME = register("over_time", OverTimePowerBehavior.FACTORY);
+    }
 
     public static <T extends PowerBehavior<T>> PowerBehaviorType<T> register(String name, PowerBehaviorFactory<T> factory) {
         return register(Races.namespace(name), factory);

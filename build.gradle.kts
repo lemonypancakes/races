@@ -6,6 +6,7 @@ plugins {
     id("maven-publish")
     id("com.gradleup.shadow") version "8.3.5"
     id("io.github.patrick.remapper") version "1.4.2"
+    id("com.diffplug.spotless") version "7.0.2"
 }
 
 val majorVersion: String by project
@@ -63,6 +64,12 @@ publishing {
                 password = System.getenv("JENKINS_PASSWORD")
             }
         }
+    }
+}
+
+spotless {
+    java {
+        googleJavaFormat()
     }
 }
 

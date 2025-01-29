@@ -7,6 +7,7 @@ import java.util.List;
 import me.lemonypancakes.races.power.Power;
 import me.lemonypancakes.races.power.PowerInstance;
 import me.lemonypancakes.races.power.PowerRepository;
+import me.lemonypancakes.races.power.behavior.OverTimePowerBehavior;
 import me.lemonypancakes.races.race.RaceRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -38,7 +39,11 @@ public final class RacesPlugin extends JavaPlugin {
     players = new ArrayList<>();
     powerRepository = new PowerRepository().reload();
     raceRepository = new RaceRepository();
-    CommandAPI.onLoad(new CommandAPIBukkitConfig(this).setNamespace("races"));
+    CommandAPI.onLoad(
+        new CommandAPIBukkitConfig(this)
+            .setNamespace("races")
+            .skipReloadDatapacks(true)
+            .silentLogs(true));
   }
 
   public void onEnable() {
@@ -54,7 +59,16 @@ public final class RacesPlugin extends JavaPlugin {
               @EventHandler
               public void onPlayerJoin(PlayerJoinEvent event) {
                 RacesPlayer player = new RacesPlayer(event.getPlayer());
-                Power power = new Power(null, null, null, null, null, 0, 0, null);
+                Power power =
+                    new Power(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        0,
+                        0,
+                        new OverTimePowerBehavior(null, null, 1));
                 PowerInstance powerInstance = new PowerInstance(power, player.getHandle());
                 player.addPower(powerInstance);
                 powerInstance.grant();
@@ -63,7 +77,9 @@ public final class RacesPlugin extends JavaPlugin {
 
               @EventHandler
               public void onPlayerQuit(PlayerQuitEvent event) {
-                players.removeIf(player -> player.getHandle() == event.getPlayer());
+                players.removeIf(
+                    player ->
+                        player.getHandle().getUniqueId().equals(event.getPlayer().getUniqueId()));
               }
             },
             this);

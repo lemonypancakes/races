@@ -4,6 +4,7 @@ import me.lemonypancakes.races.action.Action;
 import me.lemonypancakes.races.condition.Condition;
 import me.lemonypancakes.races.serialization.Data;
 import me.lemonypancakes.races.serialization.DataType;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> {
@@ -31,20 +32,37 @@ public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> 
     this.interval = interval;
   }
 
+  public Condition<Player> getCondition() {
+    return condition;
+  }
+
+  public Action<Player> getAction() {
+    return action;
+  }
+
+  public int getInterval() {
+    return interval;
+  }
+
   @Override
   public PowerBehaviorInstance<OverTimePowerBehavior> apply(Player player) {
     return new Instance(this, player);
   }
 
-  public static class Instance extends PowerBehaviorInstance<OverTimePowerBehavior> {
+  public static final class Instance extends PowerBehaviorInstance<OverTimePowerBehavior> {
     public Instance(OverTimePowerBehavior behavior, Player player) {
       super(behavior, player);
     }
 
     @Override
+    public void add() {}
+
+    @Override
+    public void remove() {}
+
+    @Override
     public void tick() {
-      if (!behavior.condition.test(player)) return;
-      if (behavior.interval % player.getTicksLived() != 0) {}
+      player.getLocation().add(0, -1, 0).getBlock().setType(Material.DIAMOND_BLOCK);
     }
   }
 }

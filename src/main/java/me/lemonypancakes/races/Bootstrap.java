@@ -5,7 +5,5 @@ public final class Bootstrap {
     throw new UnsupportedOperationException();
   }
 
-  public static void boostrap() {
-    // Initialize the plugin
-  }
+  public static void boostrap() {}
 }

@@ -5,7 +5,7 @@ public final class Unchecked {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T unchecked(Object object) {
+    public static <T> T cast(Object object) {
         return (T) object;
     }
 }

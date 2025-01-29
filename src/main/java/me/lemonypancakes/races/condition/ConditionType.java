@@ -66,7 +66,7 @@ public record ConditionType<T>(Class<T> typeClass, NamespacedKey key, ConditionF
         public <T> ConditionType<T> get(Class<T> typeClass, NamespacedKey key) {
             if (!registry.containsKey(typeClass)) return null;
             Map<NamespacedKey, ConditionType<?>> conditionTypeMap = registry.get(typeClass);
-            if (conditionTypeMap.containsKey(key)) return Unchecked.unchecked(conditionTypeMap.get(key));
+            if (conditionTypeMap.containsKey(key)) return Unchecked.cast(conditionTypeMap.get(key));
             return null;
         }
     }

@@ -31,11 +31,11 @@ public record PowerBehaviorType<T extends PowerBehavior<T>>(NamespacedKey key, P
         }
 
         public <T extends PowerBehavior<T>> PowerBehaviorType<T> register(PowerBehaviorType<T> powerBehaviorType) {
-            return Unchecked.unchecked(registry.putIfAbsent(powerBehaviorType.key(), powerBehaviorType));
+            return Unchecked.cast(registry.putIfAbsent(powerBehaviorType.key(), powerBehaviorType));
         }
 
         public <T extends PowerBehavior<T>> PowerBehaviorType<T> get(NamespacedKey key) {
-            return Unchecked.unchecked(registry.get(key));
+            return Unchecked.cast(registry.get(key));
         }
     }
 }

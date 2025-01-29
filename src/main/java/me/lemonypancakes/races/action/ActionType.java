@@ -65,7 +65,7 @@ public record ActionType<T>(Class<T> typeClass, NamespacedKey key, ActionFactory
         public <T> ActionType<T> get(Class<T> typeClass, NamespacedKey key) {
             if (!registry.containsKey(typeClass)) return null;
             Map<NamespacedKey, ActionType<?>> actionTypeMap = registry.get(typeClass);
-            if (actionTypeMap.containsKey(key)) return Unchecked.unchecked(actionTypeMap.get(key));
+            if (actionTypeMap.containsKey(key)) return Unchecked.cast(actionTypeMap.get(key));
             return null;
         }
     }

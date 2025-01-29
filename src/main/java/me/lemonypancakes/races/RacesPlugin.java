@@ -7,6 +7,7 @@ import me.lemonypancakes.races.power.PowerInstance;
 import me.lemonypancakes.races.power.PowerRepository;
 import me.lemonypancakes.races.race.RaceRepository;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -49,13 +50,17 @@ public final class RacesPlugin extends JavaPlugin {
             }
         }.runTaskTimer(this, 0L, 1L);
         Bukkit.getPluginManager().registerEvents(new Listener() {
+            @EventHandler
             public void onPlayerJoin(PlayerJoinEvent event) {
                 RacesPlayer player = new RacesPlayer(event.getPlayer());
                 Power power = Power.EMPTY;
                 PowerInstance powerInstance = new PowerInstance(power, player.getHandle());
                 player.addPower(powerInstance);
-                players.add(new RacesPlayer(event.getPlayer()));
+                powerInstance.grant();
+                players.add(player);
             }
+
+            @EventHandler
             public void onPlayerQuit(PlayerQuitEvent event) {
                 players.removeIf(player -> player.getHandle() == event.getPlayer());
             }

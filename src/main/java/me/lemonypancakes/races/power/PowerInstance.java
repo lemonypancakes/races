@@ -1,23 +1,23 @@
 package me.lemonypancakes.races.power;
 
+import me.lemonypancakes.races.power.behavior.PowerBehaviorInstance;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
-public abstract class PowerInstance<T extends Power> {
-    protected final T power;
-    protected final Player player;
+public class PowerInstance {
+    private final Power power;
+    private final Player player;
     private State state;
+    private final PowerBehaviorInstance<?> behavior;
 
-    public PowerInstance(final T power, final Player player) {
+    public PowerInstance(final Power power, final Player player) {
         this.power = Objects.requireNonNull(power, "power must not be null");
         this.player = Objects.requireNonNull(player, "player must not be null");
+        this.behavior = power.behavior().apply(player);
     }
 
-    public final T getPower() {
+    public final Power getPower() {
         return power;
     }
 
@@ -25,58 +25,52 @@ public abstract class PowerInstance<T extends Power> {
         return player;
     }
 
-    public final void grant() {
-        if (isActive()) return;
-        state = State.GRANTED;
-        onGrant();
-        Manager.INSTANCE.add(this);
+    public final State getState() {
+        return state;
     }
-
-    protected void onGrant() {
-        onAdd();
-    }
-
-    public final void revoke() {
-        if (!isActive()) return;
-        state = State.REVOKED;
-        onRevoke();
-        Manager.INSTANCE.remove(this);
-    }
-
-    protected void onRevoke() {
-        onRemove();
-    }
-
-    public final void add() {
-        if (isActive()) return;
-        state = State.ADDED;
-        onAdd();
-        Manager.INSTANCE.add(this);
-    }
-
-    protected abstract void onAdd();
-
-    public final void remove() {
-        if (!isActive()) return;
-        state = State.REMOVED;
-        onRemove();
-        Manager.INSTANCE.remove(this);
-    }
-
-    protected abstract void onRemove();
 
     public final boolean isActive() {
         return state == State.GRANTED || state == State.ADDED;
     }
 
-    public final State getState() {
-        return state;
+    public final boolean grant() {
+        if (isActive()) return false;
+        state = State.GRANTED;
+        behavior.grant();
+        return true;
+    }
+
+    public final boolean revoke() {
+        if (!isActive()) return false;
+        state = State.REVOKED;
+        behavior.revoke();
+        return true;
+    }
+
+    public final boolean add() {
+        if (isActive()) return false;
+        state = State.ADDED;
+        behavior.add();
+        return true;
+    }
+
+    public final boolean remove() {
+        if (!isActive()) return false;
+        state = State.REMOVED;
+        behavior.remove();
+        return true;
+    }
+
+    public final boolean tick() {
+        if (!isActive()) return false;
+        behavior.tick();
+        return true;
     }
 
     @Override
     public final boolean equals(Object object) {
         if (this == object) return true;
-        if (!(object instanceof PowerInstance<?> that)) return false;
+        if (!(object instanceof PowerInstance that)) return false;
 
         return power.equals(that.power) && player.equals(that.player);
     }
@@ -91,50 +85,6 @@ public abstract class PowerInstance<T extends Power> {
     @Override
     public final String toString() {
         return power.toString();
-    }
-
-    public static void removeAll(Player player) {
-        Manager.INSTANCE.removeAll(player);
-    }
-
-    public static Map<Power, PowerInstance<?>> get(Player player) {
-        return Manager.INSTANCE.get(player);
-    }
-
-    private enum Manager {
-        INSTANCE;
-
-        private final Map<Player, Map<Power, PowerInstance<?>>> players;
-
-        Manager() {
-            players = new HashMap<>();
-        }
-
-        public Map<Power, PowerInstance<?>> get(final Player player) {
-            Map<Power, PowerInstance<?>> result = players.get(player);
-            if (result == null) return null;
-            return Collections.unmodifiableMap(result);
-        }
-
-        public void add(PowerInstance<?> powerInstance) {
-            players.computeIfAbsent(powerInstance.player, k -> new HashMap<>());
-            players.get(powerInstance.player).putIfAbsent(powerInstance.power, powerInstance);
-        }
-
-        public void remove(PowerInstance<?> powerInstance) {
-            Map<Power, PowerInstance<?>> powerInstances = players.get(powerInstance.getPlayer());
-            if (powerInstances == null) return;
-            powerInstances.remove(powerInstance.power);
-            if (powerInstances.isEmpty()) players.remove(powerInstance.player);
-        }
-
-        public void removeAll(Player player) {
-            Map<Power, PowerInstance<?>> powerInstances = players.get(player);
-            if (powerInstances == null) return;
-            for (PowerInstance<?> powerInstance : powerInstances.values()) {
-                powerInstance.remove();
-            }
-        }
     }
 
     public enum State {

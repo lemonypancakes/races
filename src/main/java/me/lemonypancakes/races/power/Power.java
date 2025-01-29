@@ -2,7 +2,6 @@ package me.lemonypancakes.races.power;
 
 import com.google.gson.*;
 import java.lang.reflect.Type;
-import me.lemonypancakes.races.power.behavior.OverTimePowerBehavior;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;

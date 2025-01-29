@@ -1,4 +1,3 @@
 package me.lemonypancakes.races.race;
 
-public final class RaceRepository {
-}
+public final class RaceRepository {}

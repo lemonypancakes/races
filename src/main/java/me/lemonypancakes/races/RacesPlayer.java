@@ -11,7 +11,7 @@ public final class RacesPlayer {
 
   RacesPlayer(Player handle) {
     this.handle = handle;
-    this.powers = new ArrayList<>();
+    powers = new ArrayList<>();
   }
 
   public Player getHandle() {

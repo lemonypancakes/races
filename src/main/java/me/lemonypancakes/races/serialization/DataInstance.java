@@ -8,7 +8,7 @@ public final class DataInstance {
   private final Map<String, Object> data;
 
   public DataInstance() {
-    this.data = new HashMap<>();
+    data = new HashMap<>();
   }
 
   public <T> T get(String key) {
@@ -17,6 +17,6 @@ public final class DataInstance {
   }
 
   public void set(String key, Object value) {
-    this.data.put(key, value);
+    data.put(key, value);
   }
 }

@@ -9,7 +9,7 @@ public class Data {
   private final Map<String, DataField<?>> dataFields;
 
   public Data() {
-    this.dataFields = new HashMap<>();
+    dataFields = new HashMap<>();
   }
 
   public <T> Data add(String key, DataField<T> field) {

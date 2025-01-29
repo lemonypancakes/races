@@ -13,7 +13,7 @@ public class PowerInstance {
   public PowerInstance(final Power power, final Player player) {
     this.power = Objects.requireNonNull(power, "power must not be null");
     this.player = Objects.requireNonNull(player, "player must not be null");
-    this.behavior = power.behavior().apply(player);
+    behavior = power.behavior().apply(player);
   }
 
   public final Power getPower() {

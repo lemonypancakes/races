@@ -9,19 +9,19 @@ public final class DataField<T> {
 
   public DataField(DataType<T> dataType) {
     this.dataType = dataType;
-    this.defaultValue = null;
-    this.defaultFunction = null;
+    defaultValue = null;
+    defaultFunction = null;
   }
 
   public DataField(DataType<T> dataType, T defaultValue) {
     this.dataType = dataType;
     this.defaultValue = defaultValue;
-    this.defaultFunction = null;
+    defaultFunction = null;
   }
 
   public DataField(DataType<T> dataType, Function<DataInstance, T> defaultFunction) {
     this.dataType = dataType;
-    this.defaultValue = null;
+    defaultValue = null;
     this.defaultFunction = defaultFunction;
   }
 

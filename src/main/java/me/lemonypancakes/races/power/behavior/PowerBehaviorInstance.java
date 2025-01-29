@@ -19,13 +19,17 @@ public abstract class PowerBehaviorInstance<T extends PowerBehavior<T>> {
     return player;
   }
 
-  public void grant() {}
+  public void grant() {
+    add();
+  }
 
-  public void revoke() {}
+  public void revoke() {
+    remove();
+  }
 
-  public void add() {}
+  public abstract void add();
 
-  public void remove() {}
+  public abstract void remove();
 
   public void tick() {}
 }

@@ -1,7 +1,5 @@
 package me.lemonypancakes.races.power;
 
-import com.google.gson.*;
-import java.lang.reflect.Type;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -14,8 +12,7 @@ public record Power(
     ItemStack icon,
     int impact,
     int order,
-    PowerBehavior<?> behavior)
-    implements JsonDeserializer<Power>, JsonSerializer<Power> {
+    PowerBehavior<?> behavior) {
 
   @Override
   public boolean equals(Object object) {
@@ -33,18 +30,5 @@ public record Power(
   @Override
   public String toString() {
     return key.toString();
-  }
-
-  @Override
-  public Power deserialize(
-      JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
-      throws JsonParseException {
-    return null;
-  }
-
-  @Override
-  public JsonElement serialize(
-      Power power, Type type, JsonSerializationContext jsonSerializationContext) {
-    return null;
   }
 }

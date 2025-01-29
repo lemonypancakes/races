@@ -5,7 +5,9 @@ import org.bukkit.NamespacedKey;
 public final class Races {
   private static RacesPlugin plugin;
 
-  private Races() {}
+  private Races() {
+    throw new UnsupportedOperationException();
+  }
 
   public static RacesPlugin getPlugin() {
     return plugin;

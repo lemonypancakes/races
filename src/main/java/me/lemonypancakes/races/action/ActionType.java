@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import me.lemonypancakes.races.Races;
-import me.lemonypancakes.races.serialization.Data;
+import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
 
@@ -15,18 +15,18 @@ public record ActionType<T>(Class<T> typeClass, NamespacedKey key, ActionFactory
   }
 
   public static <T> ActionType<T> registerSimple(
-      Class<T> typeClass, String name, Data data, Consumer<T> action) {
-    return registerSimple(typeClass, Races.namespace(name), data, action);
+      Class<T> typeClass, String name, DataSchema schema, Consumer<T> action) {
+    return registerSimple(typeClass, Races.namespace(name), schema, action);
   }
 
   public static <T> ActionType<T> registerSimple(
-      Class<T> typeClass, NamespacedKey key, Data data, Consumer<T> action) {
+      Class<T> typeClass, NamespacedKey key, DataSchema schema, Consumer<T> action) {
     return register(
         typeClass,
         key,
         new ActionFactory<>(
-            data,
-            dataInstance ->
+            schema,
+            container ->
                 new Action<>() {
                   @Override
                   public void accept(T t) {

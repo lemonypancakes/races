@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 import me.lemonypancakes.races.Races;
-import me.lemonypancakes.races.serialization.Data;
+import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
 
@@ -15,18 +15,18 @@ public record ConditionType<T>(Class<T> typeClass, NamespacedKey key, ConditionF
   }
 
   public static <T> ConditionType<T> registerSimple(
-      Class<T> typeClass, String name, Data data, Predicate<T> condition) {
-    return registerSimple(typeClass, Races.namespace(name), data, condition);
+      Class<T> typeClass, String name, DataSchema schema, Predicate<T> condition) {
+    return registerSimple(typeClass, Races.namespace(name), schema, condition);
   }
 
   public static <T> ConditionType<T> registerSimple(
-      Class<T> typeClass, NamespacedKey key, Data data, Predicate<T> condition) {
+      Class<T> typeClass, NamespacedKey key, DataSchema schema, Predicate<T> condition) {
     return register(
         typeClass,
         key,
         new ConditionFactory<>(
-            data,
-            dataInstance ->
+            schema,
+            container ->
                 new Condition<>() {
                   @Override
                   public boolean test(T t) {

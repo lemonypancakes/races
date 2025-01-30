@@ -2,16 +2,16 @@ package me.lemonypancakes.races.power.behavior;
 
 import com.google.gson.JsonObject;
 import java.util.function.Function;
-import me.lemonypancakes.races.serialization.Data;
-import me.lemonypancakes.races.serialization.DataInstance;
+import me.lemonypancakes.races.serialization.DataContainer;
+import me.lemonypancakes.races.serialization.DataSchema;
 
 public record PowerBehaviorFactory<T extends PowerBehavior<T>>(
-    Data data, Function<DataInstance, T> constructor) {
-  public PowerBehavior<T> create(DataInstance data) {
-    return constructor.apply(data);
+    DataSchema schema, Function<DataContainer, T> constructor) {
+  public PowerBehavior<T> create(DataContainer container) {
+    return constructor.apply(container);
   }
 
-  public PowerBehavior<T> create(JsonObject data) {
-    return create(this.data.read(data));
+  public PowerBehavior<T> create(JsonObject json) {
+    return create(this.schema.read(json));
   }
 }

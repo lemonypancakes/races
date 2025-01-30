@@ -2,15 +2,16 @@ package me.lemonypancakes.races.condition;
 
 import com.google.gson.JsonObject;
 import java.util.function.Function;
-import me.lemonypancakes.races.serialization.Data;
-import me.lemonypancakes.races.serialization.DataInstance;
+import me.lemonypancakes.races.serialization.DataContainer;
+import me.lemonypancakes.races.serialization.DataSchema;
 
-public record ConditionFactory<T>(Data data, Function<DataInstance, Condition<T>> constructor) {
-  public Condition<T> create(DataInstance data) {
-    return constructor.apply(data);
+public record ConditionFactory<T>(
+    DataSchema schema, Function<DataContainer, Condition<T>> constructor) {
+  public Condition<T> create(DataContainer container) {
+    return constructor.apply(container);
   }
 
-  public Condition<T> create(JsonObject data) {
-    return create(this.data.read(data));
+  public Condition<T> create(JsonObject json) {
+    return create(this.schema.read(json));
   }
 }

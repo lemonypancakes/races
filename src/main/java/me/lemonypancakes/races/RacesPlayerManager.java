@@ -1,9 +1,6 @@
 package me.lemonypancakes.races;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,14 +11,14 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
 public final class RacesPlayerManager implements Listener {
-  private final Set<RacesPlayer> players;
+  private final Map<UUID, RacesPlayer> players;
 
   public RacesPlayerManager() {
-    players = new HashSet<>();
+    players = new HashMap<>();
   }
 
   public Collection<RacesPlayer> getPlayers() {
-    return Collections.unmodifiableCollection(players);
+    return Collections.unmodifiableCollection(players.values());
   }
 
   @EventHandler
@@ -29,12 +26,20 @@ public final class RacesPlayerManager implements Listener {
 
   @EventHandler
   private void onPlayerJoin(PlayerJoinEvent event) {
-    players.add(new RacesPlayer(event.getPlayer()));
+    Player player = event.getPlayer();
+    UUID uuid = player.getUniqueId();
+    RacesPlayer racesPlayer = new RacesPlayer(player);
+
+    players.put(uuid, racesPlayer);
   }
 
   @EventHandler
   private void onPlayerQuit(PlayerQuitEvent event) {
     Player player = event.getPlayer();
+    UUID uuid = player.getUniqueId();
+
+    if (!players.containsKey(uuid)) return;
+    players.remove(uuid);
   }
 
   @EventHandler
@@ -42,6 +47,6 @@ public final class RacesPlayerManager implements Listener {
     Plugin plugin = event.getPlugin();
 
     if (!(plugin instanceof RacesPlugin)) return;
-    players.forEach(RacesPlayer::tick);
+    for (Map.Entry<UUID, RacesPlayer> entry : players.entrySet()) {}
   }
 }

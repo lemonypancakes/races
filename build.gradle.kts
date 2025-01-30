@@ -32,6 +32,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly("org.jetbrains:annotations:26.0.2")
     compileOnly("org.spigotmc:spigot:$mcVersion-R0.1-SNAPSHOT:remapped-mojang")
     compileOnly("dev.folia:folia-api:1.21.4-R0.1-SNAPSHOT")
     implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")

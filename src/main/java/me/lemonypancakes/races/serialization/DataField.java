@@ -5,7 +5,7 @@ import java.util.function.Function;
 public final class DataField<T> {
   private final DataType<T> dataType;
   private final T defaultValue;
-  private final Function<DataInstance, T> defaultFunction;
+  private final Function<DataContainer, T> defaultFunction;
 
   public DataField(DataType<T> dataType) {
     this.dataType = dataType;
@@ -19,7 +19,7 @@ public final class DataField<T> {
     defaultFunction = null;
   }
 
-  public DataField(DataType<T> dataType, Function<DataInstance, T> defaultFunction) {
+  public DataField(DataType<T> dataType, Function<DataContainer, T> defaultFunction) {
     this.dataType = dataType;
     defaultValue = null;
     this.defaultFunction = defaultFunction;
@@ -33,11 +33,11 @@ public final class DataField<T> {
     return defaultValue != null || defaultFunction != null;
   }
 
-  public T getDefault(DataInstance instance) {
+  public T getDefault(DataContainer container) {
     if (defaultValue != null) {
       return defaultValue;
     } else if (defaultFunction != null) {
-      return defaultFunction.apply(instance);
+      return defaultFunction.apply(container);
     } else {
       throw new IllegalStateException("No default value or function provided");
     }

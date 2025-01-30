@@ -1,6 +1,6 @@
 package me.lemonypancakes.races.power.behavior;
 
-import me.lemonypancakes.races.serialization.Data;
+import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataType;
 import me.lemonypancakes.races.util.AttributedAttributeModifier;
 import org.bukkit.attribute.AttributeInstance;
@@ -12,8 +12,8 @@ public class AttributePowerBehavior extends PowerBehavior<AttributePowerBehavior
   static {
     FACTORY =
         new PowerBehaviorFactory<>(
-            new Data().add("modifier", DataType.ATTRIBUTED_ATTRIBUTE_MODIFIER),
-            data -> new AttributePowerBehavior(data.get("modifier")));
+            new DataSchema().add("modifier", DataType.ATTRIBUTED_ATTRIBUTE_MODIFIER),
+            container -> new AttributePowerBehavior(container.get("modifier")));
   }
 
   private final AttributedAttributeModifier modifier;

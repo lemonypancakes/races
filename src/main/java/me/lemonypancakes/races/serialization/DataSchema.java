@@ -5,29 +5,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class Data {
+public class DataSchema {
   private final Map<String, DataField<?>> dataFields;
 
-  public Data() {
+  public DataSchema() {
     dataFields = new HashMap<>();
   }
 
-  public <T> Data add(String key, DataField<T> field) {
+  public <T> DataSchema add(String key, DataField<T> field) {
     dataFields.put(key, field);
     return this;
   }
 
-  public <T> Data add(String key, DataType<T> dataType) {
+  public <T> DataSchema add(String key, DataType<T> dataType) {
     add(key, new DataField<>(dataType));
     return this;
   }
 
-  public <T> Data add(String key, DataType<T> dataType, T defaultValue) {
+  public <T> DataSchema add(String key, DataType<T> dataType, T defaultValue) {
     add(key, new DataField<>(dataType, defaultValue));
     return this;
   }
 
-  public <T> Data add(String key, DataType<T> dataType, Function<DataInstance, T> defaultFunction) {
+  public <T> DataSchema add(
+      String key, DataType<T> dataType, Function<DataContainer, T> defaultFunction) {
     add(key, new DataField<>(dataType, defaultFunction));
     return this;
   }
@@ -37,19 +38,19 @@ public class Data {
     return dataFields.get(key);
   }
 
-  public DataInstance read(JsonObject data) {
-    DataInstance instance = new DataInstance();
+  public DataContainer read(JsonObject json) {
+    DataContainer container = new DataContainer();
 
     dataFields.forEach(
         (key, field) -> {
-          if (data.has(key)) {
-            instance.set(key, field.getDataType().read(data.get(key)));
+          if (json.has(key)) {
+            container.set(key, field.getDataType().read(container.get(key)));
           } else if (field.hasDefault()) {
-            instance.set(key, field.getDefault(instance));
+            container.set(key, field.getDefault(container));
           } else {
             throw new IllegalArgumentException("No value for key " + key);
           }
         });
-    return instance;
+    return container;
   }
 }

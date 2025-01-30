@@ -2,7 +2,6 @@ package me.lemonypancakes.races.serialization;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import java.util.UUID;
 import java.util.function.Function;
 import me.lemonypancakes.races.action.Action;
 import me.lemonypancakes.races.action.ActionType;
@@ -44,14 +43,14 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         Unchecked.castClass(Action.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          JsonObject jsonObject = jsonElement.getAsJsonObject();
-          NamespacedKey key = NamespacedKey.fromString(jsonObject.get("type").getAsString());
+          JsonObject json = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
           ActionType<T> actionType = ActionType.get(typeClass, key);
 
           if (actionType == null) return null;
-          return actionType.factory().create(jsonObject);
+          return actionType.factory().create(json);
         });
   }
 
@@ -60,14 +59,14 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         Unchecked.castClass(Condition.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          JsonObject jsonObject = jsonElement.getAsJsonObject();
-          NamespacedKey key = NamespacedKey.fromString(jsonObject.get("type").getAsString());
+          JsonObject json = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
           ConditionType<T> conditionType = ConditionType.get(typeClass, key);
 
           if (conditionType == null) return null;
-          return conditionType.factory().create(jsonObject);
+          return conditionType.factory().create(json);
         });
   }
 
@@ -76,14 +75,14 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         Unchecked.castClass(PowerBehavior.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          JsonObject jsonObject = jsonElement.getAsJsonObject();
-          NamespacedKey key = NamespacedKey.fromString(jsonObject.get("type").getAsString());
+          JsonObject json = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
           PowerBehaviorType<?> powerBehaviorType = PowerBehaviorType.get(key);
 
           if (powerBehaviorType == null) return null;
-          return powerBehaviorType.factory().create(jsonObject);
+          return powerBehaviorType.factory().create(json);
         });
   }
 
@@ -92,26 +91,27 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         AttributedAttributeModifier.class,
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          JsonObject jsonObject = jsonElement.getAsJsonObject();
+          JsonObject json = jsonElement.getAsJsonObject();
 
-          if (!jsonObject.has("attribute")) return null;
-          NamespacedKey key = NamespacedKey.fromString(jsonObject.get("type").getAsString());
+          if (!json.has("attribute")) return null;
+          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
           Attribute attribute = Registry.ATTRIBUTE.get(key);
 
           if (attribute == null) return null;
+          key = new NamespacedKey("races", "attribute");
+
+          if (json.has("key")) key = NamespacedKey.fromString(json.get("key").getAsString());
+          if (key == null) return null;
+
           return new AttributedAttributeModifier(
               attribute,
               new AttributeModifier(
-                  jsonObject.has("uuid")
-                      ? UUID.fromString(jsonObject.get("uuid").getAsString())
-                      : UUID.randomUUID(),
-                  jsonObject.has("name") ? jsonObject.get("name").getAsString() : "",
-                  jsonObject.has("amount") ? jsonObject.get("amount").getAsDouble() : 0,
-                  jsonObject.has("operation")
-                      ? AttributeModifier.Operation.valueOf(
-                          jsonObject.get("operation").getAsString())
+                  key,
+                  json.has("amount") ? json.get("amount").getAsDouble() : 0,
+                  json.has("operation")
+                      ? AttributeModifier.Operation.valueOf(json.get("operation").getAsString())
                       : AttributeModifier.Operation.ADD_NUMBER));
         });
   }

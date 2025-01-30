@@ -3,30 +3,30 @@ package me.lemonypancakes.races.serialization;
 import java.util.function.Function;
 
 public final class DataField<T> {
-  private final DataType<T> dataType;
+  private final DataType<T> type;
   private final T defaultValue;
   private final Function<DataContainer, T> defaultFunction;
 
-  public DataField(DataType<T> dataType) {
-    this.dataType = dataType;
+  public DataField(DataType<T> type) {
+    this.type = type;
     defaultValue = null;
     defaultFunction = null;
   }
 
-  public DataField(DataType<T> dataType, T defaultValue) {
-    this.dataType = dataType;
+  public DataField(DataType<T> type, T defaultValue) {
+    this.type = type;
     this.defaultValue = defaultValue;
     defaultFunction = null;
   }
 
-  public DataField(DataType<T> dataType, Function<DataContainer, T> defaultFunction) {
-    this.dataType = dataType;
+  public DataField(DataType<T> type, Function<DataContainer, T> defaultFunction) {
+    this.type = type;
     defaultValue = null;
     this.defaultFunction = defaultFunction;
   }
 
   public DataType<T> getDataType() {
-    return dataType;
+    return type;
   }
 
   public boolean hasDefault() {

@@ -25,7 +25,7 @@ public final class DataEntry<T> {
     this.defaultFunction = defaultFunction;
   }
 
-  public DataType<T> getDataType() {
+  public DataType<T> getType() {
     return type;
   }
 

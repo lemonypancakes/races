@@ -38,32 +38,32 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
     ATTRIBUTED_ATTRIBUTE_MODIFIER = attributedAttributeModifier();
   }
 
-  private static <T> DataType<Action<T>> action(final Class<T> typeClass) {
+  private static <T> DataType<Action<T>> action(Class<T> typeClass) {
     return new DataType<>(
         Unchecked.castClass(Action.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          final JsonObject json = jsonElement.getAsJsonObject();
-          final NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
+          JsonObject json = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
-          final ActionType<T> actionType = ActionType.get(typeClass, key);
+          ActionType<T> actionType = ActionType.get(typeClass, key);
 
           if (actionType == null) return null;
           return actionType.factory().create(json);
         });
   }
 
-  private static <T> DataType<Condition<T>> condition(final Class<T> typeClass) {
+  private static <T> DataType<Condition<T>> condition(Class<T> typeClass) {
     return new DataType<>(
         Unchecked.castClass(Condition.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          final JsonObject json = jsonElement.getAsJsonObject();
-          final NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
+          JsonObject json = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
-          final ConditionType<T> conditionType = ConditionType.get(typeClass, key);
+          ConditionType<T> conditionType = ConditionType.get(typeClass, key);
 
           if (conditionType == null) return null;
           return conditionType.factory().create(json);
@@ -75,11 +75,11 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         Unchecked.castClass(PowerBehavior.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          final JsonObject json = jsonElement.getAsJsonObject();
-          final NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
+          JsonObject json = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
-          final PowerBehaviorType<?> powerBehaviorType = PowerBehaviorType.get(key);
+          PowerBehaviorType<?> powerBehaviorType = PowerBehaviorType.get(key);
 
           if (powerBehaviorType == null) return null;
           return powerBehaviorType.factory().create(json);
@@ -91,13 +91,13 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         AttributedAttributeModifier.class,
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          final JsonObject json = jsonElement.getAsJsonObject();
+          JsonObject json = jsonElement.getAsJsonObject();
 
           if (!json.has("attribute")) return null;
           NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
-          final Attribute attribute = Registry.ATTRIBUTE.get(key);
+          Attribute attribute = Registry.ATTRIBUTE.get(key);
 
           if (attribute == null) return null;
           key = new NamespacedKey("races", "attribute");
@@ -116,7 +116,7 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         });
   }
 
-  public T read(final JsonElement element) {
-    return this.reader.apply(element);
+  public T read(JsonElement element) {
+    return reader.apply(element);
   }
 }

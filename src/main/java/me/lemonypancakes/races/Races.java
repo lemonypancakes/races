@@ -13,12 +13,12 @@ public final class Races {
     return plugin;
   }
 
-  public static void setPlugin(final RacesPlugin plugin) {
+  public static void setPlugin(RacesPlugin plugin) {
     if (Races.plugin != null) throw new RuntimeException();
     Races.plugin = plugin;
   }
 
-  public static NamespacedKey namespace(final String key) {
+  public static NamespacedKey namespace(String key) {
     return new NamespacedKey(plugin, key);
   }
 }

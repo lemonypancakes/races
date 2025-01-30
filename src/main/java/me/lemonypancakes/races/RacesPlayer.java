@@ -9,24 +9,24 @@ public final class RacesPlayer {
   private final Player handle;
   private final List<PowerInstance> powers;
 
-  RacesPlayer(final Player handle) {
+  RacesPlayer(Player handle) {
     this.handle = handle;
-    this.powers = new ArrayList<>();
+    powers = new ArrayList<>();
   }
 
   public Player getHandle() {
-    return this.handle;
+    return handle;
   }
 
-  public void addPower(final PowerInstance power) {
-    this.powers.add(power);
+  public void addPower(PowerInstance power) {
+    powers.add(power);
   }
 
-  public void removePower(final PowerInstance power) {
-    this.powers.remove(power);
+  public void removePower(PowerInstance power) {
+    powers.remove(power);
   }
 
   public void tick() {
-    this.powers.forEach(PowerInstance::tick);
+    powers.forEach(PowerInstance::tick);
   }
 }

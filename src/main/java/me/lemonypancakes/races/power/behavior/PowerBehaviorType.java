@@ -17,16 +17,16 @@ public record PowerBehaviorType<T extends PowerBehavior<T>>(
   }
 
   public static <T extends PowerBehavior<T>> PowerBehaviorType<T> register(
-      final String name, final PowerBehaviorFactory<T> factory) {
+      String name, PowerBehaviorFactory<T> factory) {
     return register(Races.namespace(name), factory);
   }
 
   public static <T extends PowerBehavior<T>> PowerBehaviorType<T> register(
-      final NamespacedKey key, final PowerBehaviorFactory<T> factory) {
+      NamespacedKey key, PowerBehaviorFactory<T> factory) {
     return Registry.INSTANCE.register(new PowerBehaviorType<>(key, factory));
   }
 
-  public static <T extends PowerBehavior<T>> PowerBehaviorType<T> get(final NamespacedKey key) {
+  public static <T extends PowerBehavior<T>> PowerBehaviorType<T> get(NamespacedKey key) {
     return Registry.INSTANCE.get(key);
   }
 
@@ -36,16 +36,16 @@ public record PowerBehaviorType<T extends PowerBehavior<T>>(
     private final Map<NamespacedKey, PowerBehaviorType<?>> registry;
 
     Registry() {
-      this.registry = new HashMap<>();
+      registry = new HashMap<>();
     }
 
     public <T extends PowerBehavior<T>> PowerBehaviorType<T> register(
-        final PowerBehaviorType<T> powerBehaviorType) {
-      return Unchecked.cast(this.registry.putIfAbsent(powerBehaviorType.key(), powerBehaviorType));
+        PowerBehaviorType<T> powerBehaviorType) {
+      return Unchecked.cast(registry.putIfAbsent(powerBehaviorType.key(), powerBehaviorType));
     }
 
-    public <T extends PowerBehavior<T>> PowerBehaviorType<T> get(final NamespacedKey key) {
-      return Unchecked.cast(this.registry.get(key));
+    public <T extends PowerBehavior<T>> PowerBehaviorType<T> get(NamespacedKey key) {
+      return Unchecked.cast(registry.get(key));
     }
   }
 }

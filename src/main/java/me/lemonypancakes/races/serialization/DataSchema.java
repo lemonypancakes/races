@@ -44,7 +44,7 @@ public class DataSchema {
     entries.forEach(
         (key, entry) -> {
           if (json.has(key)) {
-            container.set(key, entry.getDataType().read(container.get(key)));
+            container.set(key, entry.getType().read(container.get(key)));
           } else if (entry.hasDefault()) {
             container.set(key, entry.getDefault(container));
           } else {

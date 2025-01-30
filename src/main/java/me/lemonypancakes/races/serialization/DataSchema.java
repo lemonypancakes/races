@@ -6,47 +6,47 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class DataSchema {
-  private final Map<String, DataField<?>> dataFields;
+  private final Map<String, DataEntry<?>> entries;
 
   public DataSchema() {
-    dataFields = new HashMap<>();
+    entries = new HashMap<>();
   }
 
-  public <T> DataSchema add(String key, DataField<T> field) {
-    dataFields.put(key, field);
+  public <T> DataSchema add(String key, DataEntry<T> entry) {
+    entries.put(key, entry);
     return this;
   }
 
   public <T> DataSchema add(String key, DataType<T> dataType) {
-    add(key, new DataField<>(dataType));
+    add(key, new DataEntry<>(dataType));
     return this;
   }
 
   public <T> DataSchema add(String key, DataType<T> dataType, T defaultValue) {
-    add(key, new DataField<>(dataType, defaultValue));
+    add(key, new DataEntry<>(dataType, defaultValue));
     return this;
   }
 
   public <T> DataSchema add(
       String key, DataType<T> dataType, Function<DataContainer, T> defaultFunction) {
-    add(key, new DataField<>(dataType, defaultFunction));
+    add(key, new DataEntry<>(dataType, defaultFunction));
     return this;
   }
 
-  public DataField<?> getField(String key) {
-    if (!dataFields.containsKey(key)) throw new IllegalArgumentException("No field for key " + key);
-    return dataFields.get(key);
+  public DataEntry<?> getEntry(String key) {
+    if (!entries.containsKey(key)) throw new IllegalArgumentException("No entry for key " + key);
+    return entries.get(key);
   }
 
   public DataContainer read(JsonObject json) {
     DataContainer container = new DataContainer();
 
-    dataFields.forEach(
-        (key, field) -> {
+    entries.forEach(
+        (key, entry) -> {
           if (json.has(key)) {
-            container.set(key, field.getDataType().read(container.get(key)));
-          } else if (field.hasDefault()) {
-            container.set(key, field.getDefault(container));
+            container.set(key, entry.getDataType().read(container.get(key)));
+          } else if (entry.hasDefault()) {
+            container.set(key, entry.getDefault(container));
           } else {
             throw new IllegalArgumentException("No value for key " + key);
           }

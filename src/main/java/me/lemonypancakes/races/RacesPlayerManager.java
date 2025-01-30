@@ -9,12 +9,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class RacesPlayerManager implements Listener {
   private final Map<UUID, RacesPlayer> players;
 
   public RacesPlayerManager() {
     players = new HashMap<>();
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        tick();
+      }
+    }.runTaskTimer(Races.getPlugin(), 0L, 1L);
   }
 
   public Collection<RacesPlayer> getPlayers() {
@@ -48,5 +55,9 @@ public final class RacesPlayerManager implements Listener {
 
     if (!(plugin instanceof RacesPlugin)) return;
     for (Map.Entry<UUID, RacesPlayer> entry : players.entrySet()) {}
+  }
+
+  private void tick() {
+    players.values().forEach(RacesPlayer::tick);
   }
 }

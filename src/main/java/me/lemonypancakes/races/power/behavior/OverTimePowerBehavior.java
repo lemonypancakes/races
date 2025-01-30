@@ -28,31 +28,32 @@ public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> 
   private final Action<Player> action;
   private final int interval;
 
-  public OverTimePowerBehavior(Condition<Player> condition, Action<Player> action, int interval) {
+  public OverTimePowerBehavior(
+      final Condition<Player> condition, final Action<Player> action, final int interval) {
     this.condition = condition;
     this.action = action;
     this.interval = interval;
   }
 
   public Condition<Player> getCondition() {
-    return condition;
+    return this.condition;
   }
 
   public Action<Player> getAction() {
-    return action;
+    return this.action;
   }
 
   public int getInterval() {
-    return interval;
+    return this.interval;
   }
 
   @Override
-  public PowerBehaviorInstance<OverTimePowerBehavior> apply(Player player) {
+  public PowerBehaviorInstance<OverTimePowerBehavior> apply(final Player player) {
     return new Instance(this, player);
   }
 
   public static final class Instance extends PowerBehaviorInstance<OverTimePowerBehavior> {
-    public Instance(OverTimePowerBehavior behavior, Player player) {
+    public Instance(final OverTimePowerBehavior behavior, final Player player) {
       super(behavior, player);
     }
 
@@ -64,7 +65,7 @@ public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> 
 
     @Override
     public void tick() {
-      player.getLocation().add(0, -1, 0).getBlock().setType(Material.DIAMOND_BLOCK);
+      this.player.getLocation().add(0, -1, 0).getBlock().setType(Material.DIAMOND_BLOCK);
     }
   }
 }

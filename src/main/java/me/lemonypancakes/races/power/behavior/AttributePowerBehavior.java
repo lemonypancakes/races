@@ -18,38 +18,40 @@ public class AttributePowerBehavior extends PowerBehavior<AttributePowerBehavior
 
   private final AttributedAttributeModifier modifier;
 
-  public AttributePowerBehavior(AttributedAttributeModifier modifier) {
+  public AttributePowerBehavior(final AttributedAttributeModifier modifier) {
     this.modifier = modifier;
   }
 
   public AttributedAttributeModifier getModifier() {
-    return modifier;
+    return this.modifier;
   }
 
   @Override
-  public PowerBehaviorInstance<AttributePowerBehavior> apply(Player player) {
+  public PowerBehaviorInstance<AttributePowerBehavior> apply(final Player player) {
     return new Instance(this, player);
   }
 
   public static final class Instance extends PowerBehaviorInstance<AttributePowerBehavior> {
-    public Instance(AttributePowerBehavior behavior, Player player) {
+    public Instance(final AttributePowerBehavior behavior, final Player player) {
       super(behavior, player);
     }
 
     @Override
     public void add() {
-      AttributeInstance attribute = player.getAttribute(behavior.modifier.attribute());
+      final AttributeInstance attribute =
+          this.player.getAttribute(this.behavior.modifier.attribute());
 
       if (attribute == null) return;
-      attribute.addModifier(behavior.modifier.modifier());
+      attribute.addModifier(this.behavior.modifier.modifier());
     }
 
     @Override
     public void remove() {
-      AttributeInstance attribute = player.getAttribute(behavior.modifier.attribute());
+      final AttributeInstance attribute =
+          this.player.getAttribute(this.behavior.modifier.attribute());
 
       if (attribute == null) return;
-      attribute.removeModifier(behavior.modifier.modifier());
+      attribute.removeModifier(this.behavior.modifier.modifier());
     }
   }
 }

@@ -7,11 +7,11 @@ import me.lemonypancakes.races.serialization.DataSchema;
 
 public record ConditionFactory<T>(
     DataSchema schema, Function<DataContainer, Condition<T>> constructor) {
-  public Condition<T> create(DataContainer container) {
-    return constructor.apply(container);
+  public Condition<T> create(final DataContainer container) {
+    return this.constructor.apply(container);
   }
 
-  public Condition<T> create(JsonObject json) {
+  public Condition<T> create(final JsonObject json) {
     return create(this.schema.read(json));
   }
 }

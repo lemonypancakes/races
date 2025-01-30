@@ -7,11 +7,11 @@ import me.lemonypancakes.races.serialization.DataSchema;
 
 public record PowerBehaviorFactory<T extends PowerBehavior<T>>(
     DataSchema schema, Function<DataContainer, T> constructor) {
-  public PowerBehavior<T> create(DataContainer container) {
-    return constructor.apply(container);
+  public PowerBehavior<T> create(final DataContainer container) {
+    return this.constructor.apply(container);
   }
 
-  public PowerBehavior<T> create(JsonObject json) {
+  public PowerBehavior<T> create(final JsonObject json) {
     return create(this.schema.read(json));
   }
 }

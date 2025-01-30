@@ -6,17 +6,17 @@ public abstract class PowerBehaviorInstance<T extends PowerBehavior<T>> {
   protected final T behavior;
   protected final Player player;
 
-  public PowerBehaviorInstance(T behavior, Player player) {
+  public PowerBehaviorInstance(final T behavior, final Player player) {
     this.behavior = behavior;
     this.player = player;
   }
 
   public final T getBehavior() {
-    return behavior;
+    return this.behavior;
   }
 
   public final Player getPlayer() {
-    return player;
+    return this.player;
   }
 
   public void grant() {

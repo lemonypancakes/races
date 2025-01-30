@@ -15,20 +15,20 @@ public record Power(
     PowerBehavior<?> behavior) {
 
   @Override
-  public boolean equals(Object object) {
+  public boolean equals(final Object object) {
     if (this == object) return true;
-    if (!(object instanceof Power power)) return false;
+    if (!(object instanceof final Power power)) return false;
 
-    return key.equals(power.key);
+    return this.key.equals(power.key);
   }
 
   @Override
   public int hashCode() {
-    return key.hashCode();
+    return this.key.hashCode();
   }
 
   @Override
   public String toString() {
-    return key.toString();
+    return this.key.toString();
   }
 }

@@ -23,22 +23,22 @@ public final class RacesPlugin extends JavaPlugin {
   private RaceRepository raceRepository;
 
   public List<RacesPlayer> getPlayers() {
-    return players;
+    return this.players;
   }
 
   public PowerRepository getPowerRepository() {
-    return powerRepository;
+    return this.powerRepository;
   }
 
   public RaceRepository getRaceRepository() {
-    return raceRepository;
+    return this.raceRepository;
   }
 
   public void onLoad() {
     Races.setPlugin(this);
-    players = new ArrayList<>();
-    powerRepository = new PowerRepository().reload();
-    raceRepository = new RaceRepository();
+    this.players = new ArrayList<>();
+    this.powerRepository = new PowerRepository().reload();
+    this.raceRepository = new RaceRepository();
     CommandAPI.onLoad(
         new CommandAPIBukkitConfig(this)
             .setNamespace("races")
@@ -50,16 +50,16 @@ public final class RacesPlugin extends JavaPlugin {
     CommandAPI.onEnable();
     new BukkitRunnable() {
       public void run() {
-        players.forEach(RacesPlayer::tick);
+        RacesPlugin.this.players.forEach(RacesPlayer::tick);
       }
     }.runTaskTimer(this, 0L, 1L);
     Bukkit.getPluginManager()
         .registerEvents(
             new Listener() {
               @EventHandler
-              public void onPlayerJoin(PlayerJoinEvent event) {
-                RacesPlayer player = new RacesPlayer(event.getPlayer());
-                Power power =
+              public void onPlayerJoin(final PlayerJoinEvent event) {
+                final RacesPlayer player = new RacesPlayer(event.getPlayer());
+                final Power power =
                     new Power(
                         null,
                         null,
@@ -69,15 +69,15 @@ public final class RacesPlugin extends JavaPlugin {
                         0,
                         0,
                         new OverTimePowerBehavior(null, null, 1));
-                PowerInstance powerInstance = new PowerInstance(power, player.getHandle());
+                final PowerInstance powerInstance = new PowerInstance(power, player.getHandle());
                 player.addPower(powerInstance);
                 powerInstance.grant();
-                players.add(player);
+                RacesPlugin.this.players.add(player);
               }
 
               @EventHandler
-              public void onPlayerQuit(PlayerQuitEvent event) {
-                players.removeIf(
+              public void onPlayerQuit(final PlayerQuitEvent event) {
+                RacesPlugin.this.players.removeIf(
                     player ->
                         player.getHandle().getUniqueId().equals(event.getPlayer().getUniqueId()));
               }

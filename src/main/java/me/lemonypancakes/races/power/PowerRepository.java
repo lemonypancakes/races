@@ -8,7 +8,7 @@ public final class PowerRepository {
   private final Map<NamespacedKey, Power> powers;
 
   public PowerRepository() {
-    this.powers = new HashMap<>();
+    powers = new HashMap<>();
   }
 
   public PowerRepository reload() {
@@ -16,10 +16,10 @@ public final class PowerRepository {
   }
 
   public Map<NamespacedKey, Power> getPowers() {
-    return this.powers;
+    return powers;
   }
 
-  public Power getPower(final NamespacedKey key) {
-    return this.powers.get(key);
+  public Power getPower(NamespacedKey key) {
+    return powers.get(key);
   }
 }

@@ -7,37 +7,37 @@ public final class DataField<T> {
   private final T defaultValue;
   private final Function<DataContainer, T> defaultFunction;
 
-  public DataField(DataType<T> dataType) {
+  public DataField(final DataType<T> dataType) {
     this.dataType = dataType;
-    defaultValue = null;
-    defaultFunction = null;
+    this.defaultValue = null;
+    this.defaultFunction = null;
   }
 
-  public DataField(DataType<T> dataType, T defaultValue) {
+  public DataField(final DataType<T> dataType, final T defaultValue) {
     this.dataType = dataType;
     this.defaultValue = defaultValue;
-    defaultFunction = null;
+    this.defaultFunction = null;
   }
 
-  public DataField(DataType<T> dataType, Function<DataContainer, T> defaultFunction) {
+  public DataField(final DataType<T> dataType, final Function<DataContainer, T> defaultFunction) {
     this.dataType = dataType;
-    defaultValue = null;
+    this.defaultValue = null;
     this.defaultFunction = defaultFunction;
   }
 
   public DataType<T> getDataType() {
-    return dataType;
+    return this.dataType;
   }
 
   public boolean hasDefault() {
-    return defaultValue != null || defaultFunction != null;
+    return this.defaultValue != null || this.defaultFunction != null;
   }
 
-  public T getDefault(DataContainer container) {
-    if (defaultValue != null) {
-      return defaultValue;
-    } else if (defaultFunction != null) {
-      return defaultFunction.apply(container);
+  public T getDefault(final DataContainer container) {
+    if (this.defaultValue != null) {
+      return this.defaultValue;
+    } else if (this.defaultFunction != null) {
+      return this.defaultFunction.apply(container);
     } else {
       throw new IllegalStateException("No default value or function provided");
     }

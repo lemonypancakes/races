@@ -13,77 +13,77 @@ public class PowerInstance {
   public PowerInstance(final Power power, final Player player) {
     this.power = Objects.requireNonNull(power, "power must not be null");
     this.player = Objects.requireNonNull(player, "player must not be null");
-    behavior = power.behavior().apply(player);
+    this.behavior = power.behavior().apply(player);
   }
 
   public final Power getPower() {
-    return power;
+    return this.power;
   }
 
   public final Player getPlayer() {
-    return player;
+    return this.player;
   }
 
   public final State getState() {
-    return state;
+    return this.state;
   }
 
   public final boolean isActive() {
-    return state == State.GRANTED || state == State.ADDED;
+    return this.state == State.GRANTED || this.state == State.ADDED;
   }
 
   public final boolean grant() {
     if (isActive()) return false;
-    state = State.GRANTED;
-    behavior.grant();
+    this.state = State.GRANTED;
+    this.behavior.grant();
     return true;
   }
 
   public final boolean revoke() {
     if (!isActive()) return false;
-    state = State.REVOKED;
-    behavior.revoke();
+    this.state = State.REVOKED;
+    this.behavior.revoke();
     return true;
   }
 
   public final boolean add() {
     if (isActive()) return false;
-    state = State.ADDED;
-    behavior.add();
+    this.state = State.ADDED;
+    this.behavior.add();
     return true;
   }
 
   public final boolean remove() {
     if (!isActive()) return false;
-    state = State.REMOVED;
-    behavior.remove();
+    this.state = State.REMOVED;
+    this.behavior.remove();
     return true;
   }
 
   public final boolean tick() {
     if (!isActive()) return false;
-    behavior.tick();
+    this.behavior.tick();
     return true;
   }
 
   @Override
-  public final boolean equals(Object object) {
+  public final boolean equals(final Object object) {
     if (this == object) return true;
-    if (!(object instanceof PowerInstance that)) return false;
+    if (!(object instanceof final PowerInstance that)) return false;
 
-    return power.equals(that.power) && player.equals(that.player);
+    return this.power.equals(that.power) && this.player.equals(that.player);
   }
 
   @Override
   public final int hashCode() {
-    int result = power.hashCode();
-    result = 31 * result + player.hashCode();
+    int result = this.power.hashCode();
+    result = 31 * result + this.player.hashCode();
     return result;
   }
 
   @Override
   public final String toString() {
-    return power.toString();
+    return this.power.toString();
   }
 
   public enum State {

@@ -7,7 +7,7 @@ import me.lemonypancakes.races.serialization.DataType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> {
+public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> {
   public static final PowerBehaviorFactory<OverTimePowerBehavior> FACTORY;
 
   static {

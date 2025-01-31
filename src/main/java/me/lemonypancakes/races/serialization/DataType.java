@@ -47,10 +47,10 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
           NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
-          ActionType<T> actionType = ActionType.get(typeClass, key);
+          ActionType<T> type = ActionType.get(typeClass, key);
 
-          if (actionType == null) return null;
-          return actionType.factory().create(json);
+          if (type == null) return null;
+          return type.factory().create(json);
         });
   }
 
@@ -63,10 +63,10 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
           NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
-          ConditionType<T> conditionType = ConditionType.get(typeClass, key);
+          ConditionType<T> type = ConditionType.get(typeClass, key);
 
-          if (conditionType == null) return null;
-          return conditionType.factory().create(json);
+          if (type == null) return null;
+          return type.factory().create(json);
         });
   }
 
@@ -79,10 +79,10 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
           NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
 
           if (key == null) return null;
-          PowerBehaviorType<?> powerBehaviorType = PowerBehaviorType.get(key);
+          PowerBehaviorType<?> type = PowerBehaviorType.get(key);
 
-          if (powerBehaviorType == null) return null;
-          return powerBehaviorType.factory().create(json);
+          if (type == null) return null;
+          return type.factory().create(json);
         });
   }
 

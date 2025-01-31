@@ -22,7 +22,7 @@ public record PowerBehaviorType<T extends PowerBehavior<T>>(
   }
 
   public static PowerBehaviorType<?> get(NamespacedKey key) {
-    return Unchecked.cast(Registry.POWER_BEHAVIOR.get(key));
+    return Registry.POWER_BEHAVIOR.get(key);
   }
 
   private static <T extends PowerBehavior<T>> PowerBehaviorType<T> register(

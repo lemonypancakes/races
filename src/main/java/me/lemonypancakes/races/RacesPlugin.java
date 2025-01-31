@@ -7,6 +7,7 @@ import me.lemonypancakes.races.race.RaceRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class RacesPlugin extends JavaPlugin {
   private RacesPlayerManager playerManager;
@@ -28,7 +29,7 @@ public final class RacesPlugin extends JavaPlugin {
   @Override
   public void onLoad() {
     Races.setPlugin(this);
-    playerManager = registerListener(new RacesPlayerManager());
+    playerManager = new RacesPlayerManager();
     powerRepository = new PowerRepository().reload();
     raceRepository = new RaceRepository();
     CommandAPI.onLoad(
@@ -41,6 +42,8 @@ public final class RacesPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     CommandAPI.onEnable();
+    registerListener(playerManager);
+    setupScheduler();
   }
 
   @Override
@@ -48,8 +51,16 @@ public final class RacesPlugin extends JavaPlugin {
     CommandAPI.onDisable();
   }
 
-  private <T extends Listener> T registerListener(T listener) {
+  private <T extends Listener> void registerListener(T listener) {
     Bukkit.getPluginManager().registerEvents(listener, this);
-    return listener;
+  }
+
+  private void setupScheduler() {
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        playerManager.tick();
+      }
+    }.runTaskTimer(this, 0L, 1L);
   }
 }

@@ -11,10 +11,16 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
 public final class RacesPlayerManager implements Listener {
+  private final RacesPlugin plugin;
   private final Map<UUID, RacesPlayer> players;
 
-  public RacesPlayerManager() {
+  public RacesPlayerManager(RacesPlugin plugin) {
+    this.plugin = plugin;
     players = new HashMap<>();
+  }
+
+  public RacesPlugin getPlugin() {
+    return plugin;
   }
 
   public Collection<RacesPlayer> getPlayers() {

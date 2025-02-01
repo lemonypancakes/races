@@ -29,9 +29,9 @@ public final class RacesPlugin extends JavaPlugin {
   @Override
   public void onLoad() {
     Races.setPlugin(this);
-    playerManager = new RacesPlayerManager();
-    powerRepository = new PowerRepository().reload();
-    raceRepository = new RaceRepository();
+    playerManager = new RacesPlayerManager(this);
+    powerRepository = new PowerRepository(this);
+    raceRepository = new RaceRepository(this);
     CommandAPI.onLoad(
         new CommandAPIBukkitConfig(this)
             .setNamespace("races")

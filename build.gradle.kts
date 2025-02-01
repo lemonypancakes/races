@@ -75,10 +75,6 @@ spotless {
 }
 
 tasks {
-    assemble {
-
-    }
-
     withType<ProcessResources> {
         eachFile {
             expand("version" to finalVersion)

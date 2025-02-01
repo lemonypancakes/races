@@ -10,7 +10,6 @@ public record Power(
     String displayName,
     String description,
     ItemStack icon,
-    int order,
     PowerBehavior<?> behavior) {
 
   @Override

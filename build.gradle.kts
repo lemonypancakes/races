@@ -7,6 +7,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.5"
     id("io.github.patrick.remapper") version "1.4.2"
     id("com.diffplug.spotless") version "7.0.2"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
 }
 
 val majorVersion: String by project
@@ -32,9 +33,8 @@ repositories {
 }
 
 dependencies {
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:26.0.2")
-    compileOnly("org.spigotmc:spigot:$mcVersion-R0.1-SNAPSHOT:remapped-mojang")
-    compileOnly("dev.folia:folia-api:1.21.4-R0.1-SNAPSHOT")
     implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
     implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.5")
 }
@@ -75,6 +75,10 @@ spotless {
 }
 
 tasks {
+    assemble {
+
+    }
+
     withType<ProcessResources> {
         eachFile {
             expand("version" to finalVersion)

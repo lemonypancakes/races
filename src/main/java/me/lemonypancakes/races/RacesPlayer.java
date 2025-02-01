@@ -1,8 +1,6 @@
 package me.lemonypancakes.races;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import me.lemonypancakes.races.power.PowerInstance;
 import org.bukkit.entity.Player;
 
@@ -25,11 +23,15 @@ public final class RacesPlayer {
     return uuid;
   }
 
-  public void addPower(PowerInstance power) {
+  public Collection<PowerInstance> getPowers() {
+    return Collections.unmodifiableCollection(powers);
+  }
+
+  public void grantPower(PowerInstance power) {
     powers.add(power);
   }
 
-  public void removePower(PowerInstance power) {
+  public void revokePower(PowerInstance power) {
     powers.remove(power);
   }
 

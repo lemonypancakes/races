@@ -1,6 +1,7 @@
 package me.lemonypancakes.races;
 
 import java.util.*;
+import me.lemonypancakes.races.power.PowerInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,14 @@ public final class RacesPlayerManager implements Listener {
     return Collections.unmodifiableCollection(players.values());
   }
 
+  public RacesPlayer getPlayer(UUID uuid) {
+    return players.get(uuid);
+  }
+
+  public RacesPlayer getPlayer(Player player) {
+    return getPlayer(player.getUniqueId());
+  }
+
   @EventHandler
   private void onPlayerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
@@ -35,6 +44,9 @@ public final class RacesPlayerManager implements Listener {
     UUID uuid = player.getUniqueId();
 
     if (!players.containsKey(uuid)) return;
+    RacesPlayer racesPlayer = players.get(uuid);
+
+    racesPlayer.getPowers().forEach(PowerInstance::remove);
     players.remove(uuid);
   }
 
@@ -43,9 +55,9 @@ public final class RacesPlayerManager implements Listener {
     Plugin plugin = event.getPlugin();
 
     if (!(plugin instanceof RacesPlugin)) return;
-    for (Map.Entry<UUID, RacesPlayer> entry : players.entrySet()) {
-      RacesPlayer player = entry.getValue();
-    }
+    players.forEach(
+        ((uuid, racesPlayer) -> racesPlayer.getPowers().forEach(PowerInstance::remove)));
+    players.clear();
   }
 
   public void tick() {

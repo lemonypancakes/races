@@ -10,7 +10,6 @@ public record Power(
     String displayName,
     String description,
     ItemStack icon,
-    int impact,
     int order,
     PowerBehavior<?> behavior) {
 

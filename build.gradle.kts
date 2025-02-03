@@ -7,7 +7,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.5"
     id("io.github.patrick.remapper") version "1.4.2"
     id("com.diffplug.spotless") version "7.0.2"
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    id("io.papermc.paperweight.userdev") version "2.0.0-SNAPSHOT"
 }
 
 val majorVersion: String by project

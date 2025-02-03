@@ -63,4 +63,8 @@ public final class RacesPlugin extends JavaPlugin {
       }
     }.runTaskTimer(this, 0L, 1L);
   }
+
+  private boolean isPaper() {
+    return Bukkit.getServer().getName().contains("Paper");
+  }
 }

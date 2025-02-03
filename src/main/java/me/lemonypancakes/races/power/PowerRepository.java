@@ -10,7 +10,6 @@ import org.bukkit.NamespacedKey;
 public final class PowerRepository {
   private final RacesPlugin plugin;
   private final Map<NamespacedKey, Power> powers;
-  private boolean closed;
 
   public PowerRepository(RacesPlugin plugin) {
     this.plugin = plugin;
@@ -31,12 +30,5 @@ public final class PowerRepository {
 
   public PowerRepository reload() {
     return this;
-  }
-
-  public void close() {
-    if (closed) {
-      throw new IllegalStateException("Already closed");
-    }
-    closed = true;
   }
 }

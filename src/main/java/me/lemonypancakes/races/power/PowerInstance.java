@@ -1,6 +1,5 @@
 package me.lemonypancakes.races.power;
 
-import java.util.Objects;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorInstance;
 import org.bukkit.entity.Player;
 
@@ -11,8 +10,8 @@ public class PowerInstance {
   private State state;
 
   public PowerInstance(Power power, Player player) {
-    this.power = Objects.requireNonNull(power, "power must not be null");
-    this.player = Objects.requireNonNull(player, "player must not be null");
+    this.power = power;
+    this.player = player;
     behavior = power.behavior().apply(player);
   }
 

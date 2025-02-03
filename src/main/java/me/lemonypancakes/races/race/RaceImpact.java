@@ -1,3 +1,8 @@
 package me.lemonypancakes.races.race;
 
-public enum RaceImpact {}
+public enum RaceImpact {
+  NONE,
+  LOW,
+  MEDIUM,
+  HIGH
+}

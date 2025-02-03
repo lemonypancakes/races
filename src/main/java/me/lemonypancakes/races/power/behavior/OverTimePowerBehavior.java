@@ -4,7 +4,6 @@ import me.lemonypancakes.races.action.Action;
 import me.lemonypancakes.races.condition.Condition;
 import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataType;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> {
@@ -64,7 +63,9 @@ public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBeha
 
     @Override
     public void tick() {
-      player.getLocation().add(0, -1, 0).getBlock().setType(Material.DIAMOND_BLOCK);
+      if (player.getTicksLived() % behavior.interval != 0) return;
+      if (behavior.condition == null || !behavior.condition.test(player)) return;
+      if (behavior.action != null) behavior.action.accept(player);
     }
   }
 }

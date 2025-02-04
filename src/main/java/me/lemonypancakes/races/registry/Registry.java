@@ -11,12 +11,12 @@ import org.bukkit.NamespacedKey;
 public final class Registry<K, V> {
   public static final Registry<TypedNamespacedKey<?>, ActionType<?>> ACTION_TYPE;
   public static final Registry<TypedNamespacedKey<?>, ConditionType<?>> CONDITION_TYPE;
-  public static final Registry<NamespacedKey, PowerBehaviorType<?>> POWER_BEHAVIOR;
+  public static final Registry<NamespacedKey, PowerBehaviorType<?>> POWER_BEHAVIOR_TYPE;
 
   static {
     ACTION_TYPE = new Registry<>(new HashMap<>());
     CONDITION_TYPE = new Registry<>(new HashMap<>());
-    POWER_BEHAVIOR = new Registry<>(new HashMap<>());
+    POWER_BEHAVIOR_TYPE = new Registry<>(new HashMap<>());
   }
 
   private final Map<K, V> registry;

@@ -18,11 +18,11 @@ public record PowerBehaviorType<T extends PowerBehavior<T>>(
   public static <T extends PowerBehavior<T>> PowerBehaviorType<T> register(
       NamespacedKey key, PowerBehaviorFactory<T> factory) {
     return Unchecked.cast(
-        Registry.POWER_BEHAVIOR.register(key, new PowerBehaviorType<>(key, factory)));
+        Registry.POWER_BEHAVIOR_TYPE.register(key, new PowerBehaviorType<>(key, factory)));
   }
 
   public static PowerBehaviorType<?> get(NamespacedKey key) {
-    return Registry.POWER_BEHAVIOR.get(key);
+    return Registry.POWER_BEHAVIOR_TYPE.get(key);
   }
 
   private static <T extends PowerBehavior<T>> PowerBehaviorType<T> register(

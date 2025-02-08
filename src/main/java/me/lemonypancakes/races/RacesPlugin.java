@@ -2,10 +2,15 @@ package me.lemonypancakes.races;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import me.lemonypancakes.races.menu.RaceMenu;
 import me.lemonypancakes.races.power.PowerRepository;
 import me.lemonypancakes.races.race.RaceRepository;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -44,6 +49,25 @@ public final class RacesPlugin extends JavaPlugin {
     CommandAPI.onEnable();
     registerListener(playerManager);
     setupScheduler();
+    Bukkit.getPluginManager().registerEvents(new Listener() {
+      @EventHandler
+      private void onInventoryClick(InventoryClickEvent event) {
+        Inventory inventory = event.getInventory();
+
+        if (!(inventory.getHolder() instanceof RaceMenu menu)) return;
+
+        menu.onClick(event);
+      }
+
+      @EventHandler
+      private void onInventoryClose(InventoryCloseEvent event) {
+        Inventory inventory = event.getInventory();
+
+        if (!(inventory.getHolder() instanceof RaceMenu menu)) return;
+
+        menu.onClose(event);
+      }
+    }, this);
   }
 
   @Override

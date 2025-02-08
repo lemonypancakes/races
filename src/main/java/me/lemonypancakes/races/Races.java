@@ -14,6 +14,7 @@ public final class Races {
   }
 
   public static void setPlugin(RacesPlugin plugin) {
+    if (plugin == null) throw new NullPointerException();
     if (Races.plugin != null) throw new RuntimeException();
     Races.plugin = plugin;
   }

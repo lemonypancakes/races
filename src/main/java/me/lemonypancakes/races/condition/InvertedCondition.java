@@ -5,17 +5,17 @@ import java.util.List;
 import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataType;
 
-public final class OrCondition<T> extends Condition<T> {
+public final class InvertedCondition<T> extends Condition<T> {
   private final List<Condition<T>> conditions;
 
-  public OrCondition(List<Condition<T>> conditions) {
+  public InvertedCondition(List<Condition<T>> conditions) {
     this.conditions = conditions;
   }
 
   public static <T> ConditionFactory<T> getFactory(DataType<T> type) {
     return new ConditionFactory<>(
         new DataSchema().add("conditions", DataType.listOf(type)),
-        container -> new OrCondition<>(container.get("conditions")));
+        container -> new InvertedCondition<>(container.get("conditions")));
   }
 
   public List<Condition<T>> getConditions() {
@@ -24,6 +24,6 @@ public final class OrCondition<T> extends Condition<T> {
 
   @Override
   public boolean test(T t) {
-    return conditions.stream().anyMatch(condition -> condition.test(t));
+    return conditions.stream().noneMatch(condition -> condition.test(t));
   }
 }

@@ -1,72 +1,74 @@
 package me.lemonypancakes.races.power;
 
+import java.util.Objects;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorInstance;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class PowerInstance {
+public final class PowerInstance {
   private final Power power;
   private final Player player;
   private final PowerBehaviorInstance<?> behavior;
   private State state;
 
-  public PowerInstance(Power power, Player player) {
-    this.power = power;
-    this.player = player;
+  public PowerInstance(@NotNull Power power, @NotNull Player player) {
+    this.power = Objects.requireNonNull(power, "power cannot be null");
+    this.player = Objects.requireNonNull(player, "player cannot be null");
     behavior = power.behavior().apply(player);
   }
 
-  public final Power getPower() {
+  public Power getPower() {
     return power;
   }
 
-  public final Player getPlayer() {
+  public Player getPlayer() {
     return player;
   }
 
-  public final State getState() {
+  public State getState() {
     return state;
   }
 
-  public final boolean isActive() {
+  public boolean isActive() {
     return state == State.GRANTED || state == State.ADDED;
   }
 
-  public final boolean grant() {
+  public boolean grant() {
     if (isActive()) return false;
     state = State.GRANTED;
     behavior.grant();
     return true;
   }
 
-  public final boolean revoke() {
+  public boolean revoke() {
     if (!isActive()) return false;
     state = State.REVOKED;
     behavior.revoke();
     return true;
   }
 
-  public final boolean add() {
+  public boolean add() {
     if (isActive()) return false;
     state = State.ADDED;
     behavior.add();
     return true;
   }
 
-  public final boolean remove() {
+  public boolean remove() {
     if (!isActive()) return false;
     state = State.REMOVED;
     behavior.remove();
     return true;
   }
 
-  public final boolean tick() {
+  public boolean tick() {
     if (!isActive()) return false;
     behavior.tick();
     return true;
   }
 
   @Override
-  public final boolean equals(Object object) {
+  public boolean equals(Object object) {
     if (this == object) return true;
     if (!(object instanceof PowerInstance that)) return false;
 
@@ -74,14 +76,14 @@ public class PowerInstance {
   }
 
   @Override
-  public final int hashCode() {
+  public int hashCode() {
     int result = power.hashCode();
     result = 31 * result + player.hashCode();
     return result;
   }
 
   @Override
-  public final String toString() {
+  public String toString() {
     return power.toString();
   }
 

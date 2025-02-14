@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import me.lemonypancakes.races.Races;
-import me.lemonypancakes.races.RacesPlugin;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorType;
 import me.lemonypancakes.resourcemanagerhelper.Resource;
@@ -23,16 +22,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
 public final class PowerRepository {
-  private final RacesPlugin plugin;
   private final Map<NamespacedKey, Power> powers;
 
-  public PowerRepository(RacesPlugin plugin) {
-    this.plugin = plugin;
+  public PowerRepository() {
     powers = new HashMap<>();
-  }
-
-  public RacesPlugin getPlugin() {
-    return plugin;
   }
 
   public Collection<Power> getPowers() {

@@ -39,7 +39,7 @@ public final class RacesPlayerManager implements Listener {
   private void onPlayerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
     UUID uuid = player.getUniqueId();
-    RacesPlayer racesPlayer = new RacesPlayer(player);
+    RacesPlayer racesPlayer = new RacesPlayer(player, null);
 
     players.put(uuid, racesPlayer);
   }
@@ -52,7 +52,7 @@ public final class RacesPlayerManager implements Listener {
     if (!players.containsKey(uuid)) return;
     RacesPlayer racesPlayer = players.get(uuid);
 
-    racesPlayer.getPowers().forEach(PowerInstance::remove);
+    racesPlayer.getPowers().keySet().forEach(PowerInstance::remove);
     players.remove(uuid);
   }
 
@@ -62,7 +62,7 @@ public final class RacesPlayerManager implements Listener {
 
     if (!(plugin instanceof RacesPlugin)) return;
     players.forEach(
-        ((uuid, racesPlayer) -> racesPlayer.getPowers().forEach(PowerInstance::remove)));
+        ((uuid, racesPlayer) -> racesPlayer.getPowers().keySet().forEach(PowerInstance::remove)));
     players.clear();
   }
 

@@ -4,6 +4,7 @@ import me.lemonypancakes.races.action.Action;
 import me.lemonypancakes.races.condition.Condition;
 import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataType;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> {
@@ -13,8 +14,8 @@ public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBeha
     FACTORY =
         new PowerBehaviorFactory<>(
             new DataSchema()
-                .add("condition", DataType.PLAYER_CONDITION)
-                .add("action", DataType.PLAYER_ACTION)
+                .add("condition", DataType.ENTITY_CONDITION)
+                .add("action", DataType.ENTITY_ACTION)
                 .add("interval", DataType.INTEGER),
             container ->
                 new OverTimePowerBehavior(
@@ -23,21 +24,21 @@ public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBeha
                     container.get("interval")));
   }
 
-  private final Condition<Player> condition;
-  private final Action<Player> action;
+  private final Condition<Entity> condition;
+  private final Action<Entity> action;
   private final int interval;
 
-  public OverTimePowerBehavior(Condition<Player> condition, Action<Player> action, int interval) {
+  public OverTimePowerBehavior(Condition<Entity> condition, Action<Entity> action, int interval) {
     this.condition = condition;
     this.action = action;
     this.interval = interval;
   }
 
-  public Condition<Player> getCondition() {
+  public Condition<Entity> getCondition() {
     return condition;
   }
 
-  public Action<Player> getAction() {
+  public Action<Entity> getAction() {
     return action;
   }
 

@@ -5,6 +5,7 @@ import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import me.lemonypancakes.races.menu.RaceMenu;
 import me.lemonypancakes.races.power.PowerRepository;
 import me.lemonypancakes.races.race.RaceRepository;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,8 +36,8 @@ public final class RacesPlugin extends JavaPlugin {
   public void onLoad() {
     Races.setPlugin(this);
     playerManager = new RacesPlayerManager(this);
-    powerRepository = new PowerRepository(this);
-    raceRepository = new RaceRepository(this);
+    powerRepository = new PowerRepository();
+    raceRepository = new RaceRepository();
     CommandAPI.onLoad(
         new CommandAPIBukkitConfig(this)
             .setNamespace("races")
@@ -47,27 +48,31 @@ public final class RacesPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     CommandAPI.onEnable();
+    new Metrics(this, 24704);
     registerListener(playerManager);
     setupScheduler();
-    Bukkit.getPluginManager().registerEvents(new Listener() {
-      @EventHandler
-      private void onInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getInventory();
+    Bukkit.getPluginManager()
+        .registerEvents(
+            new Listener() {
+              @EventHandler
+              private void onInventoryClick(InventoryClickEvent event) {
+                Inventory inventory = event.getInventory();
 
-        if (!(inventory.getHolder() instanceof RaceMenu menu)) return;
+                if (!(inventory.getHolder() instanceof RaceMenu menu)) return;
 
-        menu.onClick(event);
-      }
+                menu.onClick(event);
+              }
 
-      @EventHandler
-      private void onInventoryClose(InventoryCloseEvent event) {
-        Inventory inventory = event.getInventory();
+              @EventHandler
+              private void onInventoryClose(InventoryCloseEvent event) {
+                Inventory inventory = event.getInventory();
 
-        if (!(inventory.getHolder() instanceof RaceMenu menu)) return;
+                if (!(inventory.getHolder() instanceof RaceMenu menu)) return;
 
-        menu.onClose(event);
-      }
-    }, this);
+                menu.onClose(event);
+              }
+            },
+            this);
   }
 
   @Override

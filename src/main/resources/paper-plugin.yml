@@ -1,7 +1,5 @@
 name: Races
 version: '${version}'
-api-version: '1.21'
+bootstrapper: me.lemonypancakes.races.Bootstrap
 main: me.lemonypancakes.races.RacesPlugin
-authors:
-  - LemonyPancakes
-folia-supported: true
+api-version: '1.21'

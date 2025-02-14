@@ -2,58 +2,54 @@ package me.lemonypancakes.races;
 
 import java.util.*;
 import me.lemonypancakes.races.power.PowerInstance;
+import me.lemonypancakes.races.race.Race;
+import me.lemonypancakes.races.race.RaceGroup;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
 public final class RacesPlayer {
   private final Player handle;
-  private final UUID uuid;
-  private final List<PowerInstance> powers;
+  private final Map<RaceGroup, Race> races;
+  private final Map<PowerInstance, List<NamespacedKey>> powers;
+  private final boolean hasRaceBefore;
 
-  RacesPlayer(Player handle) {
+  RacesPlayer(Player handle, RacesPlayerData data) {
     this.handle = handle;
-    uuid = handle.getUniqueId();
-    powers = new ArrayList<>();
+    races = new HashMap<>();
+    powers = new HashMap<>();
+    hasRaceBefore = data.hasRaceBefore();
   }
 
   public Player getHandle() {
     return handle;
   }
 
-  public UUID getUuid() {
-    return uuid;
+  public Map<RaceGroup, Race> getRaces() {
+    return Collections.unmodifiableMap(races);
   }
 
-  public Collection<PowerInstance> getPowers() {
-    return Collections.unmodifiableCollection(powers);
+  public void setRace(RaceGroup group, Race race) {
+    races.put(group, race);
+    race.powers().forEach(power -> grantPower(new PowerInstance(power, handle), power.key()));
   }
 
-  public void grantPower(PowerInstance power) {
-    powers.add(power);
+  public Map<PowerInstance, List<NamespacedKey>> getPowers() {
+    return Collections.unmodifiableMap(powers);
   }
 
-  public void revokePower(PowerInstance power) {
+  public void grantPower(PowerInstance power, NamespacedKey source) {
+    powers.put(power, Collections.singletonList(source));
+  }
+
+  public void revokePower(PowerInstance power, NamespacedKey source) {
     powers.remove(power);
   }
 
+  public boolean hasRaceBefore() {
+    return hasRaceBefore;
+  }
+
   public void tick() {
-    powers.forEach(PowerInstance::tick);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-
-    RacesPlayer that = (RacesPlayer) o;
-    return uuid.equals(that.uuid);
-  }
-
-  @Override
-  public int hashCode() {
-    return uuid.hashCode();
-  }
-
-  @Override
-  public String toString() {
-    return "RacesPlayer{" + "handle=" + handle + '}';
+    powers.keySet().forEach(PowerInstance::tick);
   }
 }

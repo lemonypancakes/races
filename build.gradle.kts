@@ -37,6 +37,7 @@ dependencies {
     compileOnly("org.jetbrains:annotations:26.0.2")
     implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
     implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.5")
+    implementation("org.bstats:bstats-bukkit:3.1.0")
 }
 
 java {
@@ -93,5 +94,6 @@ tasks {
 
         relocate("me.lemonypancakes.resourcemanagerhelper", "me.lemonypancakes.races.libs.resourcemanagerhelper")
         relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
+        relocate("org.bstats", "me.lemonypancakes.races.metrics")
     }
 }

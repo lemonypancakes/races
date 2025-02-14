@@ -23,5 +23,5 @@ public abstract class Menu implements InventoryHolder {
 
   public void onClick(InventoryClickEvent event) {}
 
-    public void onClose(InventoryCloseEvent event) {}
+  public void onClose(InventoryCloseEvent event) {}
 }

@@ -19,7 +19,6 @@ public class PDCStorage implements Storage {
 
     if (data == null) return null;
     JsonObject json = GSON.fromJson(data, JsonObject.class);
-
     return null;
   }
 

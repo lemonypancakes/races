@@ -17,7 +17,7 @@ val finalVersion = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
 val buildNumber = System.getenv("BUILD_NUMBER") ?: ""
 val isJenkins = buildNumber.isNotEmpty()
 
-val mcVersion: String by project
+val minecraftVersion: String by project
 
 group = "me.lemonypancakes.${rootProject.name}"
 version = if (isJenkins && isSnapshot) "$finalVersion-b$buildNumber" else finalVersion

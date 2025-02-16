@@ -1,9 +1,8 @@
 package me.lemonypancakes.races.serialization;
 
-import me.lemonypancakes.races.util.Unchecked;
-
 import java.util.HashMap;
 import java.util.Map;
+import me.lemonypancakes.races.util.Unchecked;
 
 public final class DataContainer {
   private final Map<String, Object> data;

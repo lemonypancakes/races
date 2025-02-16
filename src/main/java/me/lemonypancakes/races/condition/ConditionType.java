@@ -1,5 +1,6 @@
 package me.lemonypancakes.races.condition;
 
+import java.util.function.BiPredicate;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.registry.Registry;
 import me.lemonypancakes.races.serialization.DataContainer;
@@ -7,8 +8,6 @@ import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.util.TypedNamespacedKey;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
-
-import java.util.function.BiPredicate;
 
 public record ConditionType<T>(Class<T> typeClass, NamespacedKey key, ConditionFactory<T> factory) {
   public static <T> ConditionType<T> register(ConditionType<T> type) {

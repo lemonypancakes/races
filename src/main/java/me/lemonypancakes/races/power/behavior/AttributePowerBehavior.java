@@ -1,12 +1,11 @@
 package me.lemonypancakes.races.power.behavior;
 
+import java.util.List;
 import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataType;
 import me.lemonypancakes.races.util.AttributedAttributeModifier;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
-
-import java.util.List;
 
 public final class AttributePowerBehavior extends PowerBehavior<AttributePowerBehavior> {
   public static final PowerBehaviorFactory<AttributePowerBehavior> FACTORY;

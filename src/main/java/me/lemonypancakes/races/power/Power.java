@@ -1,12 +1,13 @@
 package me.lemonypancakes.races.power;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public record Power(
     @NotNull NamespacedKey key,

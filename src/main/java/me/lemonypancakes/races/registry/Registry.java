@@ -1,14 +1,13 @@
 package me.lemonypancakes.races.registry;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import me.lemonypancakes.races.action.ActionType;
 import me.lemonypancakes.races.condition.ConditionType;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorType;
 import me.lemonypancakes.races.storage.StorageType;
 import me.lemonypancakes.races.util.TypedNamespacedKey;
 import org.bukkit.NamespacedKey;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class Registry<K, V> {
   public static final Registry<String, StorageType> STORAGE_TYPE;

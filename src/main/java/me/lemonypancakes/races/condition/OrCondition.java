@@ -1,10 +1,9 @@
 package me.lemonypancakes.races.condition;
 
-import me.lemonypancakes.races.serialization.DataSchema;
-import me.lemonypancakes.races.serialization.DataType;
-
 import java.util.Collections;
 import java.util.List;
+import me.lemonypancakes.races.serialization.DataSchema;
+import me.lemonypancakes.races.serialization.DataType;
 
 public final class OrCondition<T> extends Condition<T> {
   private final List<Condition<T>> conditions;

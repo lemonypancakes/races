@@ -1,10 +1,9 @@
 package me.lemonypancakes.races;
 
+import java.util.UUID;
 import me.lemonypancakes.races.player.Player;
 import me.lemonypancakes.races.plugin.Plugin;
 import org.bukkit.NamespacedKey;
-
-import java.util.UUID;
 
 public final class Races {
   private static Plugin plugin;

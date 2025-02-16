@@ -1,8 +1,9 @@
 name: Races
 version: '${version}'
-api-version: '1.21'
-bootsrapper: me.lemonypancakes.races.bootstrap.Bootstrap
+authors: [ LemonyPancakes ]
+
+bootstrapper: me.lemonypancakes.races.bootstrap.Bootstrap
 main: me.lemonypancakes.races.plugin.PaperPlugin
-authors:
-  - LemonyPancakes
+
 folia-supported: true
+api-version: '1.21'

@@ -1,11 +1,10 @@
 package me.lemonypancakes.races.race;
 
-import org.bukkit.NamespacedKey;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.bukkit.NamespacedKey;
 
 public final class RaceRepository {
   private final Map<NamespacedKey, Race> races;

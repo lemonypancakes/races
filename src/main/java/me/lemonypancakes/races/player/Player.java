@@ -1,14 +1,13 @@
 package me.lemonypancakes.races.player;
 
-import me.lemonypancakes.races.power.PowerInstance;
-import me.lemonypancakes.races.race.Race;
-import me.lemonypancakes.races.race.RaceGroup;
-import org.bukkit.NamespacedKey;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import me.lemonypancakes.races.power.PowerInstance;
+import me.lemonypancakes.races.race.Race;
+import me.lemonypancakes.races.race.RaceGroup;
+import org.bukkit.NamespacedKey;
 
 public final class Player {
   private final org.bukkit.entity.Player handle;

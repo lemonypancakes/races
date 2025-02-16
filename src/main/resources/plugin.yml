@@ -1,7 +1,0 @@
-name: Races
-version: '${version}'
-api-version: '1.21'
-main: me.lemonypancakes.races.plugin.PaperPlugin
-authors:
-  - LemonyPancakes
-folia-supported: true

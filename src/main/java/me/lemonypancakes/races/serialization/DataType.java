@@ -74,14 +74,14 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         Unchecked.castClass(Action.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          JsonObject json = jsonElement.getAsJsonObject();
-          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
+          JsonObject object = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(object.get("type").getAsString());
 
           if (key == null) return null;
           ActionType<T> type = ActionType.get(typeClass, key);
 
           if (type == null) return null;
-          return type.factory().create(json);
+          return type.factory().create(object);
         });
   }
 
@@ -90,14 +90,14 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         Unchecked.castClass(Condition.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          JsonObject json = jsonElement.getAsJsonObject();
-          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
+          JsonObject object = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(object.get("type").getAsString());
 
           if (key == null) return null;
           ConditionType<T> type = ConditionType.get(typeClass, key);
 
           if (type == null) return null;
-          return type.factory().create(json);
+          return type.factory().create(object);
         });
   }
 
@@ -106,14 +106,14 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         Unchecked.castClass(PowerBehavior.class),
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          JsonObject json = jsonElement.getAsJsonObject();
-          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
+          JsonObject object = jsonElement.getAsJsonObject();
+          NamespacedKey key = NamespacedKey.fromString(object.get("type").getAsString());
 
           if (key == null) return null;
           PowerBehaviorType<?> type = PowerBehaviorType.get(key);
 
           if (type == null) return null;
-          return type.factory().create(json);
+          return type.factory().create(object);
         });
   }
 
@@ -122,10 +122,10 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
         AttributedAttributeModifier.class,
         jsonElement -> {
           if (!jsonElement.isJsonObject()) return null;
-          JsonObject json = jsonElement.getAsJsonObject();
+          JsonObject object = jsonElement.getAsJsonObject();
 
-          if (!json.has("attribute")) return null;
-          NamespacedKey key = NamespacedKey.fromString(json.get("type").getAsString());
+          if (!object.has("attribute")) return null;
+          NamespacedKey key = NamespacedKey.fromString(object.get("type").getAsString());
 
           if (key == null) return null;
           Attribute attribute = Registry.ATTRIBUTE.get(key);
@@ -133,16 +133,16 @@ public record DataType<T>(Class<T> dataClass, Function<JsonElement, T> reader) {
           if (attribute == null) return null;
           key = new NamespacedKey("races", "attribute");
 
-          if (json.has("key")) key = NamespacedKey.fromString(json.get("key").getAsString());
+          if (object.has("key")) key = NamespacedKey.fromString(object.get("key").getAsString());
           if (key == null) return null;
 
           return new AttributedAttributeModifier(
               attribute,
               new AttributeModifier(
                   key,
-                  json.has("amount") ? json.get("amount").getAsDouble() : 0,
-                  json.has("operation")
-                      ? AttributeModifier.Operation.valueOf(json.get("operation").getAsString())
+                  object.has("amount") ? object.get("amount").getAsDouble() : 0,
+                  object.has("operation")
+                      ? AttributeModifier.Operation.valueOf(object.get("operation").getAsString())
                       : AttributeModifier.Operation.ADD_NUMBER));
         });
   }

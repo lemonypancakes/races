@@ -1,8 +1,7 @@
-package me.lemonypancakes.races.plugin;
+package me.lemonypancakes.races;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
-import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.menu.RaceMenu;
 import me.lemonypancakes.races.player.PlayerManager;
 import me.lemonypancakes.races.power.PowerRepository;
@@ -16,7 +15,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public abstract sealed class Plugin extends JavaPlugin permits FoliaPlugin, PaperPlugin {
+public final class RacesPlugin extends JavaPlugin {
   private PlayerManager playerManager;
   private PowerRepository powerRepository;
   private RaceRepository raceRepository;
@@ -34,12 +33,11 @@ public abstract sealed class Plugin extends JavaPlugin permits FoliaPlugin, Pape
   }
 
   @Override
-  public final void onLoad() {
+  public void onLoad() {
     Races.setPlugin(this);
     playerManager = new PlayerManager(this);
     powerRepository = new PowerRepository();
-    raceRepository = new RaceRepository();
-    powerRepository.reload();
+    raceRepository = new RaceRepository().reload();
     CommandAPI.onLoad(
         new CommandAPIBukkitConfig(this)
             .setNamespace("races")
@@ -48,7 +46,7 @@ public abstract sealed class Plugin extends JavaPlugin permits FoliaPlugin, Pape
   }
 
   @Override
-  public final void onEnable() {
+  public void onEnable() {
     CommandAPI.onEnable();
     new Metrics(this, 24704);
     registerListener(playerManager);
@@ -78,7 +76,7 @@ public abstract sealed class Plugin extends JavaPlugin permits FoliaPlugin, Pape
   }
 
   @Override
-  public final void onDisable() {
+  public void onDisable() {
     CommandAPI.onDisable();
   }
 
@@ -86,11 +84,11 @@ public abstract sealed class Plugin extends JavaPlugin permits FoliaPlugin, Pape
     Bukkit.getPluginManager().registerEvents(listener, this);
   }
 
-  protected void setupScheduler() {
+  private void setupScheduler() {
     Bukkit.getScheduler().runTaskTimer(this, this::tick, 0, 1);
   }
 
-  protected final void tick() {
+  private void tick() {
     playerManager.tick();
   }
 }

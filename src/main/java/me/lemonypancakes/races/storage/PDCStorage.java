@@ -18,7 +18,7 @@ public class PDCStorage implements Storage {
     String data = view.get(Races.namespace("data"), PersistentDataType.STRING);
 
     if (data == null) return null;
-    JsonObject json = GSON.fromJson(data, JsonObject.class);
+    JsonObject object = GSON.fromJson(data, JsonObject.class);
     return null;
   }
 

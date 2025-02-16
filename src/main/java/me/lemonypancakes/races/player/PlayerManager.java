@@ -1,7 +1,7 @@
 package me.lemonypancakes.races.player;
 
 import java.util.*;
-import me.lemonypancakes.races.plugin.Plugin;
+import me.lemonypancakes.races.RacesPlugin;
 import me.lemonypancakes.races.power.PowerInstance;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,15 +10,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 
 public final class PlayerManager implements Listener {
-  private final Plugin plugin;
+  private final RacesPlugin plugin;
   private final Map<UUID, Player> players;
 
-  public PlayerManager(Plugin plugin) {
+  public PlayerManager(RacesPlugin plugin) {
     this.plugin = plugin;
     players = new HashMap<>();
   }
 
-  public Plugin getPlugin() {
+  public RacesPlugin getPlugin() {
     return plugin;
   }
 
@@ -59,7 +59,7 @@ public final class PlayerManager implements Listener {
   private void onPluginDisable(PluginDisableEvent event) {
     org.bukkit.plugin.Plugin plugin = event.getPlugin();
 
-    if (!(plugin instanceof Plugin)) return;
+    if (!(plugin instanceof RacesPlugin)) return;
     players.forEach(((uuid, player) -> player.getPowers().keySet().forEach(PowerInstance::remove)));
     players.clear();
   }

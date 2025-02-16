@@ -31,10 +31,12 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+    paperweight {
+        foliaDevBundle("${minecraftVersion}-R0.1-SNAPSHOT")
+    }
+
     compileOnly("org.jetbrains:annotations:26.0.2")
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.7.0")
-    implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.5")
     implementation("org.bstats:bstats-bukkit:3.1.0")
 }
 
@@ -83,7 +85,6 @@ tasks {
     withType<ShadowJar> {
         archiveClassifier.set("")
 
-        relocate("me.lemonypancakes.resourcemanagerhelper", "me.lemonypancakes.races.libs.resourcemanagerhelper")
         relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
         relocate("org.bstats", "me.lemonypancakes.races.metrics")
     }

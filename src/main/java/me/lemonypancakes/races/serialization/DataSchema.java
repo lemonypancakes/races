@@ -38,12 +38,12 @@ public class DataSchema {
     return entries.get(key);
   }
 
-  public DataContainer read(JsonObject json) {
+  public DataContainer read(JsonObject object) {
     DataContainer container = new DataContainer();
 
     entries.forEach(
         (key, entry) -> {
-          if (json.has(key)) {
+          if (object.has(key)) {
             container.set(key, entry.getType().read(container.get(key)));
           } else if (entry.hasDefault()) {
             container.set(key, entry.getDefault(container));

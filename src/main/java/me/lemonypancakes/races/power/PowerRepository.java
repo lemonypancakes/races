@@ -1,24 +1,23 @@
 package me.lemonypancakes.races.power;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorType;
-import me.lemonypancakes.resourcemanagerhelper.Resource;
-import me.lemonypancakes.resourcemanagerhelper.ResourceLocation;
-import me.lemonypancakes.resourcemanagerhelper.ResourceManagerHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.packs.resources.Resource;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.inventory.ItemStack;
 
 public final class PowerRepository {
@@ -37,8 +36,12 @@ public final class PowerRepository {
   }
 
   public PowerRepository reload() {
+    CraftServer craftServer = (CraftServer) Bukkit.getServer();
+    DedicatedServer dedicatedServer = craftServer.getServer();
     Map<ResourceLocation, Resource> resources =
-        ResourceManagerHelper.listResources("powers", s -> s.toString().endsWith(".json"));
+        dedicatedServer
+            .getResourceManager()
+            .listResources("powers", s -> s.toString().endsWith(".json"));
     Gson gson = new Gson();
 
     resources.forEach(
@@ -46,44 +49,56 @@ public final class PowerRepository {
           try {
             InputStream stream = resource.open();
             Reader reader = new InputStreamReader(stream);
-            JsonObject json = gson.fromJson(reader, JsonObject.class);
+            JsonObject object = gson.fromJson(reader, JsonObject.class);
 
-            if (json == null) return;
+            if (object == null) return;
             String name = "";
             String displayName = "";
             String description = "";
             ItemStack icon = new ItemStack(Material.STONE);
-            PowerBehavior<?> behavior = null;
+            List<PowerBehavior<?>> behaviors = new ArrayList<>();
 
-            if (json.has("name")) {
-              name = json.get("name").getAsString();
+            if (object.has("name")) {
+              name = object.get("name").getAsString();
             }
-            if (json.has("display_name")) {
-              displayName = json.get("display_name").getAsString();
-            }
-            if (json.has("description")) {
-              description = json.get("description").getAsString();
-            }
-            if (json.has("icon")) {
-              icon = Bukkit.getItemFactory().createItemStack(json.get("icon").getAsString());
-            }
-            if (json.has("behavior")) {
-              if (!json.get("behavior").isJsonObject()) return;
-              JsonObject behaviorJson = json.getAsJsonObject("behavior");
 
-              if (!behaviorJson.has("type")) return;
-              String s = behaviorJson.get("type").getAsString();
-
-              if (s == null) return;
-              NamespacedKey key = NamespacedKey.fromString(s);
-
-              if (key == null) return;
-              PowerBehaviorType<?> type = PowerBehaviorType.get(key);
-
-              if (type == null) return;
-              behavior = type.factory().create(behaviorJson);
-              new Power(Races.namespace(""), name, displayName, description, icon, null);
+            if (object.has("display_name")) {
+              displayName = object.get("display_name").getAsString();
             }
+
+            if (object.has("description")) {
+              description = object.get("description").getAsString();
+            }
+
+            if (object.has("icon")) {
+              icon = Bukkit.getItemFactory().createItemStack(object.get("icon").getAsString());
+            }
+
+            if (object.has("behaviors")) {
+              if (!object.get("behaviors").isJsonArray()) return;
+              JsonArray behaviorsArray = object.getAsJsonArray("behaviors");
+
+              behaviorsArray
+                  .asList()
+                  .forEach(
+                      element -> {
+                        if (!element.isJsonObject()) return;
+                        JsonObject behaviorObject = element.getAsJsonObject();
+                        String behaviorType = behaviorObject.get("type").getAsString();
+                        NamespacedKey key = NamespacedKey.fromString(behaviorType);
+
+                        if (key == null) return;
+                        PowerBehaviorType<?> type = PowerBehaviorType.get(key);
+
+                        if (type == null) return;
+                        PowerBehavior<?> behavior = type.factory().create(behaviorObject);
+                        behaviors.add(behavior);
+                      });
+            }
+            powers.put(
+                null,
+                new Power(
+                    Races.namespace("test"), name, displayName, description, icon, behaviors));
           } catch (IOException e) {
             throw new RuntimeException(e);
           }

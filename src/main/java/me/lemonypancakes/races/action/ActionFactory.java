@@ -10,7 +10,7 @@ public record ActionFactory<T>(DataSchema schema, Function<DataContainer, Action
     return constructor.apply(container);
   }
 
-  public Action<T> create(JsonObject json) {
-    return create(schema.read(json));
+  public Action<T> create(JsonObject object) {
+    return create(schema.read(object));
   }
 }

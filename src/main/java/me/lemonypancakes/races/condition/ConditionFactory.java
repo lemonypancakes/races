@@ -11,7 +11,7 @@ public record ConditionFactory<T>(
     return constructor.apply(container);
   }
 
-  public Condition<T> create(JsonObject json) {
-    return create(schema.read(json));
+  public Condition<T> create(JsonObject object) {
+    return create(schema.read(object));
   }
 }

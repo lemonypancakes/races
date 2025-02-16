@@ -11,7 +11,7 @@ public record PowerBehaviorFactory<T extends PowerBehavior<T>>(
     return constructor.apply(container);
   }
 
-  public PowerBehavior<T> create(JsonObject json) {
-    return create(schema.read(json));
+  public PowerBehavior<T> create(JsonObject object) {
+    return create(schema.read(object));
   }
 }

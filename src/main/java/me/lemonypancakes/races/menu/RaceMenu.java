@@ -3,12 +3,11 @@ package me.lemonypancakes.races.menu;
 import java.util.ArrayList;
 import java.util.List;
 import me.lemonypancakes.races.Races;
-import me.lemonypancakes.races.RacesPlayer;
+import me.lemonypancakes.races.player.Player;
 import me.lemonypancakes.races.race.Race;
 import me.lemonypancakes.races.race.RaceGroup;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -35,8 +34,8 @@ public final class RaceMenu extends PaginatedMenu {
     event.setCancelled(true);
     HumanEntity entity = event.getWhoClicked();
 
-    if (!(entity instanceof Player player)) return;
-    RacesPlayer racesPlayer = Races.getPlayer(player);
+    if (!(entity instanceof org.bukkit.entity.Player player)) return;
+    Player racesPlayer = Races.getPlayer(player);
 
     if (racesPlayer == null) {}
   }

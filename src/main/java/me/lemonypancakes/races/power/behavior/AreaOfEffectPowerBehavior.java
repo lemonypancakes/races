@@ -14,9 +14,9 @@ public final class AreaOfEffectPowerBehavior extends PowerBehavior<AreaOfEffectP
     }
 
     @Override
-    public void add() {}
+    protected void onAdd() {}
 
     @Override
-    public void remove() {}
+    protected void onRemove() {}
   }
 }

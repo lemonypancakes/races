@@ -1,6 +1,8 @@
 package me.lemonypancakes.races.power;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorInstance;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -8,13 +10,16 @@ import org.jetbrains.annotations.NotNull;
 public final class PowerInstance {
   private final Power power;
   private final Player player;
-  private final PowerBehaviorInstance<?> behavior;
+  private final List<PowerBehaviorInstance<?>> behaviors;
   private State state;
 
   public PowerInstance(@NotNull Power power, @NotNull Player player) {
     this.power = Objects.requireNonNull(power, "power cannot be null");
     this.player = Objects.requireNonNull(player, "player cannot be null");
-    behavior = power.behavior().apply(player);
+    behaviors =
+        power.behaviors().stream()
+            .map(behavior -> behavior.apply(player))
+            .collect(Collectors.toList());
   }
 
   public Power getPower() {
@@ -36,34 +41,34 @@ public final class PowerInstance {
   public boolean grant() {
     if (isActive()) return false;
     state = State.GRANTED;
-    behavior.grant();
+    behaviors.forEach(PowerBehaviorInstance::grant);
     return true;
   }
 
   public boolean revoke() {
     if (!isActive()) return false;
     state = State.REVOKED;
-    behavior.revoke();
+    behaviors.forEach(PowerBehaviorInstance::revoke);
     return true;
   }
 
   public boolean add() {
     if (isActive()) return false;
     state = State.ADDED;
-    behavior.add();
+    behaviors.forEach(PowerBehaviorInstance::add);
     return true;
   }
 
   public boolean remove() {
     if (!isActive()) return false;
     state = State.REMOVED;
-    behavior.remove();
+    behaviors.forEach(PowerBehaviorInstance::remove);
     return true;
   }
 
   public boolean tick() {
     if (!isActive()) return false;
-    behavior.tick();
+    behaviors.forEach(PowerBehaviorInstance::tick);
     return true;
   }
 

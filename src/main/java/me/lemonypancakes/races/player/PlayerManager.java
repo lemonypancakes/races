@@ -1,56 +1,55 @@
-package me.lemonypancakes.races;
+package me.lemonypancakes.races.player;
 
 import java.util.*;
+import me.lemonypancakes.races.plugin.Plugin;
 import me.lemonypancakes.races.power.PowerInstance;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.plugin.Plugin;
 
-public final class RacesPlayerManager implements Listener {
-  private final RacesPlugin plugin;
-  private final Map<UUID, RacesPlayer> players;
+public final class PlayerManager implements Listener {
+  private final Plugin plugin;
+  private final Map<UUID, Player> players;
 
-  public RacesPlayerManager(RacesPlugin plugin) {
+  public PlayerManager(Plugin plugin) {
     this.plugin = plugin;
     players = new HashMap<>();
   }
 
-  public RacesPlugin getPlugin() {
+  public Plugin getPlugin() {
     return plugin;
   }
 
-  public Collection<RacesPlayer> getPlayers() {
+  public Collection<Player> getPlayers() {
     return Collections.unmodifiableCollection(players.values());
   }
 
-  public RacesPlayer getPlayer(UUID uuid) {
+  public Player getPlayer(UUID uuid) {
     return players.get(uuid);
   }
 
-  public RacesPlayer getPlayer(Player player) {
+  public Player getPlayer(org.bukkit.entity.Player player) {
     return getPlayer(player.getUniqueId());
   }
 
   @EventHandler
   private void onPlayerJoin(PlayerJoinEvent event) {
-    Player player = event.getPlayer();
+    org.bukkit.entity.Player player = event.getPlayer();
     UUID uuid = player.getUniqueId();
-    RacesPlayer racesPlayer = new RacesPlayer(player, null);
+    Player racesPlayer = new Player(player, null);
 
     players.put(uuid, racesPlayer);
   }
 
   @EventHandler
   private void onPlayerQuit(PlayerQuitEvent event) {
-    Player player = event.getPlayer();
+    org.bukkit.entity.Player player = event.getPlayer();
     UUID uuid = player.getUniqueId();
 
     if (!players.containsKey(uuid)) return;
-    RacesPlayer racesPlayer = players.get(uuid);
+    Player racesPlayer = players.get(uuid);
 
     racesPlayer.getPowers().keySet().forEach(PowerInstance::remove);
     players.remove(uuid);
@@ -58,15 +57,14 @@ public final class RacesPlayerManager implements Listener {
 
   @EventHandler
   private void onPluginDisable(PluginDisableEvent event) {
-    Plugin plugin = event.getPlugin();
+    org.bukkit.plugin.Plugin plugin = event.getPlugin();
 
-    if (!(plugin instanceof RacesPlugin)) return;
-    players.forEach(
-        ((uuid, racesPlayer) -> racesPlayer.getPowers().keySet().forEach(PowerInstance::remove)));
+    if (!(plugin instanceof Plugin)) return;
+    players.forEach(((uuid, player) -> player.getPowers().keySet().forEach(PowerInstance::remove)));
     players.clear();
   }
 
   public void tick() {
-    players.values().forEach(RacesPlayer::tick);
+    players.values().forEach(Player::tick);
   }
 }

@@ -1,12 +1,12 @@
 package me.lemonypancakes.races.storage;
 
 import java.util.UUID;
-import me.lemonypancakes.races.RacesPlayerData;
+import me.lemonypancakes.races.player.PlayerData;
 
 public interface Storage {
-  RacesPlayerData getPlayerData(UUID uuid);
+  PlayerData getPlayerData(UUID uuid);
 
-  void savePlayerData(RacesPlayerData data);
+  void savePlayerData(PlayerData data);
 
   void removePlayerData(UUID uuid);
 }

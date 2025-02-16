@@ -1,5 +1,6 @@
 package me.lemonypancakes.races.power.behavior;
 
+import java.util.List;
 import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataType;
 import me.lemonypancakes.races.util.AttributedAttributeModifier;
@@ -12,18 +13,19 @@ public final class AttributePowerBehavior extends PowerBehavior<AttributePowerBe
   static {
     FACTORY =
         new PowerBehaviorFactory<>(
-            new DataSchema().add("modifier", DataType.ATTRIBUTED_ATTRIBUTE_MODIFIER),
-            container -> new AttributePowerBehavior(container.get("modifier")));
+            new DataSchema()
+                .add("modifiers", DataType.listOf(DataType.ATTRIBUTED_ATTRIBUTE_MODIFIER)),
+            container -> new AttributePowerBehavior(container.get("modifiers")));
   }
 
-  private final AttributedAttributeModifier modifier;
+  private final List<AttributedAttributeModifier> modifiers;
 
-  public AttributePowerBehavior(AttributedAttributeModifier modifier) {
-    this.modifier = modifier;
+  public AttributePowerBehavior(List<AttributedAttributeModifier> modifiers) {
+    this.modifiers = modifiers;
   }
 
-  public AttributedAttributeModifier getModifier() {
-    return modifier;
+  public List<AttributedAttributeModifier> modifiers() {
+    return modifiers;
   }
 
   @Override
@@ -37,19 +39,25 @@ public final class AttributePowerBehavior extends PowerBehavior<AttributePowerBe
     }
 
     @Override
-    public void add() {
-      AttributeInstance attribute = player.getAttribute(behavior.modifier.attribute());
+    protected void onAdd() {
+      behavior.modifiers.forEach(
+          modifier -> {
+            AttributeInstance attribute = player.getAttribute(modifier.attribute());
 
-      if (attribute == null) return;
-      attribute.addModifier(behavior.modifier.modifier());
+            if (attribute == null) return;
+            attribute.addModifier(modifier.modifier());
+          });
     }
 
     @Override
-    public void remove() {
-      AttributeInstance attribute = player.getAttribute(behavior.modifier.attribute());
+    protected void onRemove() {
+      behavior.modifiers.forEach(
+          modifier -> {
+            AttributeInstance attribute = player.getAttribute(modifier.attribute());
 
-      if (attribute == null) return;
-      attribute.removeModifier(behavior.modifier.modifier());
+            if (attribute == null) return;
+            attribute.removeModifier(modifier.modifier());
+          });
     }
   }
 }

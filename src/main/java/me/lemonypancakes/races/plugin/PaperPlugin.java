@@ -1,3 +1,3 @@
 package me.lemonypancakes.races.plugin;
 
-public class PaperPlugin {}
+public final class PaperPlugin extends Plugin {}

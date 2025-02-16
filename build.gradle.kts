@@ -1,11 +1,9 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import io.github.patrick.gradle.remapper.RemapTask
 
 plugins {
     id("java")
     id("maven-publish")
     id("com.gradleup.shadow") version "8.3.5"
-    id("io.github.patrick.remapper") version "1.4.2"
     id("com.diffplug.spotless") version "7.0.2"
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
 }
@@ -35,7 +33,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:26.0.2")
-    implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
+    implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.7.0")
     implementation("me.lemonypancakes.resourcemanagerhelper:resourcemanagerhelper:1.4.5")
     implementation("org.bstats:bstats-bukkit:3.1.0")
 }
@@ -82,18 +80,15 @@ tasks {
         }
     }
 
-    withType<RemapTask> {
-        inputTask.set(jar)
-        version.set(mcVersion)
-    }
-
     withType<ShadowJar> {
-        dependsOn(withType<RemapTask>())
-
         archiveClassifier.set("")
 
         relocate("me.lemonypancakes.resourcemanagerhelper", "me.lemonypancakes.races.libs.resourcemanagerhelper")
         relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
         relocate("org.bstats", "me.lemonypancakes.races.metrics")
+    }
+
+    named("build") {
+        dependsOn(withType<ShadowJar>())
     }
 }

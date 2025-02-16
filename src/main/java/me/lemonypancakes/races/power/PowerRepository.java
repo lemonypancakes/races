@@ -82,7 +82,7 @@ public final class PowerRepository {
 
               if (type == null) return;
               behavior = type.factory().create(behaviorJson);
-              new Power(Races.namespace(""), name, displayName, description, icon, behavior);
+              new Power(Races.namespace(""), name, displayName, description, icon, null);
             }
           } catch (IOException e) {
             throw new RuntimeException(e);

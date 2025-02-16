@@ -1,3 +1,10 @@
 package me.lemonypancakes.races.plugin;
 
-public class FoliaPlugin {}
+import org.bukkit.Bukkit;
+
+public final class FoliaPlugin extends Plugin {
+  @Override
+  protected void setupScheduler() {
+    Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> this.tick(), 0, 1);
+  }
+}

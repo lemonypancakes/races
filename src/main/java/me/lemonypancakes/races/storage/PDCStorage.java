@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import java.util.UUID;
 import me.lemonypancakes.races.Races;
-import me.lemonypancakes.races.RacesPlayerData;
+import me.lemonypancakes.races.player.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -13,7 +13,7 @@ public class PDCStorage implements Storage {
   private static final Gson GSON = new Gson();
 
   @Override
-  public RacesPlayerData getPlayerData(UUID uuid) {
+  public PlayerData getPlayerData(UUID uuid) {
     PersistentDataContainerView view = Bukkit.getOfflinePlayer(uuid).getPersistentDataContainer();
     String data = view.get(Races.namespace("data"), PersistentDataType.STRING);
 
@@ -23,7 +23,7 @@ public class PDCStorage implements Storage {
   }
 
   @Override
-  public void savePlayerData(RacesPlayerData data) {}
+  public void savePlayerData(PlayerData data) {}
 
   @Override
   public void removePlayerData(UUID uuid) {}

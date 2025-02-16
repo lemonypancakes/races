@@ -57,13 +57,13 @@ public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBeha
     }
 
     @Override
-    public void add() {}
+    protected void onAdd() {}
 
     @Override
-    public void remove() {}
+    protected void onRemove() {}
 
     @Override
-    public void tick() {
+    protected void onTick() {
       if (player.getTicksLived() % behavior.interval != 0) return;
       if (behavior.condition == null || !behavior.condition.test(player)) return;
       if (behavior.action != null) behavior.action.accept(player);

@@ -1,6 +1,7 @@
 package me.lemonypancakes.races.serialization;
 
 import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;

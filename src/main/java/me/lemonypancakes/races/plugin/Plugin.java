@@ -39,6 +39,7 @@ public abstract sealed class Plugin extends JavaPlugin permits FoliaPlugin, Pape
     playerManager = new PlayerManager(this);
     powerRepository = new PowerRepository();
     raceRepository = new RaceRepository();
+    powerRepository.reload();
     CommandAPI.onLoad(
         new CommandAPIBukkitConfig(this)
             .setNamespace("races")

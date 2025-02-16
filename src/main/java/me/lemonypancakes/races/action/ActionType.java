@@ -1,6 +1,5 @@
 package me.lemonypancakes.races.action;
 
-import java.util.function.BiConsumer;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.registry.Registry;
 import me.lemonypancakes.races.serialization.DataContainer;
@@ -8,6 +7,8 @@ import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.util.TypedNamespacedKey;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
+
+import java.util.function.BiConsumer;
 
 public record ActionType<T>(Class<T> typeClass, NamespacedKey key, ActionFactory<T> factory) {
   public static <T> ActionType<T> register(ActionType<T> type) {

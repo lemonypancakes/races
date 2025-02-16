@@ -1,7 +1,8 @@
 package me.lemonypancakes.races.storage;
 
-import java.util.UUID;
 import me.lemonypancakes.races.player.PlayerData;
+
+import java.util.UUID;
 
 public class MySQLStorage implements Storage {
   @Override

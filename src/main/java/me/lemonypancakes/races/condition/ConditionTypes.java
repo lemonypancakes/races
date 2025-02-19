@@ -11,7 +11,6 @@ import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
 
 public final class ConditionTypes {
-
   public static <T> ConditionType<T> register(ConditionType<T> type) {
     Objects.requireNonNull(type, "type cannot be null");
     return Unchecked.cast(

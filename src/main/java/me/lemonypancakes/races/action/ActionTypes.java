@@ -11,7 +11,6 @@ import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
 
 public final class ActionTypes {
-
   public static <T> ActionType<T> register(ActionType<T> type) {
     Objects.requireNonNull(type, "type cannot be null");
     return Unchecked.cast(

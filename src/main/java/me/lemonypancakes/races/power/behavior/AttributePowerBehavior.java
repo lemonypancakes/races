@@ -2,7 +2,6 @@ package me.lemonypancakes.races.power.behavior;
 
 import java.util.List;
 import me.lemonypancakes.races.serialization.DataSchema;
-import me.lemonypancakes.races.serialization.DataType;
 import me.lemonypancakes.races.serialization.DataTypes;
 import me.lemonypancakes.races.util.AttributedAttributeModifier;
 import org.bukkit.attribute.AttributeInstance;

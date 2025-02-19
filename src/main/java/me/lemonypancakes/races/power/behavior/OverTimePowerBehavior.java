@@ -3,7 +3,6 @@ package me.lemonypancakes.races.power.behavior;
 import me.lemonypancakes.races.action.Action;
 import me.lemonypancakes.races.condition.Condition;
 import me.lemonypancakes.races.serialization.DataSchema;
-import me.lemonypancakes.races.serialization.DataType;
 import me.lemonypancakes.races.serialization.DataTypes;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

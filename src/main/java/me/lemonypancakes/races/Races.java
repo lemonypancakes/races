@@ -22,12 +22,12 @@ public final class Races {
     Races.plugin = plugin;
   }
 
-  public static User getPlayer(org.bukkit.entity.Player player) {
-    return plugin.getUserManager().getPlayer(player);
+  public static User getUser(org.bukkit.entity.Player player) {
+    return plugin.getUserManager().getUser(player);
   }
 
-  public static User getPlayer(UUID uuid) {
-    return plugin.getUserManager().getPlayer(uuid);
+  public static User getUser(UUID uuid) {
+    return plugin.getUserManager().getUser(uuid);
   }
 
   public static NamespacedKey namespace(String key) {

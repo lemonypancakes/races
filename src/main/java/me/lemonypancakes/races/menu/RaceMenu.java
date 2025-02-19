@@ -8,6 +8,7 @@ import me.lemonypancakes.races.race.RaceGroup;
 import me.lemonypancakes.races.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -34,9 +35,9 @@ public final class RaceMenu extends PaginatedMenu {
     event.setCancelled(true);
     HumanEntity entity = event.getWhoClicked();
 
-    if (!(entity instanceof org.bukkit.entity.Player player)) return;
-    User racesUser = Races.getPlayer(player);
+    if (!(entity instanceof Player player)) return;
+    User user = Races.getUser(player);
 
-    if (racesUser == null) {}
+    if (user == null) {}
   }
 }

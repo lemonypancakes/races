@@ -1,11 +1,12 @@
-package me.lemonypancakes.races;
+package me.lemonypancakes.races.plugin;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.menu.RaceMenu;
-import me.lemonypancakes.races.player.PlayerManager;
 import me.lemonypancakes.races.power.PowerRepository;
 import me.lemonypancakes.races.race.RaceRepository;
+import me.lemonypancakes.races.user.UserManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -16,12 +17,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RacesPlugin extends JavaPlugin {
-  private PlayerManager playerManager;
+  private UserManager userManager;
   private PowerRepository powerRepository;
   private RaceRepository raceRepository;
 
-  public PlayerManager getPlayerManager() {
-    return playerManager;
+  public UserManager getUserManager() {
+    return userManager;
   }
 
   public PowerRepository getPowerRepository() {
@@ -35,8 +36,8 @@ public final class RacesPlugin extends JavaPlugin {
   @Override
   public void onLoad() {
     Races.setPlugin(this);
-    playerManager = new PlayerManager(this);
-    powerRepository = new PowerRepository();
+    userManager = new UserManager(this);
+    powerRepository = new PowerRepository().reload();
     raceRepository = new RaceRepository().reload();
     CommandAPI.onLoad(
         new CommandAPIBukkitConfig(this)
@@ -49,7 +50,7 @@ public final class RacesPlugin extends JavaPlugin {
   public void onEnable() {
     CommandAPI.onEnable();
     new Metrics(this, 24704);
-    registerListener(playerManager);
+    registerListener(userManager);
     setupScheduler();
     Bukkit.getPluginManager()
         .registerEvents(
@@ -89,6 +90,6 @@ public final class RacesPlugin extends JavaPlugin {
   }
 
   private void tick() {
-    playerManager.tick();
+    userManager.tick();
   }
 }

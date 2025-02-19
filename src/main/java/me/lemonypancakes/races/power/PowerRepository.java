@@ -8,9 +8,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
-import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorType;
+import me.lemonypancakes.races.power.behavior.PowerBehaviorTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.packs.resources.Resource;
@@ -46,6 +46,9 @@ public final class PowerRepository {
 
     resources.forEach(
         (location, resource) -> {
+          NamespacedKey key = NamespacedKey.fromString(location.toString());
+
+          if (key == null) return;
           try {
             InputStream stream = resource.open();
             Reader reader = new InputStreamReader(stream);
@@ -55,50 +58,35 @@ public final class PowerRepository {
             String name = "";
             String displayName = "";
             String description = "";
-            ItemStack icon = new ItemStack(Material.STONE);
+            ItemStack icon = new ItemStack(Material.AIR);
             List<PowerBehavior<?>> behaviors = new ArrayList<>();
 
-            if (object.has("name")) {
-              name = object.get("name").getAsString();
-            }
-
-            if (object.has("display_name")) {
-              displayName = object.get("display_name").getAsString();
-            }
-
-            if (object.has("description")) {
-              description = object.get("description").getAsString();
-            }
-
-            if (object.has("icon")) {
+            if (object.has("name")) name = object.get("name").getAsString();
+            if (object.has("display_name")) displayName = object.get("display_name").getAsString();
+            if (object.has("description")) description = object.get("description").getAsString();
+            if (object.has("icon"))
               icon = Bukkit.getItemFactory().createItemStack(object.get("icon").getAsString());
-            }
 
             if (object.has("behaviors")) {
               if (!object.get("behaviors").isJsonArray()) return;
               JsonArray behaviorsArray = object.getAsJsonArray("behaviors");
 
-              behaviorsArray
-                  .asList()
-                  .forEach(
-                      element -> {
-                        if (!element.isJsonObject()) return;
-                        JsonObject behaviorObject = element.getAsJsonObject();
-                        String behaviorType = behaviorObject.get("type").getAsString();
-                        NamespacedKey key = NamespacedKey.fromString(behaviorType);
+              behaviorsArray.forEach(
+                  element -> {
+                    if (!element.isJsonObject()) return;
+                    JsonObject behaviorObject = element.getAsJsonObject();
+                    String typeString = behaviorObject.get("type").getAsString();
+                    NamespacedKey typeKey = NamespacedKey.fromString(typeString);
 
-                        if (key == null) return;
-                        PowerBehaviorType<?> type = PowerBehaviorType.get(key);
+                    if (typeKey == null) return;
+                    PowerBehaviorType<?> type = PowerBehaviorTypes.get(typeKey);
 
-                        if (type == null) return;
-                        PowerBehavior<?> behavior = type.factory().create(behaviorObject);
-                        behaviors.add(behavior);
-                      });
+                    if (type == null) return;
+                    PowerBehavior<?> behavior = type.factory().create(behaviorObject);
+                    behaviors.add(behavior);
+                  });
             }
-            powers.put(
-                null,
-                new Power(
-                    Races.namespace("test"), name, displayName, description, icon, behaviors));
+            powers.put(key, new Power(key, name, displayName, description, icon, behaviors));
           } catch (IOException e) {
             throw new RuntimeException(e);
           }

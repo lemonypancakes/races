@@ -1,7 +1,8 @@
 package me.lemonypancakes.races;
 
 import java.util.UUID;
-import me.lemonypancakes.races.player.Player;
+import me.lemonypancakes.races.plugin.RacesPlugin;
+import me.lemonypancakes.races.user.User;
 import org.bukkit.NamespacedKey;
 
 public final class Races {
@@ -21,12 +22,12 @@ public final class Races {
     Races.plugin = plugin;
   }
 
-  public static Player getPlayer(org.bukkit.entity.Player player) {
-    return plugin.getPlayerManager().getPlayer(player);
+  public static User getPlayer(org.bukkit.entity.Player player) {
+    return plugin.getUserManager().getPlayer(player);
   }
 
-  public static Player getPlayer(UUID uuid) {
-    return plugin.getPlayerManager().getPlayer(uuid);
+  public static User getPlayer(UUID uuid) {
+    return plugin.getUserManager().getPlayer(uuid);
   }
 
   public static NamespacedKey namespace(String key) {

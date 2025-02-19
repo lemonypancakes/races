@@ -1,8 +1,9 @@
-package me.lemonypancakes.races;
+package me.lemonypancakes.races.bootstrap;
 
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.bootstrap.PluginProviderContext;
+import me.lemonypancakes.races.plugin.RacesPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RacesBootstrap implements PluginBootstrap {

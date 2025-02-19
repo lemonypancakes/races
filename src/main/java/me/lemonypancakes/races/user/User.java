@@ -1,4 +1,4 @@
-package me.lemonypancakes.races.player;
+package me.lemonypancakes.races.user;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,22 +8,23 @@ import me.lemonypancakes.races.power.PowerInstance;
 import me.lemonypancakes.races.race.Race;
 import me.lemonypancakes.races.race.RaceGroup;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
 
-public final class Player {
-  private final org.bukkit.entity.Player handle;
+public final class User {
+  private final Player player;
   private final Map<RaceGroup, Race> races;
   private final Map<PowerInstance, List<NamespacedKey>> powers;
   private final boolean hasRaceBefore;
 
-  Player(org.bukkit.entity.Player handle, PlayerData data) {
-    this.handle = handle;
+  User(Player player, UserData data) {
+    this.player = player;
     races = new HashMap<>();
     powers = new HashMap<>();
     hasRaceBefore = data.hasRaceBefore();
   }
 
-  public org.bukkit.entity.Player getHandle() {
-    return handle;
+  public Player getPlayer() {
+    return player;
   }
 
   public Map<RaceGroup, Race> getRaces() {
@@ -32,7 +33,7 @@ public final class Player {
 
   public void setRace(RaceGroup group, Race race) {
     races.put(group, race);
-    race.powers().forEach(power -> grantPower(new PowerInstance(power, handle), power.key()));
+    race.powers().forEach(power -> grantPower(new PowerInstance(power, player), power.key()));
   }
 
   public Map<PowerInstance, List<NamespacedKey>> getPowers() {

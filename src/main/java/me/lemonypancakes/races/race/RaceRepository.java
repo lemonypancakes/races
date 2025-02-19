@@ -8,12 +8,15 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
 import me.lemonypancakes.races.Races;
+import me.lemonypancakes.races.power.Power;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.packs.resources.Resource;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.inventory.ItemStack;
 
 public final class RaceRepository {
   private final Map<NamespacedKey, Race> races;
@@ -43,13 +46,47 @@ public final class RaceRepository {
 
     resources.forEach(
         (location, resource) -> {
+          NamespacedKey key = NamespacedKey.fromString(location.toString());
+
+          if (key == null) return;
           try {
             InputStream stream = resource.open();
             Reader reader = new InputStreamReader(stream);
             JsonObject object = gson.fromJson(reader, JsonObject.class);
 
             if (object == null) return;
-            Race race = new Race(Races.namespace("test"), null, null, null, null, null, 0);
+            String name = "";
+            String description = "";
+            ItemStack icon = new ItemStack(Material.AIR);
+            RaceImpact impact = RaceImpact.NONE;
+            List<Power> powers = new ArrayList<>();
+            int order = 0;
+
+            if (object.has("name")) name = object.get("name").getAsString();
+            if (object.has("description")) description = object.get("description").getAsString();
+
+            if (object.has("icon")) {
+              String iconString = object.get("icon").getAsString();
+              icon = Bukkit.getItemFactory().createItemStack(iconString);
+            }
+
+            if (object.has("impact")) {
+              impact = RaceImpact.valueOf(object.get("impact").getAsString().toUpperCase());
+            }
+
+            if (object.has("powers")) {
+              String[] powersStrings = gson.fromJson(object.get("powers"), String[].class);
+              Arrays.stream(powersStrings)
+                  .forEach(
+                      string -> {
+                        Power power =
+                            Races.getPlugin()
+                                .getPowerRepository()
+                                .getPower(NamespacedKey.fromString(string));
+                        powers.add(power);
+                      });
+            }
+            races.put(key, new Race(key, name, description, icon, impact, powers, order));
           } catch (IOException e) {
             throw new RuntimeException(e);
           }

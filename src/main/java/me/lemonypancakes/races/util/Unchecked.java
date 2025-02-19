@@ -3,7 +3,7 @@ package me.lemonypancakes.races.util;
 @SuppressWarnings("unchecked")
 public final class Unchecked {
   private Unchecked() {
-    throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException("This class cannot be instantiated.");
   }
 
   public static <T> T cast(Object object) {

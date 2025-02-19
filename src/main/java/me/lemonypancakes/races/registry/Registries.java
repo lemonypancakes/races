@@ -21,5 +21,7 @@ public final class Registries {
     POWER_BEHAVIOR_TYPE = new Registry<>(new ConcurrentHashMap<>());
   }
 
-  private Registries() {}
+  private Registries() {
+    throw new UnsupportedOperationException("This class cannot be instantiated.");
+  }
 }

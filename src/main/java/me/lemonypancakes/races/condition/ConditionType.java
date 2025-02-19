@@ -1,6 +1,14 @@
 package me.lemonypancakes.races.condition;
 
+import java.util.Objects;
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.NotNull;
 
 public record ConditionType<T>(
-    Class<T> typeClass, NamespacedKey key, ConditionFactory<T> factory) {}
+    @NotNull Class<T> typeClass, @NotNull NamespacedKey key, @NotNull ConditionFactory<T> factory) {
+  public ConditionType {
+    Objects.requireNonNull(typeClass, "typeClass cannot be null");
+    Objects.requireNonNull(key, "key cannot be null");
+    Objects.requireNonNull(factory, "factory cannot be null");
+  }
+}

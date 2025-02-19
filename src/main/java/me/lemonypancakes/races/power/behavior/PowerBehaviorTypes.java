@@ -30,6 +30,6 @@ public final class PowerBehaviorTypes {
   }
 
   private PowerBehaviorTypes() {
-    throw new RuntimeException();
+    throw new UnsupportedOperationException("This class cannot be instantiated.");
   }
 }

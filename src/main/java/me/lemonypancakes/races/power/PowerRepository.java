@@ -3,11 +3,9 @@ package me.lemonypancakes.races.power;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorType;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorTypes;
@@ -21,11 +19,8 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.inventory.ItemStack;
 
 public final class PowerRepository {
-  private final Map<NamespacedKey, Power> powers;
-
-  public PowerRepository() {
-    powers = new HashMap<>();
-  }
+  private final Map<NamespacedKey, Power> powers = new ConcurrentHashMap<>();
+  private static final Gson GSON = new Gson();
 
   public Collection<Power> getPowers() {
     return Collections.unmodifiableCollection(powers.values());
@@ -39,58 +34,62 @@ public final class PowerRepository {
     CraftServer craftServer = (CraftServer) Bukkit.getServer();
     DedicatedServer dedicatedServer = craftServer.getServer();
     Map<ResourceLocation, Resource> resources =
-        dedicatedServer
-            .getResourceManager()
-            .listResources("powers", s -> s.toString().endsWith(".json"));
-    Gson gson = new Gson();
+        dedicatedServer.getResourceManager().listResources("powers", path -> true);
 
-    resources.forEach(
-        (location, resource) -> {
-          NamespacedKey key = NamespacedKey.fromString(location.toString());
-
-          if (key == null) return;
-          try {
-            InputStream stream = resource.open();
-            Reader reader = new InputStreamReader(stream);
-            JsonObject object = gson.fromJson(reader, JsonObject.class);
-
-            if (object == null) return;
-            String name = "";
-            String displayName = "";
-            String description = "";
-            ItemStack icon = new ItemStack(Material.AIR);
-            List<PowerBehavior<?>> behaviors = new ArrayList<>();
-
-            if (object.has("name")) name = object.get("name").getAsString();
-            if (object.has("display_name")) displayName = object.get("display_name").getAsString();
-            if (object.has("description")) description = object.get("description").getAsString();
-            if (object.has("icon"))
-              icon = Bukkit.getItemFactory().createItemStack(object.get("icon").getAsString());
-
-            if (object.has("behaviors")) {
-              if (!object.get("behaviors").isJsonArray()) return;
-              JsonArray behaviorsArray = object.getAsJsonArray("behaviors");
-
-              behaviorsArray.forEach(
-                  element -> {
-                    if (!element.isJsonObject()) return;
-                    JsonObject behaviorObject = element.getAsJsonObject();
-                    String typeString = behaviorObject.get("type").getAsString();
-                    NamespacedKey typeKey = NamespacedKey.fromString(typeString);
-
-                    if (typeKey == null) return;
-                    PowerBehaviorType<?> type = PowerBehaviorTypes.get(typeKey);
-
-                    if (type == null) return;
-                    PowerBehavior<?> behavior = type.factory().create(behaviorObject);
-                    behaviors.add(behavior);
-                  });
-            }
-            powers.put(key, new Power(key, name, displayName, description, icon, behaviors));
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        });
+    resources.forEach(this::loadPower);
     return this;
+  }
+
+  private void loadPower(ResourceLocation location, Resource resource) {
+    NamespacedKey key = parseKey(location);
+    if (key == null) return;
+
+    try (InputStreamReader reader = new InputStreamReader(resource.open())) {
+      JsonObject object = GSON.fromJson(reader, JsonObject.class);
+      if (object == null) return;
+
+      Power power = parsePower(key, object);
+      powers.put(key, power);
+    } catch (Exception e) {
+      Bukkit.getLogger().severe("Failed to load power: " + key + " - " + e.getMessage());
+    }
+  }
+
+  private NamespacedKey parseKey(ResourceLocation location) {
+    return NamespacedKey.fromString(location.toString().replace(".json", ""));
+  }
+
+  private Power parsePower(NamespacedKey key, JsonObject object) {
+    String name = object.has("name") ? object.get("name").getAsString() : "";
+    String displayName = object.has("display_name") ? object.get("display_name").getAsString() : "";
+    String description = object.has("description") ? object.get("description").getAsString() : "";
+    ItemStack icon =
+        object.has("icon")
+            ? Bukkit.getItemFactory().createItemStack(object.get("icon").getAsString())
+            : new ItemStack(Material.AIR);
+    List<PowerBehavior<?>> behaviors = parseBehaviors(object.getAsJsonArray("behaviors"));
+
+    return new Power(key, name, displayName, description, icon, behaviors);
+  }
+
+  private List<PowerBehavior<?>> parseBehaviors(JsonArray behaviorsArray) {
+    if (behaviorsArray == null) return Collections.emptyList();
+
+    List<PowerBehavior<?>> behaviors = new ArrayList<>();
+    behaviorsArray.forEach(
+        element -> {
+          if (!element.isJsonObject()) return;
+          JsonObject behaviorObject = element.getAsJsonObject();
+          NamespacedKey typeKey =
+              NamespacedKey.fromString(behaviorObject.get("type").getAsString());
+
+          Optional.ofNullable(typeKey)
+              .map(PowerBehaviorTypes::get)
+              .map(PowerBehaviorType::factory)
+              .map(factory -> factory.create(behaviorObject))
+              .ifPresent(behaviors::add);
+        });
+
+    return behaviors;
   }
 }

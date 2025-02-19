@@ -1,12 +1,12 @@
 package me.lemonypancakes.races.race;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.power.Power;
 import net.minecraft.resources.ResourceLocation;
@@ -19,13 +19,9 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.inventory.ItemStack;
 
 public final class RaceRepository {
-  private final Map<NamespacedKey, Race> races;
-  private final Map<NamespacedKey, RaceGroup> groups;
-
-  public RaceRepository() {
-    races = new HashMap<>();
-    groups = new HashMap<>();
-  }
+  private final Map<NamespacedKey, Race> races = new ConcurrentHashMap<>();
+  private final Map<NamespacedKey, RaceGroup> groups = new ConcurrentHashMap<>();
+  private static final Gson GSON = new Gson();
 
   public Collection<Race> getRaces() {
     return Collections.unmodifiableCollection(races.values());
@@ -38,59 +34,98 @@ public final class RaceRepository {
   public RaceRepository reload() {
     CraftServer craftServer = (CraftServer) Bukkit.getServer();
     DedicatedServer dedicatedServer = craftServer.getServer();
-    Map<ResourceLocation, Resource> resources =
+    Map<ResourceLocation, Resource> raceResources =
         dedicatedServer
             .getResourceManager()
             .listResources("races", s -> s.toString().endsWith(".json"));
-    Gson gson = new Gson();
+    Map<ResourceLocation, Resource> groupResources =
+        dedicatedServer
+            .getResourceManager()
+            .listResources("race_groups", s -> s.toString().endsWith(".json"));
 
-    resources.forEach(
-        (location, resource) -> {
-          NamespacedKey key = NamespacedKey.fromString(location.toString());
+    raceResources.forEach(this::loadRace);
+    groupResources.forEach(this::loadRaceGroup);
 
-          if (key == null) return;
-          try {
-            InputStream stream = resource.open();
-            Reader reader = new InputStreamReader(stream);
-            JsonObject object = gson.fromJson(reader, JsonObject.class);
-
-            if (object == null) return;
-            String name = "";
-            String description = "";
-            ItemStack icon = new ItemStack(Material.AIR);
-            RaceImpact impact = RaceImpact.NONE;
-            List<Power> powers = new ArrayList<>();
-            int order = 0;
-
-            if (object.has("name")) name = object.get("name").getAsString();
-            if (object.has("description")) description = object.get("description").getAsString();
-
-            if (object.has("icon")) {
-              String iconString = object.get("icon").getAsString();
-              icon = Bukkit.getItemFactory().createItemStack(iconString);
-            }
-
-            if (object.has("impact")) {
-              impact = RaceImpact.valueOf(object.get("impact").getAsString().toUpperCase());
-            }
-
-            if (object.has("powers")) {
-              String[] powersStrings = gson.fromJson(object.get("powers"), String[].class);
-              Arrays.stream(powersStrings)
-                  .forEach(
-                      string -> {
-                        Power power =
-                            Races.getPlugin()
-                                .getPowerRepository()
-                                .getPower(NamespacedKey.fromString(string));
-                        powers.add(power);
-                      });
-            }
-            races.put(key, new Race(key, name, description, icon, impact, powers, order));
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        });
     return this;
+  }
+
+  private void loadRace(ResourceLocation location, Resource resource) {
+    NamespacedKey key = parseKey(location);
+    if (key == null) return;
+
+    try (InputStreamReader reader = new InputStreamReader(resource.open())) {
+      JsonObject object = GSON.fromJson(reader, JsonObject.class);
+      if (object == null) return;
+
+      Race race = parseRace(key, object);
+      races.put(key, race);
+    } catch (Exception e) {
+      Bukkit.getLogger().severe("Failed to load race: " + key + " - " + e.getMessage());
+    }
+  }
+
+  private void loadRaceGroup(ResourceLocation location, Resource resource) {
+    NamespacedKey key = parseKey(location);
+    if (key == null) return;
+
+    try (InputStreamReader reader = new InputStreamReader(resource.open())) {
+      JsonObject object = GSON.fromJson(reader, JsonObject.class);
+      if (object == null) return;
+
+      RaceGroup group = parseRaceGroup(key, object);
+      groups.put(key, group);
+    } catch (Exception e) {
+      Bukkit.getLogger().severe("Failed to load race group: " + key + " - " + e.getMessage());
+    }
+  }
+
+  private NamespacedKey parseKey(ResourceLocation location) {
+    return NamespacedKey.fromString(location.toString().replace(".json", ""));
+  }
+
+  private Race parseRace(NamespacedKey key, JsonObject object) {
+    String name = object.has("name") ? object.get("name").getAsString() : "";
+    String description = object.has("description") ? object.get("description").getAsString() : "";
+    ItemStack icon =
+        object.has("icon")
+            ? Bukkit.getItemFactory().createItemStack(object.get("icon").getAsString())
+            : new ItemStack(Material.AIR);
+    RaceImpact impact =
+        object.has("impact")
+            ? RaceImpact.valueOf(object.get("impact").getAsString().toUpperCase())
+            : RaceImpact.NONE;
+    int order = object.has("order") ? object.get("order").getAsInt() : 0;
+    List<Power> powers = parsePowers(object.getAsJsonArray("powers"));
+
+    return new Race(key, name, description, icon, impact, powers, order);
+  }
+
+  private RaceGroup parseRaceGroup(NamespacedKey key, JsonObject object) {
+    String name = object.has("name") ? object.get("name").getAsString() : "";
+    List<Race> groupRaces = parseGroupRaces(object.getAsJsonArray("races"));
+
+    return new RaceGroup(key, name, groupRaces);
+  }
+
+  private List<Power> parsePowers(JsonArray powersArray) {
+    if (powersArray == null) return Collections.emptyList();
+
+    return powersArray.asList().stream()
+        .map(element -> NamespacedKey.fromString(element.getAsString()))
+        .filter(Objects::nonNull)
+        .map(key -> Optional.ofNullable(Races.getPlugin().getPowerRepository().getPower(key)))
+        .flatMap(Optional::stream)
+        .collect(Collectors.toList());
+  }
+
+  private List<Race> parseGroupRaces(JsonArray racesArray) {
+    if (racesArray == null) return Collections.emptyList();
+
+    return racesArray.asList().stream()
+        .map(element -> NamespacedKey.fromString(element.getAsString()))
+        .filter(Objects::nonNull)
+        .map(races::get)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
   }
 }

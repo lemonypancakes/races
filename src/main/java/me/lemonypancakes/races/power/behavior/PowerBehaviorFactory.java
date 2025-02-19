@@ -5,23 +5,20 @@ import java.util.Objects;
 import java.util.function.Function;
 import me.lemonypancakes.races.serialization.DataContainer;
 import me.lemonypancakes.races.serialization.DataSchema;
-import org.jetbrains.annotations.NotNull;
 
 public record PowerBehaviorFactory<T extends PowerBehavior<T>>(
-    @NotNull DataSchema schema, @NotNull Function<DataContainer, T> constructor) {
+    DataSchema schema, Function<DataContainer, T> constructor) {
   public PowerBehaviorFactory {
     Objects.requireNonNull(schema, "schema cannot be null");
     Objects.requireNonNull(constructor, "constructor cannot be null");
   }
 
-  @NotNull
-  public PowerBehavior<T> create(@NotNull DataContainer container) {
+  public PowerBehavior<T> create(DataContainer container) {
     Objects.requireNonNull(container, "container cannot be null");
     return constructor.apply(container);
   }
 
-  @NotNull
-  public PowerBehavior<T> create(@NotNull JsonObject object) {
+  public PowerBehavior<T> create(JsonObject object) {
     Objects.requireNonNull(object, "object cannot be null");
     return create(schema.read(object));
   }

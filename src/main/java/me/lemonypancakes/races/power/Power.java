@@ -6,15 +6,14 @@ import java.util.Objects;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public record Power(
-    @NotNull NamespacedKey key,
-    @NotNull String name,
-    @NotNull String displayName,
-    @NotNull String description,
-    @NotNull ItemStack icon,
-    @NotNull List<PowerBehavior<?>> behaviors) {
+    NamespacedKey key,
+    String name,
+    String displayName,
+    String description,
+    ItemStack icon,
+    List<PowerBehavior<?>> behaviors) {
   public Power {
     Objects.requireNonNull(key, "key cannot be null");
     Objects.requireNonNull(name, "name cannot be null");

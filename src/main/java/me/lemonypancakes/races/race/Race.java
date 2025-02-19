@@ -6,15 +6,14 @@ import java.util.Objects;
 import me.lemonypancakes.races.power.Power;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public record Race(
-    @NotNull NamespacedKey key,
-    @NotNull String name,
-    @NotNull String description,
-    @NotNull ItemStack icon,
-    @NotNull RaceImpact impact,
-    @NotNull List<Power> powers,
+    NamespacedKey key,
+    String name,
+    String description,
+    ItemStack icon,
+    RaceImpact impact,
+    List<Power> powers,
     int order) {
   public Race {
     Objects.requireNonNull(key, "Key cannot be null");

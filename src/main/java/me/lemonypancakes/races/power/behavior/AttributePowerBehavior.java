@@ -6,7 +6,6 @@ import me.lemonypancakes.races.serialization.DataTypes;
 import me.lemonypancakes.races.util.AttributedAttributeModifier;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public final class AttributePowerBehavior extends PowerBehavior<AttributePowerBehavior> {
   public static final PowerBehaviorFactory<AttributePowerBehavior> FACTORY;
@@ -30,7 +29,7 @@ public final class AttributePowerBehavior extends PowerBehavior<AttributePowerBe
   }
 
   @Override
-  public @NotNull PowerBehaviorInstance<AttributePowerBehavior> apply(@NotNull Player player) {
+  public PowerBehaviorInstance<AttributePowerBehavior> apply(Player player) {
     return new Instance(this, player);
   }
 

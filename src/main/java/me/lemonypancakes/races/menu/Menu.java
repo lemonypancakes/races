@@ -5,13 +5,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class Menu implements InventoryHolder {
   protected Inventory inventory;
 
   @Override
-  public final @NotNull Inventory getInventory() {
+  public final Inventory getInventory() {
     return inventory;
   }
 

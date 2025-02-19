@@ -9,33 +9,29 @@ import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.util.TypedNamespacedKey;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class ActionTypes {
-  @NotNull
-  public static <T> ActionType<T> register(@NotNull ActionType<T> type) {
+
+  public static <T> ActionType<T> register(ActionType<T> type) {
     Objects.requireNonNull(type, "type cannot be null");
     return Unchecked.cast(
         Registries.ACTION_TYPE.register(
             new TypedNamespacedKey<>(type.typeClass(), type.key()), type));
   }
 
-  @NotNull
   public static <T> ActionType<T> register(
-      @NotNull Class<T> typeClass, @NotNull NamespacedKey key, @NotNull ActionFactory<T> factory) {
+      Class<T> typeClass, NamespacedKey key, ActionFactory<T> factory) {
     Objects.requireNonNull(typeClass, "typeClass cannot be null");
     Objects.requireNonNull(key, "key cannot be null");
     Objects.requireNonNull(factory, "factory cannot be null");
     return register(new ActionType<>(typeClass, key, factory));
   }
 
-  @NotNull
   public static <T> ActionType<T> registerSimple(
-      @NotNull Class<T> typeClass,
-      @NotNull NamespacedKey key,
-      @NotNull DataSchema schema,
-      @NotNull BiConsumer<DataContainer, T> action) {
+      Class<T> typeClass,
+      NamespacedKey key,
+      DataSchema schema,
+      BiConsumer<DataContainer, T> action) {
     Objects.requireNonNull(typeClass, "typeClass cannot be null");
     Objects.requireNonNull(key, "key cannot be null");
     Objects.requireNonNull(schema, "schema cannot be null");
@@ -48,14 +44,13 @@ public final class ActionTypes {
             container ->
                 new Action<>() {
                   @Override
-                  public void accept(@NotNull T t) {
+                  public void accept(T t) {
                     action.accept(container, t);
                   }
                 }));
   }
 
-  @Nullable
-  public static <T> ActionType<T> get(@NotNull Class<T> typeClass, @NotNull NamespacedKey key) {
+  public static <T> ActionType<T> get(Class<T> typeClass, NamespacedKey key) {
     Objects.requireNonNull(typeClass, "typeClass cannot be null");
     Objects.requireNonNull(key, "key cannot be null");
     return Unchecked.cast(Registries.ACTION_TYPE.get(new TypedNamespacedKey<>(typeClass, key)));

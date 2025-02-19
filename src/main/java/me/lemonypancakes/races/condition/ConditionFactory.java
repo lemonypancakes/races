@@ -8,8 +8,7 @@ import me.lemonypancakes.races.serialization.DataSchema;
 import org.jetbrains.annotations.NotNull;
 
 public record ConditionFactory<T>(
-    @NotNull DataSchema schema,
-    @NotNull Function<DataContainer, @NotNull Condition<T>> constructor) {
+    @NotNull DataSchema schema, @NotNull Function<DataContainer, Condition<T>> constructor) {
   public ConditionFactory {
     Objects.requireNonNull(schema, "schema cannot be null");
     Objects.requireNonNull(constructor, "constructor cannot be null");

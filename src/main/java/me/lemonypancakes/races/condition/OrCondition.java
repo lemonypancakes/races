@@ -5,6 +5,7 @@ import java.util.List;
 import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataType;
 import me.lemonypancakes.races.serialization.DataTypes;
+import org.jetbrains.annotations.NotNull;
 
 public final class OrCondition<T> extends Condition<T> {
   private final List<Condition<T>> conditions;
@@ -24,7 +25,7 @@ public final class OrCondition<T> extends Condition<T> {
   }
 
   @Override
-  public boolean test(T t) {
+  public boolean test(@NotNull T t) {
     return conditions.stream().anyMatch(condition -> condition.test(t));
   }
 }

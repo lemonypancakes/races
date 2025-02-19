@@ -50,7 +50,7 @@ public final class ConditionTypes {
             container ->
                 new Condition<>() {
                   @Override
-                  public boolean test(T t) {
+                  public boolean test(@NotNull T t) {
                     return condition.test(container, t);
                   }
                 }));

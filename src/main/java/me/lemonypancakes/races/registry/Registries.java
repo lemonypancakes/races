@@ -1,6 +1,5 @@
 package me.lemonypancakes.races.registry;
 
-import java.util.concurrent.ConcurrentHashMap;
 import me.lemonypancakes.races.action.ActionType;
 import me.lemonypancakes.races.condition.ConditionType;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorType;
@@ -15,10 +14,10 @@ public final class Registries {
   public static final Registry<NamespacedKey, PowerBehaviorType<?>> POWER_BEHAVIOR_TYPE;
 
   static {
-    STORAGE_TYPE = new Registry<>(new ConcurrentHashMap<>());
-    ACTION_TYPE = new Registry<>(new ConcurrentHashMap<>());
-    CONDITION_TYPE = new Registry<>(new ConcurrentHashMap<>());
-    POWER_BEHAVIOR_TYPE = new Registry<>(new ConcurrentHashMap<>());
+    STORAGE_TYPE = new Registry<>();
+    ACTION_TYPE = new Registry<>();
+    CONDITION_TYPE = new Registry<>();
+    POWER_BEHAVIOR_TYPE = new Registry<>();
   }
 
   private Registries() {

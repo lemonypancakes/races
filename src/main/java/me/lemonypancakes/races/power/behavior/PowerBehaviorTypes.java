@@ -4,6 +4,8 @@ import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.registry.Registries;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class PowerBehaviorTypes {
   public static final PowerBehaviorType<AttributePowerBehavior> ATTRIBUTE;
@@ -14,13 +16,15 @@ public final class PowerBehaviorTypes {
     OVER_TIME = register("over_time", OverTimePowerBehavior.FACTORY);
   }
 
+  @NotNull
   public static <T extends PowerBehavior<T>> PowerBehaviorType<T> register(
-      NamespacedKey key, PowerBehaviorFactory<T> factory) {
+      @NotNull NamespacedKey key, @NotNull PowerBehaviorFactory<T> factory) {
     return Unchecked.cast(
         Registries.POWER_BEHAVIOR_TYPE.register(key, new PowerBehaviorType<>(key, factory)));
   }
 
-  public static PowerBehaviorType<?> get(NamespacedKey key) {
+  @Nullable
+  public static PowerBehaviorType<?> get(@NotNull NamespacedKey key) {
     return Registries.POWER_BEHAVIOR_TYPE.get(key);
   }
 

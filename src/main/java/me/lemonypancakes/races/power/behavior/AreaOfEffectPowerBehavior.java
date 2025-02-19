@@ -1,10 +1,11 @@
 package me.lemonypancakes.races.power.behavior;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public final class AreaOfEffectPowerBehavior extends PowerBehavior<AreaOfEffectPowerBehavior> {
   @Override
-  public PowerBehaviorInstance<AreaOfEffectPowerBehavior> apply(Player player) {
+  public @NotNull PowerBehaviorInstance<AreaOfEffectPowerBehavior> apply(@NotNull Player player) {
     return new Instance(this, player);
   }
 

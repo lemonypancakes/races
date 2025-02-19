@@ -6,6 +6,7 @@ import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataTypes;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBehavior> {
   public static final PowerBehaviorFactory<OverTimePowerBehavior> FACTORY;
@@ -47,7 +48,7 @@ public final class OverTimePowerBehavior extends PowerBehavior<OverTimePowerBeha
   }
 
   @Override
-  public PowerBehaviorInstance<OverTimePowerBehavior> apply(Player player) {
+  public @NotNull PowerBehaviorInstance<OverTimePowerBehavior> apply(@NotNull Player player) {
     return new Instance(this, player);
   }
 

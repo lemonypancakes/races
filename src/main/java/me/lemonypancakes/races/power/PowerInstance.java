@@ -10,7 +10,7 @@ public final class PowerInstance {
   private final Power power;
   private final Player player;
   private final List<PowerBehaviorInstance<?>> behaviors;
-  private State state;
+  private PowerState state;
 
   public PowerInstance(Power power, Player player) {
     this.power = Objects.requireNonNull(power, "power cannot be null");
@@ -19,6 +19,7 @@ public final class PowerInstance {
         power.behaviors().stream()
             .map(behavior -> behavior.apply(player))
             .collect(Collectors.toList());
+    state = PowerState.REVOKED;
   }
 
   public Power getPower() {
@@ -29,38 +30,38 @@ public final class PowerInstance {
     return player;
   }
 
-  public State getState() {
+  public PowerState getState() {
     return state;
   }
 
   public boolean isActive() {
-    return state == State.GRANTED || state == State.ADDED;
+    return state == PowerState.GRANTED || state == PowerState.ADDED;
   }
 
   public boolean grant() {
     if (isActive()) return false;
-    state = State.GRANTED;
+    state = PowerState.GRANTED;
     behaviors.forEach(PowerBehaviorInstance::grant);
     return true;
   }
 
   public boolean revoke() {
     if (!isActive()) return false;
-    state = State.REVOKED;
+    state = PowerState.REVOKED;
     behaviors.forEach(PowerBehaviorInstance::revoke);
     return true;
   }
 
   public boolean add() {
     if (isActive()) return false;
-    state = State.ADDED;
+    state = PowerState.ADDED;
     behaviors.forEach(PowerBehaviorInstance::add);
     return true;
   }
 
   public boolean remove() {
     if (!isActive()) return false;
-    state = State.REMOVED;
+    state = PowerState.REMOVED;
     behaviors.forEach(PowerBehaviorInstance::remove);
     return true;
   }
@@ -89,12 +90,5 @@ public final class PowerInstance {
   @Override
   public String toString() {
     return power.toString();
-  }
-
-  public enum State {
-    GRANTED,
-    REVOKED,
-    ADDED,
-    REMOVED
   }
 }

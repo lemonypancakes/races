@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import me.lemonypancakes.races.serialization.DataSchema;
 import me.lemonypancakes.races.serialization.DataType;
+import me.lemonypancakes.races.serialization.DataTypes;
 
 public final class OrCondition<T> extends Condition<T> {
   private final List<Condition<T>> conditions;
@@ -14,7 +15,7 @@ public final class OrCondition<T> extends Condition<T> {
 
   public static <T> ConditionFactory<T> getFactory(DataType<T> type) {
     return new ConditionFactory<>(
-        new DataSchema().add("conditions", DataType.listOf(type)),
+        new DataSchema().add("conditions", DataTypes.listOf(type)),
         container -> new OrCondition<>(container.get("conditions")));
   }
 

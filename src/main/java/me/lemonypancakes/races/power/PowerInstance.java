@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorInstance;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public final class PowerInstance {
   private final Power power;
@@ -12,7 +13,7 @@ public final class PowerInstance {
   private final List<PowerBehaviorInstance<?>> behaviors;
   private PowerState state;
 
-  public PowerInstance(Power power, Player player) {
+  public PowerInstance(@NotNull Power power, @NotNull Player player) {
     this.power = Objects.requireNonNull(power, "power cannot be null");
     this.player = Objects.requireNonNull(player, "player cannot be null");
     behaviors =
@@ -22,14 +23,17 @@ public final class PowerInstance {
     state = PowerState.REVOKED;
   }
 
+  @NotNull
   public Power getPower() {
     return power;
   }
 
+  @NotNull
   public Player getPlayer() {
     return player;
   }
 
+  @NotNull
   public PowerState getState() {
     return state;
   }
@@ -73,9 +77,8 @@ public final class PowerInstance {
   }
 
   @Override
-  public boolean equals(Object object) {
-    if (this == object) return true;
-    if (!(object instanceof PowerInstance that)) return false;
+  public boolean equals(Object o) {
+    if (!(o instanceof PowerInstance that)) return false;
 
     return power.equals(that.power) && player.equals(that.player);
   }

@@ -1,21 +1,25 @@
 package me.lemonypancakes.races.power.behavior;
 
+import java.util.Objects;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class PowerBehaviorInstance<T extends PowerBehavior<T>> {
   protected final T behavior;
   protected final Player player;
   private boolean active;
 
-  public PowerBehaviorInstance(T behavior, Player player) {
-    this.behavior = behavior;
-    this.player = player;
+  public PowerBehaviorInstance(@NotNull T behavior, @NotNull Player player) {
+    this.behavior = Objects.requireNonNull(behavior, "behavior cannot be null");
+    this.player = Objects.requireNonNull(player, "player cannot be null");
   }
 
+  @NotNull
   public final T getBehavior() {
     return behavior;
   }
 
+  @NotNull
   public final Player getPlayer() {
     return player;
   }

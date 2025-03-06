@@ -17,19 +17,25 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class PowerRepository {
   private final Map<NamespacedKey, Power> powers = new ConcurrentHashMap<>();
   private static final Gson GSON = new Gson();
 
+  @NotNull
   public Collection<Power> getPowers() {
     return Collections.unmodifiableCollection(powers.values());
   }
 
-  public Power getPower(NamespacedKey key) {
+  @Nullable
+  public Power getPower(@NotNull NamespacedKey key) {
+    Objects.requireNonNull(key, "key cannot be null");
     return powers.get(key);
   }
 
+  @NotNull
   public PowerRepository reload() {
     CraftServer craftServer = (CraftServer) Bukkit.getServer();
     DedicatedServer dedicatedServer = craftServer.getServer();

@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class ConditionedBreathingPowerBehavior
     extends PowerBehavior<ConditionedBreathingPowerBehavior> {
@@ -21,7 +22,8 @@ public class ConditionedBreathingPowerBehavior
   }
 
   @Override
-  public PowerBehaviorInstance<ConditionedBreathingPowerBehavior> apply(Player player) {
+  @NotNull
+  public PowerBehaviorInstance<ConditionedBreathingPowerBehavior> apply(@NotNull Player player) {
     return new Instance(this, player);
   }
 

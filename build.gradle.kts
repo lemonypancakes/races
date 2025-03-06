@@ -1,11 +1,9 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     id("java")
-    id("maven-publish")
-    id("com.gradleup.shadow") version "8.3.5"
-    id("com.diffplug.spotless") version "7.0.2"
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    id("com.diffplug.spotless") version "7.0.2"
+    id("com.gradleup.shadow") version "8.3.5"
+    id("maven-publish")
 }
 
 val majorVersion: String by project
@@ -23,11 +21,10 @@ group = "me.lemonypancakes.${rootProject.name}"
 version = if (isJenkins && isSnapshot) "$finalVersion-b$buildNumber" else finalVersion
 
 repositories {
-    mavenCentral()
     maven("https://repo.codemc.io/repository/nms/")
-    maven("https://repo.codemc.io/repository/lemonypancakes/")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://libraries.minecraft.net/")
+    mavenCentral()
 }
 
 dependencies {
@@ -76,20 +73,20 @@ spotless {
 }
 
 tasks {
-    withType<ProcessResources> {
+    processResources {
         eachFile {
-            expand("version" to finalVersion)
+            expand("version" to version)
         }
     }
 
-    withType<ShadowJar> {
+    shadowJar {
         archiveClassifier.set("")
 
         relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
         relocate("org.bstats", "me.lemonypancakes.races.metrics")
     }
 
-    named("build") {
-        dependsOn(withType<ShadowJar>())
+    build {
+        dependsOn(shadowJar)
     }
 }

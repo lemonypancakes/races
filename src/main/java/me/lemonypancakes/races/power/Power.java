@@ -1,19 +1,19 @@
 package me.lemonypancakes.races.power;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public record Power(
-    NamespacedKey key,
-    String name,
-    String displayName,
-    String description,
-    ItemStack icon,
-    List<PowerBehavior<?>> behaviors) {
+    @NotNull NamespacedKey key,
+    @NotNull String name,
+    @NotNull String displayName,
+    @NotNull String description,
+    @NotNull ItemStack icon,
+    @NotNull List<PowerBehavior<?>> behaviors) {
   public Power {
     Objects.requireNonNull(key, "key cannot be null");
     Objects.requireNonNull(name, "name cannot be null");
@@ -21,10 +21,11 @@ public record Power(
     Objects.requireNonNull(description, "description cannot be null");
     Objects.requireNonNull(icon, "icon cannot be null");
     Objects.requireNonNull(behaviors, "behaviors cannot be null");
-    behaviors = Collections.unmodifiableList(behaviors);
+    behaviors = List.copyOf(behaviors);
   }
 
   @Override
+  @NotNull
   public ItemStack icon() {
     return icon.clone();
   }
@@ -43,6 +44,7 @@ public record Power(
   }
 
   @Override
+  @NotNull
   public String toString() {
     return key.toString();
   }

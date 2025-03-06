@@ -1,8 +1,7 @@
-package me.lemonypancakes.races.plugin;
+package me.lemonypancakes.races;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
-import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.menu.RaceMenu;
 import me.lemonypancakes.races.power.PowerRepository;
 import me.lemonypancakes.races.race.RaceRepository;

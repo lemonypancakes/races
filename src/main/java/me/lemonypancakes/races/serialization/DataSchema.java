@@ -6,11 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class DataSchema {
-  private final Map<String, DataEntry<?>> entries;
-
-  public DataSchema() {
-    entries = new HashMap<>();
-  }
+  private final Map<String, DataEntry<?>> entries = new HashMap<>();
 
   public <T> DataSchema add(String key, DataEntry<T> entry) {
     entries.put(key, entry);

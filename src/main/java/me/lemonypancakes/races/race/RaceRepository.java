@@ -17,20 +17,24 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public final class RaceRepository {
   private final Map<NamespacedKey, Race> races = new ConcurrentHashMap<>();
   private final Map<NamespacedKey, RaceGroup> groups = new ConcurrentHashMap<>();
   private static final Gson GSON = new Gson();
 
+  @NotNull
   public Collection<Race> getRaces() {
     return Collections.unmodifiableCollection(races.values());
   }
 
+  @NotNull
   public Collection<RaceGroup> getGroups() {
     return Collections.unmodifiableCollection(groups.values());
   }
 
+  @NotNull
   public RaceRepository reload() {
     CraftServer craftServer = (CraftServer) Bukkit.getServer();
     DedicatedServer dedicatedServer = craftServer.getServer();

@@ -73,6 +73,10 @@ spotless {
 }
 
 tasks {
+    assemble {
+        dependsOn(clean)
+    }
+
     processResources {
         eachFile {
             expand("version" to version)

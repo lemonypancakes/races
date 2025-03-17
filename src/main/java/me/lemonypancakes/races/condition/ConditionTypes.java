@@ -1,7 +1,5 @@
 package me.lemonypancakes.races.condition;
 
-import java.util.Objects;
-import java.util.function.BiPredicate;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.registry.Registries;
 import me.lemonypancakes.races.serialization.DataContainer;
@@ -11,6 +9,9 @@ import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.function.BiPredicate;
 
 public final class ConditionTypes {
   @Nullable

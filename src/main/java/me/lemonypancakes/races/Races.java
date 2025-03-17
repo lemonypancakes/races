@@ -1,12 +1,13 @@
 package me.lemonypancakes.races;
 
-import java.util.Objects;
-import java.util.UUID;
 import me.lemonypancakes.races.user.User;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public final class Races {
   private static RacesPlugin plugin;

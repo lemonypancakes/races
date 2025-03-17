@@ -1,8 +1,9 @@
 package me.lemonypancakes.races.power.behavior;
 
-import java.util.Objects;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public abstract class PowerBehaviorInstance<T extends PowerBehavior<T>> {
   protected final T behavior;

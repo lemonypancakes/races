@@ -3,10 +3,6 @@ package me.lemonypancakes.races.race;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import java.io.InputStreamReader;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.power.Power;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +14,11 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public final class RaceRepository {
   private final Map<NamespacedKey, Race> races = new ConcurrentHashMap<>();

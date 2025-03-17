@@ -1,6 +1,5 @@
 package me.lemonypancakes.races.user;
 
-import java.util.*;
 import me.lemonypancakes.races.event.user.UserRaceSetEvent;
 import me.lemonypancakes.races.power.Power;
 import me.lemonypancakes.races.power.PowerInstance;
@@ -11,6 +10,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
 
 public final class User {
   private final Player player;

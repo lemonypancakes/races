@@ -1,9 +1,6 @@
 name: Races
 version: '${version}'
 authors: [ LemonyPancakes ]
-
-bootstrapper: me.lemonypancakes.races.RacesBootstrap
 main: me.lemonypancakes.races.RacesPlugin
 api-version: '1.21'
-
 folia-supported: true

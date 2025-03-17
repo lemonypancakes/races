@@ -1,8 +1,9 @@
 package me.lemonypancakes.races.condition;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class Condition<T> implements Predicate<T> {
   @Override

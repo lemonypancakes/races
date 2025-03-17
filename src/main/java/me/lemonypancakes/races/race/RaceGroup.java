@@ -1,9 +1,10 @@
 package me.lemonypancakes.races.race;
 
-import java.util.List;
-import java.util.Objects;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Objects;
 
 public record RaceGroup(
     @NotNull NamespacedKey key, @NotNull String name, @NotNull List<Race> races) {

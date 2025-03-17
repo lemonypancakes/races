@@ -1,6 +1,5 @@
 package me.lemonypancakes.races.user;
 
-import java.util.*;
 import me.lemonypancakes.races.RacesPlugin;
 import me.lemonypancakes.races.power.PowerInstance;
 import org.bukkit.entity.Player;
@@ -11,6 +10,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
 
 public final class UserManager implements Listener {
   private final RacesPlugin plugin;

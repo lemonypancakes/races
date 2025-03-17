@@ -1,11 +1,12 @@
 package me.lemonypancakes.races.action;
 
 import com.google.gson.JsonObject;
-import java.util.Objects;
-import java.util.function.Function;
 import me.lemonypancakes.races.serialization.DataContainer;
 import me.lemonypancakes.races.serialization.DataSchema;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.function.Function;
 
 public record ActionFactory<T>(
     @NotNull DataSchema schema, @NotNull Function<DataContainer, Action<T>> constructor) {

@@ -1,7 +1,5 @@
 package me.lemonypancakes.races.menu;
 
-import java.util.ArrayList;
-import java.util.List;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.race.Race;
 import me.lemonypancakes.races.race.RaceGroup;
@@ -11,6 +9,9 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class RaceMenu extends PaginatedMenu {
   private final List<Race> racesPages;

@@ -1,8 +1,9 @@
 package me.lemonypancakes.races.condition;
 
-import java.util.Objects;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public record ConditionType<T>(
     @NotNull Class<T> typeClass, @NotNull NamespacedKey key, @NotNull ConditionFactory<T> factory) {

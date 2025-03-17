@@ -52,7 +52,7 @@ publishing {
 
     repositories {
         maven {
-            url = uri("https://repo.lemonypancakes.me/")
+            url = uri("https://repo.codemc.io/repository/lemonypancakes/")
 
             credentials {
                 username = System.getenv("JENKINS_USERNAME")

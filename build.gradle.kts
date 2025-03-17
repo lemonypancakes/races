@@ -1,8 +1,8 @@
 plugins {
     id("java")
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.16"
     id("com.diffplug.spotless") version "7.0.2"
-    id("com.gradleup.shadow") version "8.3.5"
+    id("com.gradleup.shadow") version "8.3.6"
     id("maven-publish")
 }
 
@@ -25,13 +25,11 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://libraries.minecraft.net/")
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
-    paperweight {
-        foliaDevBundle("${minecraftVersion}-R0.1-SNAPSHOT")
-    }
-
+    paperweight.foliaDevBundle("${minecraftVersion}-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:26.0.2")
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.7.0")
     implementation("org.bstats:bstats-bukkit:3.1.0")
@@ -40,7 +38,6 @@ dependencies {
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
-
     withJavadocJar()
     withSourcesJar()
 }
@@ -49,14 +46,13 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-
             version = finalVersion
         }
     }
 
     repositories {
         maven {
-            url = uri("https://repo.codemc.io/repository/lemonypancakes/")
+            url = uri("https://repo.lemonypancakes.me/")
 
             credentials {
                 username = System.getenv("JENKINS_USERNAME")
@@ -85,7 +81,6 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("")
-
         relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
         relocate("org.bstats", "me.lemonypancakes.races.metrics")
     }

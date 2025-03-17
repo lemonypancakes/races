@@ -21,7 +21,6 @@ group = "me.lemonypancakes.${rootProject.name}"
 version = if (isJenkins && isSnapshot) "$finalVersion-b$buildNumber" else finalVersion
 
 repositories {
-    maven("https://repo.codemc.io/repository/nms/")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://libraries.minecraft.net/")
     mavenCentral()

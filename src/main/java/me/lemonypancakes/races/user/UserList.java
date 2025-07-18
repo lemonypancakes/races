@@ -1,5 +1,6 @@
 package me.lemonypancakes.races.user;
 
+import java.util.*;
 import me.lemonypancakes.races.RacesPlugin;
 import me.lemonypancakes.races.power.PowerInstance;
 import org.bukkit.entity.Player;
@@ -11,13 +12,11 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-
-public final class UserManager implements Listener {
+public final class UserList implements Listener {
   private final RacesPlugin plugin;
   private final Map<UUID, User> users;
 
-  public UserManager(RacesPlugin plugin) {
+  public UserList(RacesPlugin plugin) {
     this.plugin = plugin;
     users = new HashMap<>();
   }
@@ -45,9 +44,7 @@ public final class UserManager implements Listener {
   private void onPlayerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
     UUID uuid = player.getUniqueId();
-    User user =
-        new User(
-            player, new UserData(player.getUniqueId(), new HashMap<>(), new HashMap<>(), false));
+    User user = new User(player);
 
     users.put(uuid, user);
   }

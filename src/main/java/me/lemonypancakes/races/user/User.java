@@ -1,5 +1,6 @@
 package me.lemonypancakes.races.user;
 
+import java.util.*;
 import me.lemonypancakes.races.event.user.UserRaceSetEvent;
 import me.lemonypancakes.races.power.Power;
 import me.lemonypancakes.races.power.PowerInstance;
@@ -11,15 +12,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-
 public final class User {
   private final Player player;
   private final Map<RaceGroup, Race> races;
   private final Map<PowerInstance, List<NamespacedKey>> powers;
   private final boolean hasRaceBefore;
 
-  User(@NotNull Player player, @NotNull UserData data) {
+  User(@NotNull Player player) {
     this.player = Objects.requireNonNull(player, "player cannot be null");
     this.races = new HashMap<>();
     this.powers = new HashMap<>();

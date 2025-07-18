@@ -1,7 +1,5 @@
 package me.lemonypancakes.races.storage;
 
-import me.lemonypancakes.races.user.UserData;
-
 import java.util.UUID;
 
 public class MySQLStorage implements Storage {

@@ -2,6 +2,7 @@ package me.lemonypancakes.races.serialization;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.List;
 import me.lemonypancakes.races.action.Action;
 import me.lemonypancakes.races.action.ActionType;
 import me.lemonypancakes.races.action.ActionTypes;
@@ -21,8 +22,6 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 public final class DataTypes {
   public static final DataType<String> STRING;

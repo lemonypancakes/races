@@ -3,6 +3,9 @@ package me.lemonypancakes.races.power;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorType;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorTypes;
@@ -16,10 +19,6 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.InputStreamReader;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class PowerRepository {
   private final Map<NamespacedKey, Power> powers = new ConcurrentHashMap<>();

@@ -3,12 +3,10 @@ package me.lemonypancakes.races.storage;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.papermc.paper.persistence.PersistentDataContainerView;
+import java.util.UUID;
 import me.lemonypancakes.races.Races;
-import me.lemonypancakes.races.user.UserData;
 import org.bukkit.Bukkit;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.util.UUID;
 
 public class PDCStorage implements Storage {
   private static final Gson GSON = new Gson();

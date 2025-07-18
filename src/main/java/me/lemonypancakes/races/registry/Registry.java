@@ -1,11 +1,10 @@
 package me.lemonypancakes.races.registry;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class Registry<K, V> {
   private final Map<K, V> registry = new ConcurrentHashMap<>();

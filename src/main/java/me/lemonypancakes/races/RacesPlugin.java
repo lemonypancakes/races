@@ -5,7 +5,7 @@ import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import me.lemonypancakes.races.menu.RaceMenu;
 import me.lemonypancakes.races.power.PowerRepository;
 import me.lemonypancakes.races.race.RaceRepository;
-import me.lemonypancakes.races.user.UserManager;
+import me.lemonypancakes.races.user.UserList;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -16,12 +16,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RacesPlugin extends JavaPlugin {
-  private UserManager userManager;
+  private UserList userList;
   private PowerRepository powerRepository;
   private RaceRepository raceRepository;
 
-  public UserManager getUserManager() {
-    return userManager;
+  public UserList getUserManager() {
+    return userList;
   }
 
   public PowerRepository getPowerRepository() {
@@ -35,7 +35,7 @@ public final class RacesPlugin extends JavaPlugin {
   @Override
   public void onLoad() {
     Races.setPlugin(this);
-    userManager = new UserManager(this);
+    userList = new UserList(this);
     powerRepository = new PowerRepository().reload();
     raceRepository = new RaceRepository().reload();
     CommandAPI.onLoad(
@@ -49,7 +49,7 @@ public final class RacesPlugin extends JavaPlugin {
   public void onEnable() {
     CommandAPI.onEnable();
     new Metrics(this, 24704);
-    registerListener(userManager);
+    registerListener(userList);
     setupScheduler();
     Bukkit.getPluginManager()
         .registerEvents(
@@ -89,6 +89,6 @@ public final class RacesPlugin extends JavaPlugin {
   }
 
   private void tick() {
-    userManager.tick();
+    userList.tick();
   }
 }

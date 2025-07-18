@@ -1,12 +1,11 @@
 package me.lemonypancakes.races.power;
 
-import me.lemonypancakes.races.power.behavior.PowerBehaviorInstance;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import me.lemonypancakes.races.power.behavior.PowerBehaviorInstance;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public final class PowerInstance {
   private final Power power;

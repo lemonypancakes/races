@@ -1,12 +1,11 @@
 package me.lemonypancakes.races.condition;
 
 import com.google.gson.JsonObject;
+import java.util.Objects;
+import java.util.function.Function;
 import me.lemonypancakes.races.serialization.DataContainer;
 import me.lemonypancakes.races.serialization.DataSchema;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
-import java.util.function.Function;
 
 public record ConditionFactory<T>(
     @NotNull DataSchema schema, @NotNull Function<DataContainer, Condition<T>> constructor) {

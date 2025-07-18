@@ -1,10 +1,9 @@
 package me.lemonypancakes.races.serialization;
 
-import me.lemonypancakes.races.util.Unchecked;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 import java.util.Map;
+import me.lemonypancakes.races.util.Unchecked;
+import org.jetbrains.annotations.NotNull;
 
 public final class DataContainer {
   private final Map<String, Object> data = new HashMap<>();

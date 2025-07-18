@@ -1,9 +1,8 @@
 package me.lemonypancakes.races.action;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 import java.util.function.Consumer;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class Action<T> implements Consumer<T> {
   @Override

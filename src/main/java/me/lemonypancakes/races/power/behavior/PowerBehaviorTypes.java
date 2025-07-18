@@ -1,13 +1,12 @@
 package me.lemonypancakes.races.power.behavior;
 
+import java.util.Objects;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.registry.Registries;
 import me.lemonypancakes.races.util.Unchecked;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 public final class PowerBehaviorTypes {
   public static final PowerBehaviorType<AttributePowerBehavior> ATTRIBUTE;

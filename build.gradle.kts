@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.16"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.18"
     id("com.diffplug.spotless") version "7.0.2"
     id("com.gradleup.shadow") version "8.3.6"
     id("maven-publish")
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.foliaDevBundle("${minecraftVersion}-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("${minecraftVersion}-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:26.0.2")
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.7.0")
     implementation("org.bstats:bstats-bukkit:3.1.0")

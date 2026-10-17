@@ -1,21 +1,24 @@
 plugins {
     id("java")
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.18"
-    id("com.diffplug.spotless") version "7.0.2"
-    id("com.gradleup.shadow") version "8.3.6"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.24"
+    id("com.diffplug.spotless") version "8.10.4"
+    id("com.gradleup.shadow") version "9.6.1"
     id("maven-publish")
 }
 
-val majorVersion: String by project
-val minorVersion: String by project
-val patchVersion: String by project
+val majorVersion = project.property("majorVersion").toString()
+val minorVersion = project.property("minorVersion").toString()
+val patchVersion = project.property("patchVersion").toString()
+
 val baseVersion = "$majorVersion.$minorVersion.$patchVersion"
 val isSnapshot = project.property("isSnapshot").toString().toBoolean()
+
 val finalVersion = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
+
 val buildNumber = System.getenv("BUILD_NUMBER") ?: ""
 val isJenkins = buildNumber.isNotEmpty()
 
-val minecraftVersion: String by project
+val minecraftVersion = project.property("minecraftVersion").toString()
 
 group = "me.lemonypancakes.${rootProject.name}"
 version = if (isJenkins && isSnapshot) "$finalVersion-b$buildNumber" else finalVersion
@@ -28,17 +31,18 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("${minecraftVersion}-R0.1-SNAPSHOT")
-    compileOnly("org.jetbrains:annotations:26.0.2")
-    implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.7.0")
-    implementation("org.bstats:bstats-bukkit:3.1.0")
+    paperweight.paperDevBundle("${minecraftVersion}.build.+")
+    compileOnly("org.jetbrains:annotations:26.1.0")
+    implementation("dev.jorel:commandapi-paper-shade:12.1.0")
+    implementation("org.bstats:bstats-bukkit:3.2.1")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-    withJavadocJar()
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
     withSourcesJar()
+    withJavadocJar()
 }
 
 publishing {
@@ -78,9 +82,14 @@ tasks {
         }
     }
 
+    compileJava {
+        options.release.set(25)
+        options.encoding = "UTF-8"
+    }
+
     shadowJar {
         archiveClassifier.set("")
-        relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libs.commandapi")
+        relocate("dev.jorel.commandapi", "me.lemonypancakes.races.libraries.commandapi")
         relocate("org.bstats", "me.lemonypancakes.races.metrics")
     }
 

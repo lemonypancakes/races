@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import me.lemonypancakes.races.power.behavior.PowerBehavior;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorType;
 import me.lemonypancakes.races.power.behavior.PowerBehaviorTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.packs.resources.Resource;
 import org.bukkit.Bukkit;
@@ -39,14 +39,14 @@ public final class PowerRepository {
   public PowerRepository reload() {
     CraftServer craftServer = (CraftServer) Bukkit.getServer();
     DedicatedServer dedicatedServer = craftServer.getServer();
-    Map<ResourceLocation, Resource> resources =
+    Map<Identifier, Resource> resources =
         dedicatedServer.getResourceManager().listResources("powers", path -> true);
 
     resources.forEach(this::loadPower);
     return this;
   }
 
-  private void loadPower(ResourceLocation location, Resource resource) {
+  private void loadPower(Identifier location, Resource resource) {
     NamespacedKey key = parseKey(location);
     if (key == null) return;
 
@@ -61,7 +61,7 @@ public final class PowerRepository {
     }
   }
 
-  private NamespacedKey parseKey(ResourceLocation location) {
+  private NamespacedKey parseKey(Identifier location) {
     return NamespacedKey.fromString(location.toString().replace(".json", ""));
   }
 

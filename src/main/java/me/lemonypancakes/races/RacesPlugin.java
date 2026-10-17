@@ -1,7 +1,6 @@
 package me.lemonypancakes.races;
 
-import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import dev.jorel.commandapi.*;
 import me.lemonypancakes.races.menu.RaceMenu;
 import me.lemonypancakes.races.power.PowerRepository;
 import me.lemonypancakes.races.race.RaceRepository;
@@ -39,7 +38,7 @@ public final class RacesPlugin extends JavaPlugin {
     powerRepository = new PowerRepository().reload();
     raceRepository = new RaceRepository().reload();
     CommandAPI.onLoad(
-        new CommandAPIBukkitConfig(this)
+        new CommandAPISpigotConfig(this)
             .setNamespace("races")
             .skipReloadDatapacks(true)
             .silentLogs(true));

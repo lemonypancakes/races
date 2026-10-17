@@ -22,7 +22,7 @@ public final class User {
     this.player = Objects.requireNonNull(player, "player cannot be null");
     this.races = new HashMap<>();
     this.powers = new HashMap<>();
-    this.hasRaceBefore = data.hasRaceBefore();
+    this.hasRaceBefore = false;
   }
 
   @NotNull

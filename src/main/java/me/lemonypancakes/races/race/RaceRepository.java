@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import me.lemonypancakes.races.Races;
 import me.lemonypancakes.races.power.Power;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.packs.resources.Resource;
 import org.bukkit.Bukkit;
@@ -38,11 +38,11 @@ public final class RaceRepository {
   public RaceRepository reload() {
     CraftServer craftServer = (CraftServer) Bukkit.getServer();
     DedicatedServer dedicatedServer = craftServer.getServer();
-    Map<ResourceLocation, Resource> raceResources =
+    Map<Identifier, Resource> raceResources =
         dedicatedServer
             .getResourceManager()
             .listResources("races", s -> s.toString().endsWith(".json"));
-    Map<ResourceLocation, Resource> groupResources =
+    Map<Identifier, Resource> groupResources =
         dedicatedServer
             .getResourceManager()
             .listResources("race_groups", s -> s.toString().endsWith(".json"));
@@ -53,7 +53,7 @@ public final class RaceRepository {
     return this;
   }
 
-  private void loadRace(ResourceLocation location, Resource resource) {
+  private void loadRace(Identifier location, Resource resource) {
     NamespacedKey key = parseKey(location);
     if (key == null) return;
 
@@ -68,7 +68,7 @@ public final class RaceRepository {
     }
   }
 
-  private void loadRaceGroup(ResourceLocation location, Resource resource) {
+  private void loadRaceGroup(Identifier location, Resource resource) {
     NamespacedKey key = parseKey(location);
     if (key == null) return;
 
@@ -83,7 +83,7 @@ public final class RaceRepository {
     }
   }
 
-  private NamespacedKey parseKey(ResourceLocation location) {
+  private NamespacedKey parseKey(Identifier location) {
     return NamespacedKey.fromString(location.toString().replace(".json", ""));
   }
 

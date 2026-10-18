@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("${minecraftVersion}.build.+")
+    paperweight.foliaDevBundle("${minecraftVersion}.build.+")
     compileOnly("org.jetbrains:annotations:26.1.0")
     implementation("dev.jorel:commandapi-spigot-shade:12.0.0")
     implementation("org.bstats:bstats-bukkit:3.2.1")

@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.24"
-    id("com.diffplug.spotless") version "8.10.4"
+    id("com.diffplug.spotless") version "8.11.0"
     id("com.gradleup.shadow") version "9.6.1"
     id("maven-publish")
 }
